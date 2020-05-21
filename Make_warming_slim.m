@@ -1,13 +1,11 @@
-%Make_warming_endstats.m
-%Edward Tekwa Oct 22, 17
-%run food web simulations with parallel warming and no-warming cases
-
 clear all; %close all;
 
-TimeData=string(datetime);
+
 %%%% Testing realization ofsize-shifts
 global P v % P has parameters, v are current thermal envelopes
 %if matlabpool('size') ~= 0; matlabpool close; end; matlabpool local 2
+
+FoodWebFile=sprintf('Food web %s.mat', string(datetime));
 
 
 %%-- Load ensemble trait values
@@ -27,7 +25,6 @@ nccreate('./Data/Data_ensembles.nc','Z','Dimensions',...
 %for i = 200; size(TR,1);
 
 %create matrices to store ensemble data
-%no warming
 EnsembleGbar=[];
 EnsembleGBbins=[];
 EnsembleprodBbins=[];
@@ -35,27 +32,23 @@ avgB=[];
 avgP=[];
 Ps=P;
 
-%warming
 EnsembleGbar_w=[];
 EnsembleGBbins_w=[];
 EnsembleprodBbins_w=[];
 avgB_w=[];
 avgP_w=[];
 
-Iter=1;
-for i = 1:size(TR,2)
+for i = 1:size(TR,2);
     %i=1;
-    %disp([num2str(i) ', basalSize=' num2str(TR{i}.s.m0) ', meanD=' num2str(HP.sdm(i)) ', stdD='])
-    sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(Iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*100000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_stdD' num2str(HP.sdv(i))])  
+    disp([num2str(i) ', basalSize=' num2str(TR{i}.s.m0) ', meanD=' num2str(HP.sdm(i))])
+    
     %% make parameters for a given set of traits
     [P B Z T] = make_parameters(TR,i);
-    TE = zeros(P.n, P.nx); %trophic efficiency
-    PB = zeros(P.n, P.nx); %doubling time
-    prodZ=zeros(P.nx, 1); %productivity of basal resource
-    prodB=zeros(P.nx, P.n); %productivity of heterotrophs
+    TE = zeros(P.n, P.nx);
+    PB = zeros(P.n, P.nx);
+    prodZ=zeros(P.nx, 1);
+    prodB=zeros(P.nx, P.n);
     
-    
-    %with warming
     TEw = zeros(P.n, P.nx);
     PBw = zeros(P.n, P.nx);
     prodZw=zeros(P.nx, 1);
@@ -63,19 +56,26 @@ for i = 1:size(TR,2)
     
     %% Iterate model forward in time (days at the moment)
     YearStartT=1;
-    for t = 1:P.Tend;
-        %    for t = 1:5000;
+    %for t = 1:P.Tend;
+    for t = 1:400000;
         
+        % organize
+        B1      = []; B2 = [];
+        B1      = B(:,:,1);Z1 = Z(:,:,1);
         if t==100001 %transition time when no-warming and warming experiments diverge from common states
-            Bw=B; Zw =Z;
+            B1w      = []; B2w = [];
+            B1w=B1;Z1w =Z1;
+        elseif t>100001
+            B1w      = []; B2w = [];
+            B1w      = Bw(:,:);Z1w = Zw(:,:);
         end
         
         % fix
-        B(B<eps) = 0;% eps;
-        Z(Z<eps) = 0;% eps;
+        B1(B1<eps) = 0;% eps;
+        Z1(Z1<eps) = 0;% eps;
         if t>100000
-            Bw(Bw<eps) = 0;% eps;
-            Zw(Zw<eps) = 0;% eps;
+            B1w(B1w<eps) = 0;% eps;
+            Z1w(Z1w<eps) = 0;% eps;
         end
         
         % Shift thermal gradient
@@ -90,19 +90,23 @@ for i = 1:size(TR,2)
         
         
         % demographics
-        B        = sub_move(B); % move
-        [gainB gainZ dB dZ v TE PB TLik TLi TLk TLall] = sub_demog(t,B,Z,T1); % grow/die
+        B2        = sub_move(B1); % move
+        [gainB gainZ dB dZ v TE(:,:) PB(:,:)] = sub_demog(1,B2,Z1,T1); % grow/die
         if t>100000
-            Bw        = sub_move(Bw); % move
-            [gainBw gainZw dBw dZw vw TEw PBw TLikw TLiw TLkw TLallw] = sub_demog(t,Bw,Zw,T1w); % grow/die
+            B2w        = sub_move(B1w); % move
+            [gainBw gainZw dBw dZw vw TEw(:,:) PBw(:,:)] = sub_demog(1,B2w,Z1w,T1w); % grow/die
         end
         % time step
-        Z = Z + (dZ .* P.dt);
-        B = B + (dB .* P.dt);
+        Z(:,:) = Z1 + (dZ .* P.dt);
+        B(:,:) = B2 + (dB .* P.dt);
+        prodZ(:,:) = gainZ;
+        prodB(:,:) = gainB;
         
         if t>100000
-            Zw = Zw + (dZw .* P.dt);
-            Bw = Bw + (dBw .* P.dt);
+            Zw(:,:) = Z1w + (dZw .* P.dt);
+            Bw(:,:) = B2w + (dBw .* P.dt);
+            prodZw(:,:) = gainZw;
+            prodBw(:,:) = gainBw;
         end
         %fix again?
         %B(B(:,:,t+1)<eps) = eps;
@@ -115,6 +119,7 @@ for i = 1:size(TR,2)
     %             reshape(B,[1 P.nx P.n P.Tend+1]),[i 1 1 1]);
     %     ncwrite('./Data/Data_ensembles.nc','Z',...
     %             reshape(Z,[1 P.nx P.Tend+1]),[i 1 1]);
+
     
     %%-- Data analysis
     %B(B<eps) = eps;
@@ -122,14 +127,9 @@ for i = 1:size(TR,2)
     %% Simple plotting to file (see Fig/biomass_plots.pdf)
     %plot_demog_spatial(25, Z, B, P, v) % plots ts from patch 25
     %plot_demog_spatial_B(1,Z, B, P) % plots ts from patch 1 (coldest)
-    
-%     set(0,'DefaultFigureVisible', 'on'); %use this to suppress plot display but still runs through the stats
-%     [EnsembleGbar(i,:),EnsembleGBbins(i,:),EnsembleprodBbins(i,:),avgB(:,:,i),avgP(:,:,i),figs]=plot_demog_spatial_B(P.nx,Z, B, P,HP,prodZ,prodB,i);
-%     savefig(figs,[FoodWebFile '_' num2str(i) '_TimeSeries_noWarming.fig'],'compact');
-%     close(figs);
-%     [EnsembleGbar_w(i,:),EnsembleGBbins_w(i,:),EnsembleprodBbins_w(i,:),avgB_w(:,:,i),avgP_w(:,:,i),figs]=plot_demog_spatial_B(P.nx,Zw_comp, Bw_comp, P,HP,prodZw_comp,prodBw_comp,i);
-%     savefig(figs,[FoodWebFile '_' num2str(i) '_TimeSeries_Warming.fig'],'compact');
-%     close(figs);
+    set(0,'DefaultFigureVisible', 'off'); %use this to suppress plot display but still runs through the stats
+    [EnsembleGbar(i,:),EnsembleGBbins(i,:),EnsembleprodBbins(i,:),avgB(:,:,i),avgP(:,:,i)]=plot_demog_spatial_B(P.nx,Z, B, P,HP,prodZ,prodB,i);
+    [EnsembleGbar_w(i,:),EnsembleGBbins_w(i,:),EnsembleprodBbins_w(i,:),avgB_w(:,:,i),avgP_w(:,:,i)]=plot_demog_spatial_B(P.nx,Zw_comp, Bw_comp, P,HP,prodZw_comp,prodBw_comp,i);
     
     %plot_demog_spatial_spectra(P.nx,Z, B(:,:,ceil(4*t/5):t), P,HP,prodZ,prodB,i) %spectra plots only
     Ps(i)=P; %store parameters
@@ -137,16 +137,8 @@ for i = 1:size(TR,2)
     if min(min(min(B)))<log10(eps)
        disp('negative biomass error'); 
     end
-    %clear Z B prodZ prodB Zw_comp Bw_comp prodZw_comp prodBw_comp 
     %save and overwrite after every new simulation in the ensemble
-    FoodWebFile=sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(Iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*100000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_stdD' num2str(HP.sdv(i))]);
-    save(FoodWebFile, 'Z','B','gainB','gainZ','dB','dZ','v','TE','PB','TLik','TLi','TLk','TLall','Zw','Bw','gainBw','gainZw','dBw','dZw','vw','TEw','PBw','TLikw','TLiw','TLkw','TLallw','P');
-    clear Z B gainB gainZ dB dZ v TE PB TLik TLi TLk TLall Zw Bw gainBw gainZw dBw dZw vw TEw PBw TLikw TLiw TLkw TLallw
-    if Iter<numIt
-        Iter=Iter+1;
-    else
-        Iter=1;
-    end
+    save(FoodWebFile,'EnsembleGbar','EnsembleGBbins','EnsembleprodBbins','avgB','avgP','EnsembleGbar_w','EnsembleGBbins_w','EnsembleprodBbins_w','avgB_w','avgP_w','Ps');
 end
 %compute and plot ensemble stats
 % scrsz = get(0,'ScreenSize');

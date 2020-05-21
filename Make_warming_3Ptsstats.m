@@ -4,9 +4,10 @@
 
 clear all; %close all;
 
+numIt=20;    %number of iterations for each parameter combination
 TimeData=string(datetime);
 %%%% Testing realization ofsize-shifts
-global P v % P has parameters, v are current thermal envelopes
+global P %v vw % P has parameters, v are current thermal envelopes
 %if matlabpool('size') ~= 0; matlabpool close; end; matlabpool local 2
 
 
@@ -42,24 +43,32 @@ EnsembleprodBbins_w=[];
 avgB_w=[];
 avgP_w=[];
 
+%timepoints:
+TimePts=[100000 118250 136500 154750 173000];
+
 Iter=1;
 for i = 1:size(TR,2)
     %i=1;
     %disp([num2str(i) ', basalSize=' num2str(TR{i}.s.m0) ', meanD=' num2str(HP.sdm(i)) ', stdD='])
-    sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(Iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*100000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_stdD' num2str(HP.sdv(i))])  
+    sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(Iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*73000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_stdD' num2str(HP.sdv(i))])  
     %% make parameters for a given set of traits
     [P B Z T] = make_parameters(TR,i);
-    TE = zeros(P.n, P.nx); %trophic efficiency
+    TE = zeros(P.n, P.nx, 5); %trophic efficiency
     PB = zeros(P.n, P.nx); %doubling time
     prodZ=zeros(P.nx, 1); %productivity of basal resource
     prodB=zeros(P.nx, P.n); %productivity of heterotrophs
     
+    TE_5 = zeros(P.n, P.nx,5); %trophic efficiency
+    PB_5 = zeros(P.n, P.nx,5); %doubling time
+    prodZ_5=zeros(P.nx, 1,5); %productivity of basal resource
+    prodB_5=zeros(P.nx, P.n,5); %productivity of heterotrophs
+    
     
     %with warming
-    TEw = zeros(P.n, P.nx);
-    PBw = zeros(P.n, P.nx);
-    prodZw=zeros(P.nx, 1);
-    prodBw=zeros(P.nx, P.n);
+    TEw_5 = zeros(P.n, P.nx,5);
+    PBw_5 = zeros(P.n, P.nx,5);
+    prodZw_5=zeros(P.nx, 1,5);
+    prodBw_5=zeros(P.nx, P.n,5);
     
     %% Iterate model forward in time (days at the moment)
     YearStartT=1;
@@ -80,10 +89,8 @@ for i = 1:size(TR,2)
         
         % Shift thermal gradient
         T1      = P.T;% + t.*P.dT; %<<< add this when time is right
-        if t>100000 && t<=200000 %warming period (2 degree increase total)
+        if t>100000
             T1w      = P.T + (t-100000)*P.dT;
-        elseif t>200000 %new stable period
-            T1w      = P.T +2;
         end
         %T1      = P.T + 2*sin(2*pi*((365-t.*P.dt)/365)); %seasonal cycle
         %T1      = P.T + 2*sin(2*pi*((365-t.*P.dt/10)/365)); %decadal cycle
@@ -108,6 +115,33 @@ for i = 1:size(TR,2)
         %B(B(:,:,t+1)<eps) = eps;
         
         %disp(num2str(t))
+        
+        %record major time points:
+        Tpos=find(t==TimePts);
+        if ~isempty(Tpos)
+            Z_5(:,:,Tpos)=Z;
+            B_5(:,:,Tpos)=B;
+            Zw_5(:,:,Tpos)=Zw;
+            Bw_5(:,:,Tpos)=Bw;
+            gainB_5(:,:,Tpos)=gainB;
+            gainZ_5(:,:,Tpos)=gainZ;
+            v_5(:,:,:,Tpos)=v;
+            TE_5(:,:,Tpos)=TE;
+            PB_5(:,:,Tpos)=PB;
+            TLik_5(:,:,Tpos)=TLik;
+            TLi_5(:,:,Tpos)=TLi;
+            TLk_5(:,:,Tpos)=TLk;
+            TLall_5(Tpos)=TLall;
+            gainBw_5(:,:,Tpos)=gainBw;
+            gainZw_5(:,:,Tpos)=gainZw;
+            vw_5(:,:,:,Tpos)=vw;
+            TEw_5(:,:,Tpos)=TEw;
+            PBw_5(:,:,Tpos)=PBw;
+            TLikw_5(:,:,Tpos)=TLikw;
+            TLiw_5(:,:,Tpos)=TLiw;
+            TLkw_5(:,:,Tpos)=TLkw;
+            TLallw_5(Tpos)=TLallw;
+        end
     end
     
     %     %% Save ensemble member here
@@ -132,16 +166,17 @@ for i = 1:size(TR,2)
 %     close(figs);
     
     %plot_demog_spatial_spectra(P.nx,Z, B(:,:,ceil(4*t/5):t), P,HP,prodZ,prodB,i) %spectra plots only
-    Ps(i)=P; %store parameters
+    %Ps(i)=P; %store parameters
     
     if min(min(min(B)))<log10(eps)
        disp('negative biomass error'); 
     end
     %clear Z B prodZ prodB Zw_comp Bw_comp prodZw_comp prodBw_comp 
     %save and overwrite after every new simulation in the ensemble
-    FoodWebFile=sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(Iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*100000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_stdD' num2str(HP.sdv(i))]);
-    save(FoodWebFile, 'Z','B','gainB','gainZ','dB','dZ','v','TE','PB','TLik','TLi','TLk','TLall','Zw','Bw','gainBw','gainZw','dBw','dZw','vw','TEw','PBw','TLikw','TLiw','TLkw','TLallw','P');
-    clear Z B gainB gainZ dB dZ v TE PB TLik TLi TLk TLall Zw Bw gainBw gainZw dBw dZw vw TEw PBw TLikw TLiw TLkw TLallw
+    FoodWebFile=sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(Iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*73000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_stdD' num2str(HP.sdv(i))]);
+    %save(FoodWebFile, 'Z_5','B_5','gainB_5','gainZ_5','v_5','TE_5','PB_5','TLik_5','TLi_5','TLk_5','TLall_5','Zw_5','Bw_5','gainBw_5','gainZw_5','vw_5','TEw_5','PBw_5','TLikw_5','TLiw_5','TLkw_5','TLallw_5','P');
+    savemat_Foodweb(FoodWebFile,Z_5,B_5,gainB_5,gainZ_5,v_5,TE_5,PB_5,TLik_5,TLi_5,TLk_5,TLall_5,Zw_5,Bw_5,gainBw_5,gainZw_5,vw_5,TEw_5,PBw_5,TLikw_5,TLiw_5,TLkw_5,TLallw_5,P);
+    clear Z B gainB gainZ dB dZ v TE PB TLik TLi TLk TLall Zw Bw gainBw gainZw dBw dZw vw TEw PBw TLikw TLiw TLkw TLallw Z_5 B_5 gainB_5 gainZ_5  v_5 TE_5 PB_5 TLik_5 TLi_5 TLk_5 TLall_5 Zw_5 Bw_5 gainBw_5 gainZw_5 vw_5 TEw_5 PBw_5 TLikw_5 TLiw_5 TLkw_5 TLallw_5
     if Iter<numIt
         Iter=Iter+1;
     else

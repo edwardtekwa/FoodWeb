@@ -1,0 +1,11 @@
+squeue -p (partition) or -n (node)
+scontrol show node hal0186 hal0181 hal0096 hal0170
+scontrol show partition p_mlp195 p_deenr_1 p_eoas_1 
+
+sinfo -p p_eoas_1
+
+cd /scratch/tw406/Foodweb
+sbatch Slurm_script.sh
+
+sacctmgr show assoc where account=eoas
+

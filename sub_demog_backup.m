@@ -1,6 +1,11 @@
-function [gainB gainZ dB dZ v TE PB TLik TLi TLk TLall] = sub_demog(t,B,Z,T,P)
-%global P
+function [gainB gainZ dB dZ v TE PB] = sub_demog(t,B,Z,T)
+global P
 
+
+% test:
+B = B(:,:,1);
+Z = Z(:,:,1);
+%T = T;
 
 
 %%---- Define predators and prey
@@ -11,27 +16,22 @@ bi = reshape(B',[P.n 1 P.nx]); % predator biomass: dims are species,1,patches
 
 %%---- Thermal envelope
 % difference between spp optimal temp and local temp: rows patches, cols spp
-%dt  = bsxfun(@minus, T, P.z);
-%dt  = T - P.z;
-dt  = T - P.z - 1.738211; %move optimal temperature z to stated after skewing thermal envelope with the shape parameter w=-2.7
+dt  = bsxfun(@minus, T, P.z);
 
 % squared for thermal envelope
 dt2 = dt.^2;
 
 % scaled dt2 for thermal envelope, rows are patches, cols are spp
-%dt2s= bsxfun(@times, -dt2, 1./P.sigmaz.^2);
-dt2s= -dt2./P.sigmaz.^2;
+dt2s= bsxfun(@times, -dt2, 1./P.sigmaz.^2);
 
 % scaled dt for thermal envelope 
-%dts = bsxfun(@times, P.omegaz./P.sigmaz, dt);
-dts = P.omegaz./P.sigmaz .* dt;
+dts = bsxfun(@times, P.omegaz./P.sigmaz, dt);
 
 % temp-adjusted search rate, rows patches, cols spp
 th    = exp(dt2s).*(1+erf(dts));
 th(P.omegaz==-2.7) = th(P.omegaz==-2.7).*0.621525;
 th(P.omegaz==0)    = th(P.omegaz==0).*1;
-%v     = bsxfun(@times, P.V, th); % modified search rate
-v     = P.V .* th; % modified search rate
+v     = bsxfun(@times, P.V, th); % modified search rate
 v     = reshape(v', [P.n 1 P.nx]); % dims: spp, 1, patches
 
 
@@ -46,40 +46,20 @@ v     = reshape(v', [P.n 1 P.nx]); % dims: spp, 1, patches
 Phi = P.Sig; % turn prey switching off
 
 %- encounter rate (numerator of Type II); dims are pred, prey, patch
-%aa  = bsxfun(@times,v,bj);
-%aa  = v .* bj; %Type II
-aa  = v .* bj.^2; %Type III
+aa  = bsxfun(@times,v,bj);
 
 %- Factor in prey preference to get numerator of Type II; same dims as aa
-%bb  = bsxfun(@times,aa,Phi);
-bb  = aa .*Phi;
+bb  = bsxfun(@times,aa,Phi);
 
 %- handling time calculation; dims pred,1 (since all prey),patch
-%cc  = sum(bsxfun(@times,bb,P.tau),2);
-%cc  = sum(bb.*P.tau,2); %version 1: tau is independent of temperature
-cc  = sum(bb.*P.tau(T),2); %version 2: tau is function of temperature
+cc  = sum(bsxfun(@times,bb,P.tau),2);
 ee  = 1 + cc; % denominator of Type II (ignore interference for now)
 
 % per unit biomass (of predator) predation rate (g/g/day)
-%cij = bsxfun(@rdivide,bb,ee);
-%Cij = bsxfun(@times,cij,bi); % get total consumption in g/day: dims are pred, prey, patches
-cij = bb./ee;
-Cij = cij.*bi; % get total consumption in g/day: dims are pred, prey, patches
+cij = bsxfun(@rdivide,bb,ee);
+Cij = bsxfun(@times,cij,bi); % get total consumption in g/day: dims are pred, prey, patches
 
-%calculate trophic level
-TLik=zeros(1,size(Cij,2),size(Cij,3)); %trophic level of each species in each patch
-TLik(1,1,:)=1;
-TLi=zeros(1,size(Cij,2),1); %trophic level of each species
-TLi(1,1)=1;
-TLk=zeros(size(Cij,3)); %mean trophic level of each patch
 
-for i=1:size(Cij,1)
-    TLik(1,i+1,:)=1+nansum((Cij(i,:,:)./sum(Cij(i,:,:),2)).*TLik);
-end
-TLik=(reshape(TLik,size(Cij,2),size(Cij,3)))';
-TLi=sum(B.*TLik(:,2:end))./sum(B);
-TLk=sum(B.*TLik(:,2:end),2)./sum(B,2);
-TLall=sum(sum(B.*TLik(:,2:end)))./sum(sum(B));
 
 %%---- Zooplankton
 loss_z = squeeze(sum(Cij(:,1,:))); % zooplankton that are eaten (g/day/m3)
@@ -93,19 +73,15 @@ gain_z = (P.Zr.*(P.ZK-Z)); % chemostatic growth in zooplankton (g/day/m3), with 
 %Met=(exp( (0.71.*log(P.s.mi)) + 18.47 - (0.63./(0.0000862.*(T+273))))...
 %                ./7000.*(60.*60.*24)./P.s.mi)';
             
-%Met=bsxfun(@minus,(0.71.*log(P.s.mi)) + 18.47, (0.63./(0.0000862.*(T+273))))';
-Met=(0.71.*log(P.s.mi) + 18.47 - P.Ea./(P.k.*(T+273)))'; %temp dependent
-%Met=(0.71.*log(P.s.mi) + 18.47 - P.Ea./(P.k.*(ones(11,1)*12.5+273)))'; %temp independent
+Met=bsxfun(@minus,(0.71.*log(P.s.mi)) + 18.47, (0.63./(0.0000862.*(T+273))))';
 Met=exp(Met);
-% %Met=bsxfun(@times,Met,1/7000.*(60.*60.*24)./P.s.mi');
-Met=Met .* (1/7000.*(60.*60.*24)./P.s.mi');
-%Met=P.m.eq(P.s.mi,T); %temperature dependent metabolic rate
-%Met=P.m.eq(P.s.mi,ones(11,1)*12.5); %no temperature dependence on metabolic rate
+Met=bsxfun(@times,Met,1/7000.*(60.*60.*24)./P.s.mi');
+
 
 % (add swimming) rows are spp, cols are patches
-%Met = bsxfun(@times,Met,exp(0.03.*P.Spd'.*100./60./60./24'));
-Met = Met .* exp(0.03.*P.Spd'.*100./60./60./24');
+Met = bsxfun(@times,Met,exp(0.03.*P.Spd'.*100./60./60./24'));
 
+% w/out swimming: rows are spp, cols are patches
 loss_m = reshape(bi .* reshape(Met,[P.n 1 P.nx]), [P.n P.nx]);
 
 
@@ -119,17 +95,14 @@ loss_f  = reshape(dj,[P.n P.nx]);
 % total consumption rate (g day-1): rows are preds, cols are patches
 gain_f  = P.lambda .* reshape(sum(Cij,2),[P.n P.nx]);
 
-gainB=(gain_f - loss_m)'; %production=growth-metabolism
+gainB=gain_f';
 gainZ=gain_z;
 
 %%---- Mass balance
 dB = gain_f' - (loss_f' + loss_m');
 dZ = gain_z - loss_z;
 
-TE = (gain_f - loss_m)./reshape(sum(Cij,2),[P.n P.nx]); % Trophic efficiency excluding basal
+TE = (gain_f - loss_m)./reshape(sum(Cij,2),[P.n P.nx]); % Trophic efficiency
 PB = B' ./ (gain_f - loss_m); % biomass/production ratios: days to double
-
-%rearrange v to have the same dimensions as B
-v=reshape(v,size(B'));
 
 return
