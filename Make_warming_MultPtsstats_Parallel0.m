@@ -11,7 +11,7 @@ delete(gcp('nocreate'))
 parpool('local', str2num(getenv('SLURM_CPUS_PER_TASK')))
 warning('off','all')
 
-numIt=40;    %number of iterations for each parameter combination
+numIt=2;    %number of iterations for each parameter combination
 SampInt=365;  %record every SampInt pts (days) in time series during transcient period
 
 TimeData=string(datetime);
