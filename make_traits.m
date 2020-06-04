@@ -21,12 +21,13 @@ rng('shuffle') % set random number seed to ensure the same 'random' numbers each
 % D sd is in log10 space
 %sdm = [0 2 4 5 7]; % mean D in log10(m^2/day)
 %sdv = [0 0.3 0.5 0.7]; % standard deviation of D among species in log10 space
-sdm = [-Inf 0 3 6 9]; %[-Inf 0 3 6 9 12]; % mean D in log10(m^2/day) for all
+ThermPerfWidth=5/4; %thermal performance width (or 5)
+sdm = [6.25 6.5 6.75 7.25 7.5 7.75]; %[-Inf 0 3 6 7 8 9]; % mean D in log10(m^2/day) for all
 sdv = 0; % standard deviation of D among species in log10 space
-specialist = [0 0.5]; %value of pInedible, with extreme specialist->1, and generalist->0
+specialist = [0]; %value of pInedible, with extreme specialist=1, intermediate=0.5, and generalist=0
 tv = [0]; %standard deviation of optimal temperature around 12.5C: 10~uniform distribution
 basalSize =[0.01]; %= 0.05; % Body-mass of zooplankton; g, 5e-7 for phytoplankton, 1e-13 for bacteria
-tempChange =[6]; %temperature change in degree C [-2 2 4 6]
+tempChange =[3]; %temperature change in degree C [-2 2 4 6]
 %tempChange =[8]; %temperature change in degree C
 numSpecies=[200]; %number of random initial species
 initBDistr=[0]; %initial log body size-log biomass slope
@@ -71,7 +72,7 @@ for q=1:length(basalSize)
                         %P.z = (maxSize-minSize-(log10(P.m.si)-minSize))*25/(maxSize-minSize) + normrnd(0, tv(j), 1, P.n); %inversely proportional to body size
                         %P.z = (min(max(ones(1,P.n).*12.5+normrnd(0, tv(j), 1, P.n),minOptTemp),maxOptTemp)); %normal distribution with boundaries at min and max
                         % thermal niche breadth for species i (deg C, from Urban et al. 2012)
-                        P.sigmaz  = ones(1,P.n)*5;
+                        P.sigmaz  = ones(1,P.n)*ThermPerfWidth;
                         
                         % skewness of thermal niche for species i (from Urban et al. 2012)
                         P.omegaz  = ones(1,P.n)* -2.7;

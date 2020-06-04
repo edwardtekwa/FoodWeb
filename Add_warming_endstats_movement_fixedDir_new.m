@@ -13,7 +13,7 @@ recordYrs=20; %use these number of years at the end of time series to compute me
 %Cases={'basalSize0.01_meanD-Inf';'basalSize0.01_meanD0';'basalSize0.01_meanD3';'basalSize0.01_meanD6';'basalSize0.01_meanD9';'basalSize0.01_meanD12'};
 
 %specify simulation data folder in current directory
-Path='Type III'; %'Lambda 02'; %'GA1'; %'EA 069'; %'PPMR 208'; %''; %'Specialist food web'; %'Generalist food web'; 'General special base';
+Path='Type III narrow thermal evlp'; %'Lambda 02'; %'GA1'; %'EA 069'; %'PPMR 208'; %''; %'Specialist food web'; %'Generalist food web'; 'General special base';
 
 %first, use these lines for specialist food webs:
 %Cases={'basalSize0.01_meanD-Inf_pInedible0.5';'basalSize0.01_meanD0_pInedible0.5';'basalSize0.01_meanD3_pInedible0.5';'basalSize0.01_meanD6_pInedible0.5';'basalSize0.01_meanD9_pInedible0.5';'basalSize0.01_meanD12_pInedible0.5'};
@@ -27,16 +27,19 @@ Path='Type III'; %'Lambda 02'; %'GA1'; %'EA 069'; %'PPMR 208'; %''; %'Specialist
 %Cases={'basalSize0.01_meanD3_pInedible0'};
 %AntiCases={'basalSize0.01_meanD3_pInedible0.5'};
 %Cases={'basalSize0.01_meanD-Inf';'basalSize0.01_meanD0';'basalSize0.01_meanD3';'basalSize0.01_meanD6';'basalSize0.01_meanD9'};
-Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII'};
-AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII'};
+%Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII'};
+%AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII'};
+Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII';'basalSize0.01_meanD8_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII'};
+AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0.5_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII';'basalSize0.01_meanD8_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII'};
 %Cases={'basalSize0.01_meanD4_pInedible0';'basalSize0.01_meanD5_pInedible0';'basalSize0.01_meanD7_pInedible0'};
 %AntiCases={'basalSize0.01_meanD4_pInedible0.5';'basalSize0.01_meanD5_pInedible0.5';'basalSize0.01_meanD7_pInedible0.5'};
 
 %Cases={'basalSize0.001_meanD-Inf_stdD0';'basalSize0.001_meanD0_stdD0';'basalSize0.001_meanD3_stdD0';'basalSize0.001_meanD6_stdD0';'basalSize0.001_meanD9_stdD0';'basalSize0.001_meanD12_stdD0'};
 numCases=length(Cases);
-moveRates=[-Inf,0,3,6,9];
-%moveRates=[3];
+moveRates=[-Inf 0 3 6 7 8 9];
 %moveRates=[-Inf,0,3,6];
+%movementLabels={'0' '1' '10^3' '10^6' '10^9' '10^{12}'};
+movementLabels={'0' '1' '10^3' '10^6' '10^7' '10^8' '10^9'};
 caseIts=[]; %record number of iterations for each case
 
 %quantile fits:
@@ -192,6 +195,9 @@ for CaseNumber=1:numCases
             %stdDispersals=[stdDispersals;str2num(Cases{CaseNumber}(findPos5:end))];
             paramIndices=[paramIndices;CaseNumber];
             warmingIndices=[warmingIndices;[0 1]];
+            
+            tempChanges=P.dT*73000; %temperature changes corresponding to temperature scenario
+            TempChange=tempChanges(TempScenario);
             
             %reduce matrices to contain only last point and TempScenario warming
             B=nanmean(B_yrs(:,:,end-recordYrs+1:end),3); %B_yrs(:,:,end);
@@ -484,8 +490,7 @@ end
 
 %numIt=length(paramIndices)/numCases; %number of iterations per case
 %(assuming equal numbers for each case)
-tempChanges=P.dT*73000; %temperature changes corresponding to temperature scenario
-movementLabels={'0' '1' '10^3' '10^6' '10^9' '10^{12}'};
+
 scrsz = get(0,'ScreenSize');
 set(0,'defaulttextinterpreter','tex');
 set(0, 'defaultAxesTickLabelInterpreter','tex');
@@ -1139,7 +1144,7 @@ set(refl,'color','r')
 xlabel 'movement rate'
 ylabel '\Delta'
 xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
+title (['warming ' num2str(TempChange) '\circC'])
 legend off
 subplot(2,2,3)
 yyaxis left
@@ -1240,14 +1245,14 @@ seBSShiftCoeffLV=[];
 meanBS26ShiftLV=[];
 seBS26ShiftLV=[];
 for i=1:length(moveRates)
-    lm=fitlm(BS_move(:,i),-CentroidShift_move(:,i)*100/6);
+    lm=fitlm(BS_move(:,i),-CentroidShift_move(:,i)*100/TempChange);
     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
     %seBSShiftCoeff(:,i)=lm.Coefficients.SE;
     [shift2, ci2] = predict(lm,2);
     [shift6, ci6] = predict(lm,6);
     meanBS26Shift(:,i)=[shift2;shift6];
     seBS26Shift(:,i)=[ci2(1);ci6(1)];
-    lmLV=fitlm(BS_move(:,i),-CentroidShift_moveLV(:,i)*100/6);
+    lmLV=fitlm(BS_move(:,i),-CentroidShift_moveLV(:,i)*100/TempChange);
     [shift2LV, ci2LV] = predict(lmLV,2);
     [shift6LV, ci6LV] = predict(lmLV,6);
     meanBS26ShiftLV(:,i)=[shift2LV;shift6LV];
@@ -1264,10 +1269,10 @@ if ~exist('CentroidShift1') %if this is first set of analysis (specialists)
 else
     plotColor='r';
 end
-blmean=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*100/6,[nanstd(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
+blmean=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
 bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-seBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
 bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-seBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-blssproj=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*100/6,[nanstd(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
+blssproj=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'centroid shift %'
@@ -1340,14 +1345,14 @@ seBSShiftCoeffLV=[];
 meanBS26ShiftLV=[];
 seBS26ShiftLV=[];
 for i=1:length(moveRates)
-    lm=fitlm(BS_move(:,i),-LeadingShift_move(:,i)*100/6);
+    lm=fitlm(BS_move(:,i),-LeadingShift_move(:,i)*100/TempChange);
     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
     %seBSShiftCoeff(:,i)=lm.Coefficients.SE;
     [shift2, ci2] = predict(lm,2);
     [shift6, ci6] = predict(lm,6);
     meanBS26Shift(:,i)=[shift2;shift6];
     seBS26Shift(:,i)=[ci2(1);ci6(1)];
-    lmLV=fitlm(BS_move(:,i),-LeadingShift_moveLV(:,i)*100/6);
+    lmLV=fitlm(BS_move(:,i),-LeadingShift_moveLV(:,i)*100/TempChange);
     [shift2LV, ci2LV] = predict(lmLV,2);
     [shift6LV, ci6LV] = predict(lmLV,6);
     meanBS26ShiftLV(:,i)=[shift2LV;shift6LV];
@@ -1359,10 +1364,10 @@ CM=colormap(jet(128)); % set colormap
 %bl1=boundedline([1:numCases], meanBSShiftCoeff(2,:),seBSShiftCoeff(2,:)*1.96,'-b','alpha'); drawnow; set(bl1,'linewidth',2);
 bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-seBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
 bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-seBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
-blmean=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*100/6,[nanstd(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
+blmean=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
 bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-seBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
 bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-seBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-blssproj=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*100/6,[nanstd(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
+blssproj=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'leading edge shift %'
@@ -1386,14 +1391,14 @@ seBSShiftCoeffLV=[];
 meanBS26ShiftLV=[];
 seBS26ShiftLV=[];
 for i=1:length(moveRates)
-    lm=fitlm(BS_move(:,i),-TrailingShift_move(:,i)*100/6);
+    lm=fitlm(BS_move(:,i),-TrailingShift_move(:,i)*100/TempChange);
     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
     %seBSShiftCoeff(:,i)=lm.Coefficients.SE;
     [shift2, ci2] = predict(lm,2);
     [shift6, ci6] = predict(lm,6);
     meanBS26Shift(:,i)=[shift2;shift6];
     seBS26Shift(:,i)=[ci2(1);ci6(1)];
-    lmLV=fitlm(BS_move(:,i),-TrailingShift_moveLV(:,i)*100/6);
+    lmLV=fitlm(BS_move(:,i),-TrailingShift_moveLV(:,i)*100/TempChange);
     [shift2LV, ci2LV] = predict(lmLV,2);
     [shift6LV, ci6LV] = predict(lmLV,6);
     meanBS26ShiftLV(:,i)=[shift2LV;shift6LV];
@@ -1405,10 +1410,10 @@ CM=colormap(jet(128)); % set colormap
 %bl1=boundedline([1:numCases], meanBSShiftCoeff(2,:),seBSShiftCoeff(2,:)*1.96,'-b','alpha'); drawnow; set(bl1,'linewidth',2);
 bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-seBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
 bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-seBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
-blmean=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*100/6,[nanstd(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
+blmean=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
 bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-seBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
 bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-seBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-blssproj=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*100/6,[nanstd(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
+blssproj=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'trailing edge shift %'
@@ -1609,7 +1614,7 @@ else %plot both sets of changes
     numSpeciesPerCase=length(BS_move);
     %for C=1:numCases
     C=3;
-    SpeciesCentroidShifts=-[CentroidShift_move1(:,C); CentroidShift_move(:,C); CentroidShift_moveLV1(:,C); CentroidShift_moveLV(:,C)]*100/6; %specialist food web, generalist food web, specialist single-species, generalist single-species
+    SpeciesCentroidShifts=-[CentroidShift_move1(:,C); CentroidShift_move(:,C); CentroidShift_moveLV1(:,C); CentroidShift_moveLV(:,C)]*100/TempChange; %specialist food web, generalist food web, specialist single-species, generalist single-species
     SpeciesBodySizes=[BS_move1(:,C); BS_move(:,C); BS_move1(:,C); BS_move(:,C)];
     SpeciesInteraction=[ones(numSpeciesPerCase*2,1); zeros(numSpeciesPerCase*2,1)]; %no food web=0, food web=1
     SpeciesSpecialization=[ones(numSpeciesPerCase,1); zeros(numSpeciesPerCase,1); ones(numSpeciesPerCase,1); zeros(numSpeciesPerCase,1)]; %generalist=0, specialist=1
@@ -1867,9 +1872,9 @@ else %plot both sets of changes
     set(refl,'color','k')
     %blLVCentroid2=boundedline([1:numCases], nanmean(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[])),[nanstd(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[])))).^0.5)]','k','alpha'); drawnow; set(blLVCentroid2,'linewidth',2);
     %blLVCentroid1=boundedline([1:numCases], nanmean(reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])),[nanstd(reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])))).^0.5)]','k','alpha'); drawnow; set(blLVCentroid1,'linewidth',2);
-    blCentroid2=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])*100/6),[nanstd(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blCentroid2,'linewidth',2);
-    blCentroid1=boundedline([1:numCases], -nanmean(reshape(CentroidShift1(:,1)-CentroidShift01(:,1),numIt,[])*100/6),[nanstd(reshape(CentroidShift1(:,1)-CentroidShift01(:,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(CentroidShift1(:,1)-CentroidShift01(:,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blCentroid1,'linewidth',2);
-    blCentroidLV=boundedline([1:numCases], -nanmean([reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]);reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])]*100/6),[nanstd([reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]);reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])])*(100/6)*1.96./((sum(~isnan([reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]);reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])]))).^0.5)]','k','alpha'); drawnow; set(blCentroidLV,'linewidth',2);
+    blCentroid2=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])*100/TempChange),[nanstd(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blCentroid2,'linewidth',2);
+    blCentroid1=boundedline([1:numCases], -nanmean(reshape(CentroidShift1(:,1)-CentroidShift01(:,1),numIt,[])*100/TempChange),[nanstd(reshape(CentroidShift1(:,1)-CentroidShift01(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift1(:,1)-CentroidShift01(:,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blCentroid1,'linewidth',2);
+    blCentroidLV=boundedline([1:numCases], -nanmean([reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]);reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])]*100/TempChange),[nanstd([reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]);reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])])*(100/TempChange)*1.96./((sum(~isnan([reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]);reshape(CentroidShift1(:,2)-CentroidShift01(:,2),numIt,[])]))).^0.5)]','k','alpha'); drawnow; set(blCentroidLV,'linewidth',2);
 
     blRangeExpansion2=boundedline([1:numCases], nanmean(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])),[nanstd(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])))).^0.5)]','--r','alpha'); drawnow; set(blRangeExpansion2,'linewidth',2);
     blRangeExpansion1=boundedline([1:numCases], nanmean(reshape(RangeExpansionPerc1(:,1)-RangeExpansionPerc01(:,1),numIt,[])),[nanstd(reshape(RangeExpansionPerc1(:,1)-RangeExpansionPerc01(:,1),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc1(:,1)-RangeExpansionPerc01(:,1),numIt,[])))).^0.5)]','--b','alpha'); drawnow; set(blRangeExpansion1,'linewidth',2);
@@ -1899,7 +1904,7 @@ else %plot both sets of changes
     x=BS_move1(:,C);
     [x,xi]=sort(x);
     x2=OptT_move1(xi,C);
-    y=-CentroidShift_move1(xi,C)*100/6;
+    y=-CentroidShift_move1(xi,C)*100/TempChange;
     lm1=fitlm([x x2],y);
     x=x(~isnan(y));
     x2=x2(~isnan(y));
@@ -1910,7 +1915,7 @@ else %plot both sets of changes
     x=BS_move(:,C);
     [x,xi]=sort(x);
     x2=OptT_move(xi,C);
-    y=-CentroidShift_move(xi,C)*100/6;
+    y=-CentroidShift_move(xi,C)*100/TempChange;
     lm2=fitlm([x x2],y);
     x=x(~isnan(y));
     x2=x2(~isnan(y));
@@ -1922,7 +1927,7 @@ else %plot both sets of changes
     [x,xi]=sort(x);
     x2=[OptT_move1(:,C);OptT_move(:,C)];
     x2=x2(xi);
-    y=-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/6;
+    y=-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/TempChange;
     y=y(xi);
     lm3=fitlm([x x2],y);
     x=x(~isnan(y));
@@ -1966,28 +1971,28 @@ else %plot both sets of changes
     [ynew, ci] = predict(lm6, [x ones(length(x),1)*mean(x2)]);
     bllm6=boundedline(x,ynew,ynew-ci(:,1),'--k','alpha'); drawnow; set(bllm6,'linewidth',2);
    
-%     lm1=fitlm(BS_move1(:,C),-CentroidShift_move1(:,C)*100/6);
+%     lm1=fitlm(BS_move1(:,C),-CentroidShift_move1(:,C)*100/TempChange);
 %     x=BS_move1(:,C);
 %     [x,xi]=sort(x);
-%     y=-CentroidShift_move1(xi,C)*100/6;
+%     y=-CentroidShift_move1(xi,C)*100/TempChange;
 %     x=x(~isnan(y));
 %     y=y(~isnan(y));
 %     [ynew, ci] = predict(lm1, x);
 %     bllm1=boundedline(x,ynew,ynew-ci(:,1),'b','alpha'); drawnow; set(bllm1,'linewidth',2);
 %     
-%     lm2=fitlm(BS_move(:,C),-CentroidShift_move(:,C)*100/6);
+%     lm2=fitlm(BS_move(:,C),-CentroidShift_move(:,C)*100/TempChange);
 %     x=BS_move(:,C);
 %     [x,xi]=sort(x);
-%     y=-CentroidShift_move(xi,C)*100/6;
+%     y=-CentroidShift_move(xi,C)*100/TempChange;
 %     x=x(~isnan(y));
 %     y=y(~isnan(y));
 %     [ynew, ci] = predict(lm2, x);
 %     bllm2=boundedline(x,ynew,ynew-ci(:,1),'r','alpha'); drawnow; set(bllm2,'linewidth',2);
 %     
-%     lm3=fitlm([BS_move1(:,C);BS_move(:,C)],-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/6);
+%     lm3=fitlm([BS_move1(:,C);BS_move(:,C)],-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/TempChange);
 %     x=[BS_move1(:,C);BS_move(:,C)];
 %     [x,xi]=sort(x);
-%     y=-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/6;
+%     y=-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/TempChange;
 %     x=x(~isnan(y));
 %     y=y(~isnan(y));
 %     [ynew, ci] = predict(lm3, x);
@@ -2028,7 +2033,7 @@ else %plot both sets of changes
     x2=OptT_move1(:,C);
     [x2,xi]=sort(x2);
     x=BS_move1(xi,C);
-    y=-CentroidShift_move1(xi,C)*100/6;
+    y=-CentroidShift_move1(xi,C)*100/TempChange;
     lm1=fitlm([x x2],y);
     x=x(~isnan(y));
     x2=x2(~isnan(y));
@@ -2039,7 +2044,7 @@ else %plot both sets of changes
     x2=OptT_move(:,C);
     [x2,xi]=sort(x2);
     x=BS_move(xi,C);
-    y=-CentroidShift_move(xi,C)*100/6;
+    y=-CentroidShift_move(xi,C)*100/TempChange;
     lm2=fitlm([x x2],y);
     x=x(~isnan(y));
     x2=x2(~isnan(y));
@@ -2051,7 +2056,7 @@ else %plot both sets of changes
     [x2,xi]=sort(x2);
     x=[BS_move1(:,C);BS_move(:,C)];
     x=x(xi);
-    y=-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/6;
+    y=-[CentroidShift_moveLV1(:,C);CentroidShift_moveLV(:,C)]*100/TempChange;
     y=y(xi);
     lm3=fitlm([x x2],y);
     x=x(~isnan(y));
@@ -2106,11 +2111,11 @@ else %plot both sets of changes
     hold on
     refl=refline(0,0);
     set(refl,'color','k')
-    %blMedian2=boundedline([1:numCases], -nanmean(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])*100/6),[nanstd(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
-    %blMedian1=boundedline([1:numCases], -nanmean(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])*100/6),[nanstd(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
-    blMedian2=boundedline([1:numCases-2], -nanmean(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])*100/6),[nanstd(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
-    blMedian1=boundedline([1:numCases-2], -nanmean(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])*100/6),[nanstd(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[]))*(100/6)*1.96./((sum(~isnan(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
-    blMedianLV=boundedline([1:numCases], -nanmean([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])]*100/6),[nanstd([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])])*(100/6)*1.96./((sum(~isnan([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])]))).^0.5)]','k','alpha'); drawnow; set(blMedianLV,'linewidth',2);
+    %blMedian2=boundedline([1:numCases], -nanmean(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
+    %blMedian1=boundedline([1:numCases], -nanmean(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
+    blMedian2=boundedline([1:numCases-2], -nanmean(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
+    blMedian1=boundedline([1:numCases-2], -nanmean(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
+    blMedianLV=boundedline([1:numCases], -nanmean([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])]*100/TempChange),[nanstd([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])])*(100/TempChange)*1.96./((sum(~isnan([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])]))).^0.5)]','k','alpha'); drawnow; set(blMedianLV,'linewidth',2);
 
     ylabel 'median location shift %'
     xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);

@@ -22,8 +22,8 @@ numpatch=size(B,1);
 %avgWindow=ceil(length(B)*1/2):length(B)-1; %define time window to average long-term statistics
 %avgWindow=1:length(B);
 avgWindow=length(B)-9:length(B); %final (end of warming)
-avgWindow1=1:9; %initial (just before warming)
-avgWindow2=length(Bw_yrs)-9:length(Bw_yrs); %initial (just before warming)
+avgWindow1=length(B)-209:length(B)-200; %initial (just before warming)
+avgWindow2=length(B)-9:length(B); %final
 lengthWindow=length(avgWindow);
 
 if numpatch==1
@@ -177,7 +177,7 @@ subplot(3,3,4:6);
 hold on
 %set(line2,'LineWidth',2,'Color','r')
 %ylim(plot2(1),[0 5])
-SpeciesDistr=plot(([(mean(Bw_yrs(:,:,avgWindow1),3))]),'LineWidth',2);
+SpeciesDistr=plot(([(mean(B(:,:,avgWindow1),3))]),'LineWidth',2);
 %SpeciesDistr(1).FaceColor='k';
 for i = 1:P.n
     Ci = fix((log10(P.s.mi(i))-C(1))/(C(2)-C(1))*(size(CM,1)-1))+1;
@@ -200,7 +200,7 @@ xlim([0.8 numpatch+0.2]);
 
 subplot(3,3,7:9);
 %plot(Xp, log10(mean(Z(:,:,avgWindow),3)), 'Color', 'k','linewidth',2);
-SpeciesDistr=plot((mean(Bw_yrs(:,:,avgWindow2),3)),'LineWidth',2);
+SpeciesDistr=plot((mean(B(:,:,avgWindow2),3)),'LineWidth',2);
 hold on
 for i = 1:P.n
     Ci = fix((log10(P.s.mi(i))-C(1))/(C(2)-C(1))*(size(CM,1)-1))+1;
