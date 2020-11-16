@@ -1,12 +1,15 @@
-function [r,a,z,K,flag,raR2,r_T,K_T,K_T_ratio,r_T_ratio]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode) %r, a dimensions: species, patch (temperature)
+function [r,a,c,z,K,flag,raR2,r_T,K_T,K_T_ratio,r_T_ratio]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode) %r, a dimensions: species, patch (temperature)
 %Edward Tekwa Nov 17, 17
 %estimate per-mass intrinsic growth rate and competition terms
 %global zs
-options=optimoptions(@lsqlin,'OptimalityTolerance',1e-12,'StepTolerance',1e-12,'ConstraintTolerance',1e-12,'display','off');
+%options=optimoptions(@lsqlin,'OptimalityTolerance',1e-12,'StepTolerance',1e-12,'ConstraintTolerance',1e-12,'display','off');
+options = optimset('MaxFunEvals',2000,'MaxIter',2000,'Display','off','TolFun',1e-9,'TolX',1e-9);
+%fminoption=optimoptions('display','off');
 warning('off','all')
 
 r=NaN(1,size(Btrans,2)); %intrinsic growth rates for all species
 a=NaN(1,size(Btrans,2)); %a=NaN(size(Btrans,1),size(Btrans,2)); %first row: self competition, second row: interaction with all other species in patch
+c=NaN(1,size(Btrans,2));
 z=NaN(1,size(Btrans,2)); %optimal growth temperature for all species
 raR2=NaN(1,size(Btrans,2)); %model R^2 values for each species
 numraPts=NaN(size(Btrans,1),size(Btrans,2));
@@ -76,19 +79,45 @@ for species=1:size(Btrans,2)
         dBseries=dBtrans(:,species,:);
         Pseries=gainBtrans(:,species,:);
         zs=P.z(species); %get current species optimal temperature (for search rate only)
-        freeparstart=[1e-3 -1e-3 0]; %r(T),a, opt growth T
-        freeparmin=[0 -Inf 0];
-        freeparmax=[Inf 0 0];
-        [lm4,fval4,exitflag,output] = fminsearchbnd(@(params) LV_SSmsy(Bseries,dBseries,Pseries,P.T,zs,fitCode,params),freeparstart,freeparmin,freeparmax); %estimate single-species growth model with skewed thermal envelope for intrinsic growth and temp-independent self-competition
+        Eas=P.Ea;
+        ks=P.k;
+        smis=P.s.mi(species);
+        Spds=P.Spd(species);
+        freeparstart=[1e-1 -1 1.004]; %r(T),a, and c (aB/c is taken from r as productivity)
+        freeparmin=[0 -Inf 1.004]; %best c: 1.004, alternatives: 1.0025, 1.0065
+        freeparmax=[Inf 0 1.004];
+        [lm4,fval4,exitflag,output] = fminsearchbnd(@(params) LV_SSmsy(Bseries,dBseries,Pseries,P.T,zs,Eas,ks,smis,Spds,fitCode,params),freeparstart,freeparmin,freeparmax,options); %estimate single-species growth model with skewed thermal envelope for intrinsic growth and temp-independent self-competition
         r(:,species)=lm4(1);
         a(:,species)=lm4(2);
-        %z(:,species)=lm4(3);
-        z(:,species)=zs;
+        c(:,species)=lm4(3);
         raR2(species)=1-fval4/(var(Y4)*(length(Y4)-1));
         flag(1,species)=exitflag;
+        r_T(:,species)=skewThEnv(lm4(1),P.T,zs);
+        %-------deterministic parameter assignments:
+%         Met=(0.71.*log(smis) + 18.47 - Eas./(ks.*(P.T+273)))';
+%         Met=exp(Met);
+%         Met=Met .* (1/7000.*(60.*60.*24)./smis');
+%         Met=Met .* exp(0.03.*Spds'.*100./60./60./24'); %per day
+%         Bmean=nanmean(Bseries,3);
+%         [Bmax,BmaxIdx]=max(Bmean);
+%         Pmean=nanmean(Pseries,3);
+%         Pbmax=Pmean(BmaxIdx);
+%         r(:,species)=Pbmax/Bmax+Met(BmaxIdx);
+%         %r(:,species)=Pbmax/Bmax;
+%         %r(:,species)=Pbmax/Bmax-((Pbmax/Bmax)-Met(BmaxIdx))/(2-Bmax);
+%         a(:,species)=-Pbmax/(Bmax^2);
+%         %a(:,species)=-(Pbmax/Bmax-Met(BmaxIdx))./Bmax;
+%         %a(:,species)=-(Pbmax/Bmax-Met(BmaxIdx))/(Bmax*(1-Bmax/2));
+%         c(:,species)=0;
+%         raR2(species)=0;
+%         %raR2(species)=abs(nanmean(Bmean)-nanmean((r(:,species)-Met')./a(:,species)))/nanmean(Bmean);
+%         flag(1,species)=0;
+%         r_T(:,species)=0;
+        %-------
+        %z(:,species)=lm4(3);
+        z(:,species)=zs;
         %estimate left-skewed normal thermal envelope of species s:
         %beta=nlinfit(P.T(nansum(X3(:,1:end-2))>0),lm4(1:end-2),@skewThEnv,1e-5);
-        r_T(:,species)=skewThEnv(lm4(1),P.T,zs);
         %r_T(:,species)=skewThEnv(lm4(1),P.T,lm4(3));
 %        betas(1,species)=beta;
     end

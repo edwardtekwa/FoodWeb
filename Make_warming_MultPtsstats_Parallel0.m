@@ -11,7 +11,7 @@ delete(gcp('nocreate'))
 parpool('local', str2num(getenv('SLURM_CPUS_PER_TASK')))
 warning('off','all')
 
-numIt=2;    %number of iterations for each parameter combination
+numIt=10;    %number of iterations for each parameter combination: variations: pIned=0.1, alpha_R=2.08, Ea=0.69, Fh=0.13, lambda=0.2
 SampInt=365;  %record every SampInt pts (days) in time series during transcient period
 
 TimeData=string(datetime);
@@ -51,6 +51,7 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
 %     z=0;
     r1=0;
     a1=0;
+    c1=0;
     z1=0;
     r2=0;
     a2=0;
@@ -211,12 +212,12 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
 %             BLVw(BLVw<eps)= 0;
             BLV1(BLV1<eps) = 0;
             BLV1w(BLV1w<eps)= 0;
-            BLV2(BLV2<eps) = 0;
-            BLV2w(BLV2w<eps)= 0;
-            BLV3(BLV3<eps) = 0;
-            BLV3w(BLV3w<eps)= 0;
-            BLV4(BLV1<eps) = 0;
-            BLV4w(BLV1w<eps)= 0;
+%             BLV2(BLV2<eps) = 0;
+%             BLV2w(BLV2w<eps)= 0;
+%             BLV3(BLV3<eps) = 0;
+%             BLV3w(BLV3w<eps)= 0;
+%             BLV4(BLV1<eps) = 0;
+%             BLV4w(BLV1w<eps)= 0;
 %             BLV5(BLV2<eps) = 0;
 %             BLV5w(BLV2w<eps)= 0;
 %             BLV6(BLV3<eps) = 0;
@@ -239,16 +240,16 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
         if t>=TimePts(1)
 %            BLV=sub_move(BLV,P); %LV no temp change
             BLV1=sub_move(BLV1,P); %single species model no temp change
-            BLV2=sub_move(BLV2,P); %single species model no temp change
-            BLV3=sub_move(BLV3,P); %single species model no temp change
-            BLV4=sub_move(BLV4,P); %single species model no temp change
+%             BLV2=sub_move(BLV2,P); %single species model no temp change
+%             BLV3=sub_move(BLV3,P); %single species model no temp change
+%             BLV4=sub_move(BLV4,P); %single species model no temp change
 %             BLV5=sub_move(BLV5,P); %single species model no temp change
 %             BLV6=sub_move(BLV6,P); %single species model no temp change
 %             [gainBLV dBLV] = sub_demogLV(BLV,T1,r,a,z,P); %grow/die according to Lotka-Volterra approximation
-            [gainBLV1 dBLV1] = sub_demogLVmsy(BLV1,T1,r1,a1,z1,P);
-            [gainBLV2 dBLV2] = sub_demogLVmsy(BLV2,T1,r2,a2,z2,P);
-            [gainBLV3 dBLV3] = sub_demogLVmsy(BLV3,T1,r3,a3,z3,P);
-            [gainBLV4 dBLV4] = sub_demogLVmsy(BLV4,T1,r4,a4,z4,P);
+            [gainBLV1 dBLV1] = sub_demogLV(BLV1,T1,r1,a1,c1,z1,P.Ea,P.k,P.s.mi,P.Spd);
+%             [gainBLV2 dBLV2] = sub_demogLVmsy(BLV2,T1,r2,a2,z2,P);
+%             [gainBLV3 dBLV3] = sub_demogLVmsy(BLV3,T1,r3,a3,z3,P);
+%             [gainBLV4 dBLV4] = sub_demogLVmsy(BLV4,T1,r4,a4,z4,P);
 %             [gainBLV5 dBLV5] = sub_demogLVmsy(BLV5,T1,r5,a5,z5,P);
 %             [gainBLV6 dBLV6] = sub_demogLVmsy(BLV6,T1,r6,a6,z6,P);
             for TCase=1:numT %for each temperature change scenario
@@ -257,13 +258,13 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
 %                 BLVw(:,:,TCase)        = sub_move(BLVw(:,:,TCase),P); % move
 %                 [gainBLVw(:,:,TCase) dBLVw(:,:,TCase)] = sub_demogLV(BLVw(:,:,TCase),T1w(:,TCase),r,a,z,P); % grow/die
                 BLV1w(:,:,TCase)        = sub_move(BLV1w(:,:,TCase),P); % move
-                [gainBLV1w(:,:,TCase) dBLV1w(:,:,TCase)] = sub_demogLVmsy(BLV1w(:,:,TCase),T1w(:,TCase),r1,a1,z1,P); % grow/die
-                BLV2w(:,:,TCase)        = sub_move(BLV2w(:,:,TCase),P); % move
-                [gainBLV2w(:,:,TCase) dBLV2w(:,:,TCase)] = sub_demogLVmsy(BLV2w(:,:,TCase),T1w(:,TCase),r2,a2,z2,P); % grow/die
-                BLV3w(:,:,TCase)        = sub_move(BLV3w(:,:,TCase),P); % move
-                [gainBLV3w(:,:,TCase) dBLV3w(:,:,TCase)] = sub_demogLVmsy(BLV3w(:,:,TCase),T1w(:,TCase),r3,a3,z3,P); % grow/die
-                BLV4w(:,:,TCase)        = sub_move(BLV4w(:,:,TCase),P); % move
-                [gainBLV4w(:,:,TCase) dBLV4w(:,:,TCase)] = sub_demogLVmsy(BLV4w(:,:,TCase),T1w(:,TCase),r4,a4,z4,P); % grow/die
+                [gainBLV1w(:,:,TCase) dBLV1w(:,:,TCase)] = sub_demogLV(BLV1w(:,:,TCase),T1w(:,TCase),r1,a1,c1,z1,P.Ea,P.k,P.s.mi,P.Spd); % grow/die
+%                 BLV2w(:,:,TCase)        = sub_move(BLV2w(:,:,TCase),P); % move
+%                 [gainBLV2w(:,:,TCase) dBLV2w(:,:,TCase)] = sub_demogLVmsy(BLV2w(:,:,TCase),T1w(:,TCase),r2,a2,z2,P); % grow/die
+%                 BLV3w(:,:,TCase)        = sub_move(BLV3w(:,:,TCase),P); % move
+%                 [gainBLV3w(:,:,TCase) dBLV3w(:,:,TCase)] = sub_demogLVmsy(BLV3w(:,:,TCase),T1w(:,TCase),r3,a3,z3,P); % grow/die
+%                 BLV4w(:,:,TCase)        = sub_move(BLV4w(:,:,TCase),P); % move
+%                 [gainBLV4w(:,:,TCase) dBLV4w(:,:,TCase)] = sub_demogLVmsy(BLV4w(:,:,TCase),T1w(:,TCase),r4,a4,z4,P); % grow/die
 %                 BLV5w(:,:,TCase)        = sub_move(BLV5w(:,:,TCase),P); % move
 %                 [gainBLV5w(:,:,TCase) dBLV5w(:,:,TCase)] = sub_demogLVmsy(BLV5w(:,:,TCase),T1w(:,TCase),r5,a5,z5,P); % grow/die
 %                 BLV6w(:,:,TCase)        = sub_move(BLV6w(:,:,TCase),P); % move
@@ -314,18 +315,18 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
             gainBLV1_yrs(:,:,tpos)=gainBLV1;
             BLV1w_yrs(:,:,tpos,:)=BLV1w;
             gainBLV1w_yrs(:,:,tpos,:)=gainBLV1w;
-            BLV2_yrs(:,:,tpos)=BLV2;
-            gainBLV2_yrs(:,:,tpos)=gainBLV2;
-            BLV2w_yrs(:,:,tpos,:)=BLV2w;
-            gainBLV2w_yrs(:,:,tpos,:)=gainBLV2w;
-            BLV3_yrs(:,:,tpos)=BLV3;
-            gainBLV3_yrs(:,:,tpos)=gainBLV3;
-            BLV3w_yrs(:,:,tpos,:)=BLV3w;
-            gainBLV3w_yrs(:,:,tpos,:)=gainBLV3w;
-            BLV4_yrs(:,:,tpos)=BLV4;
-            gainBLV4_yrs(:,:,tpos)=gainBLV4;
-            BLV4w_yrs(:,:,tpos,:)=BLV4w;
-            gainBLV4w_yrs(:,:,tpos,:)=gainBLV4w;
+%             BLV2_yrs(:,:,tpos)=BLV2;
+%             gainBLV2_yrs(:,:,tpos)=gainBLV2;
+%             BLV2w_yrs(:,:,tpos,:)=BLV2w;
+%             gainBLV2w_yrs(:,:,tpos,:)=gainBLV2w;
+%             BLV3_yrs(:,:,tpos)=BLV3;
+%             gainBLV3_yrs(:,:,tpos)=gainBLV3;
+%             BLV3w_yrs(:,:,tpos,:)=BLV3w;
+%             gainBLV3w_yrs(:,:,tpos,:)=gainBLV3w;
+%             BLV4_yrs(:,:,tpos)=BLV4;
+%             gainBLV4_yrs(:,:,tpos)=gainBLV4;
+%             BLV4w_yrs(:,:,tpos,:)=BLV4w;
+%             gainBLV4w_yrs(:,:,tpos,:)=gainBLV4w;
 %             BLV5_yrs(:,:,tpos)=BLV5;
 %             gainBLV5_yrs(:,:,tpos)=gainBLV5;
 %             BLV5w_yrs(:,:,tpos,:)=BLV5w;
@@ -346,12 +347,12 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
 %             BLVw = BLVw + dBLVw;
             BLV1 = BLV1 + dBLV1;
             BLV1w = BLV1w + dBLV1w;
-            BLV2 = BLV2 + dBLV2;
-            BLV2w = BLV2w + dBLV2w;
-            BLV3 = BLV3 + dBLV3;
-            BLV3w = BLV3w + dBLV3w;
-            BLV4 = BLV4 + dBLV4;
-            BLV4w = BLV4w + dBLV4w;
+%             BLV2 = BLV2 + dBLV2;
+%             BLV2w = BLV2w + dBLV2w;
+%             BLV3 = BLV3 + dBLV3;
+%             BLV3w = BLV3w + dBLV3w;
+%             BLV4 = BLV4 + dBLV4;
+%             BLV4w = BLV4w + dBLV4w;
 %             BLV5 = BLV5 + dBLV5;
 %             BLV5w = BLV5w + dBLV5w;
 %             BLV6 = BLV6 + dBLV6;
@@ -371,16 +372,16 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
 %                        %3=fit to max(Btrans) and max(gainBtrans)
             %[r1,a1,K1,flag1,raR21,r_T1,K_T1,K_T_ratio1,r_T_ratio1]=estSingleSpeciesModel(Btrans,dBtrans,gainBtrans,P,fitCode); %fit growth model to al patches at once
             %fit model to 100% quantiles of biomass and production
-            %fitCode=[1 1;0.9 0.9;0.8 0.8];
-            fitCode=[.5 .5; .5 .8; .8 .5; .8 .8];
-            [r1,a1,z1,K1,flag1,raR21,r_T1,K_T1,K_T_ratio1,r_T_ratio1]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(1,:)); %fit growth model to all patches at once
+            fitCode=[0.5 0.5];
+            %fitCode=[.5 .5; .5 .8; .8 .5; .8 .8];
+            [r1,a1,c1,z1,K1,flag1,raR21,r_T1,K_T1,K_T_ratio1,r_T_ratio1]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(1,:)); %fit growth model to all patches at once
             %fit model to 90% quantiles of production
-            [r2,a2,z2,K2,flag2,raR22,r_T2,K_T2,K_T_ratio2,r_T_ratio2]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(2,:)); %fit growth model to all patches at once
+            %[r2,a2,z2,K2,flag2,raR22,r_T2,K_T2,K_T_ratio2,r_T_ratio2]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(2,:)); %fit growth model to all patches at once
              %fit model to all changes in biomass
-            [r3,a3,z3,K3,flag3,raR23,r_T3,K_T3,K_T_ratio3,r_T_ratio3]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(3,:)); %fit growth model to all patches at once
+            %[r3,a3,z3,K3,flag3,raR23,r_T3,K_T3,K_T_ratio3,r_T_ratio3]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(3,:)); %fit growth model to all patches at once
              %fit model to biomass time series
 %             [r,a,z,K,flag,raR2,r_T,K_T,K_T_ratio,r_T_ratio]=estSingleSpeciesModel(Btrans,dBtrans,gainBtrans,P,fitCode(4,:)); %fit growth model to all patches and times at once
-            [r4,a4,z4,K4,flag4,raR24,r_T4,K_T4,K_T_ratio4,r_T_ratio4]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(4,:)); %fit growth model to all patches at once
+            %[r4,a4,z4,K4,flag4,raR24,r_T4,K_T4,K_T_ratio4,r_T_ratio4]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(4,:)); %fit growth model to all patches at once
 %             %fit model to 90% quantiles of biomass and production
 %             [r5,a5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCode(5,:)); %fit growth model to all patches at once
 %              %fit model to 80% quantiles of biomass and production
@@ -396,9 +397,9 @@ parfor i = 1:size(TR,2) %go through all parameter combinations (as defined in ma
     if min(min(min(B)))<log10(eps)
         disp('negative biomass error');
     end
-    FoodWebFile=sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(P.iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*73000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_pInedible' num2str(P.pInedible) '_fIII']);
+    FoodWebFile=sprintf('Foodweb_%s_%s%s.mat', TimeData, num2str(P.iter), ['_numSpecies' num2str(P.n) '_dT' num2str(P.dT*73000) '_basalSize' num2str(P.s.m0) '_meanD' num2str(HP.sdm(i)) '_pInedible' num2str(P.pInedible) '_fIII']); %pIned=0.1, alpha_R=2.08, Ea=0.69, Fh=0.13, lambda=0.2
     %savemat_Foodweb(FoodWebFile,Z_yrs,B_yrs,gainB_yrs,gainZ_yrs,v_yrs,TE_yrs,PB_yrs,TLik_yrs,TLi_yrs,TLk_yrs,TLall_yrs,Zw_yrs,Bw_yrs,gainBw_yrs,gainZw_yrs,vw_yrs,TEw_yrs,PBw_yrs,TLikw_yrs,TLiw_yrs,TLkw_yrs,TLallw_yrs,BLV_yrs,gainBLV_yrs,BLVw_yrs,gainBLVw_yrs,BLV1_yrs,gainBLV1_yrs,BLV1w_yrs,gainBLV1w_yrs,BLV2_yrs,gainBLV2_yrs,BLV2w_yrs,gainBLV2w_yrs,BLV3_yrs,gainBLV3_yrs,BLV3w_yrs,gainBLV3w_yrs,BLV4_yrs,gainBLV4_yrs,BLV4w_yrs,gainBLV4w_yrs,BLV5_yrs,gainBLV5_yrs,BLV5w_yrs,gainBLV5w_yrs,BLV6_yrs,gainBLV6_yrs,BLV6w_yrs,gainBLV6w_yrs,Btrans,dBtrans,gainBtrans,r,a,z,K,flag,raR2,r_T,K_T,K_T_ratio,r_T_ratio,r1,a1,z1,K1,flag1,raR21,r_T1,K_T1,K_T_ratio1,r_T_ratio1,r2,a2,z2,K2,flag2,raR22,r_T2,K_T2,K_T_ratio2,r_T_ratio2,r3,a3,z3,K3,flag3,raR23,r_T3,K_T3,K_T_ratio3,r_T_ratio3,r4,a4,z4,K4,flag4,raR24,r_T4,K_T4,K_T_ratio4,r_T_ratio4,r5,a5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5,r6,a6,z6,K6,flag6,raR26,r_T6,K_T6,K_T_ratio6,r_T_ratio6,fitCode,P);
-    savemat_Foodweb(FoodWebFile,Z_yrs,B_yrs,gainB_yrs,gainZ_yrs,v_yrs,TE_yrs,PB_yrs,TLik_yrs,TLi_yrs,TLk_yrs,TLall_yrs,Zw_yrs,Bw_yrs,gainBw_yrs,gainZw_yrs,vw_yrs,TEw_yrs,PBw_yrs,TLikw_yrs,TLiw_yrs,TLkw_yrs,TLallw_yrs,BLV1_yrs,gainBLV1_yrs,BLV1w_yrs,gainBLV1w_yrs,BLV2_yrs,gainBLV2_yrs,BLV2w_yrs,gainBLV2w_yrs,BLV3_yrs,gainBLV3_yrs,BLV3w_yrs,gainBLV3w_yrs,BLV4_yrs,gainBLV4_yrs,BLV4w_yrs,gainBLV4w_yrs,Btrans,dBtrans,gainBtrans,r1,a1,z1,K1,flag1,raR21,r_T1,K_T1,K_T_ratio1,r_T_ratio1,r2,a2,z2,K2,flag2,raR22,r_T2,K_T2,K_T_ratio2,r_T_ratio2,r3,a3,z3,K3,flag3,raR23,r_T3,K_T3,K_T_ratio3,r_T_ratio3,r4,a4,z4,K4,flag4,raR24,r_T4,K_T4,K_T_ratio4,r_T_ratio4,fitCode,P);
+    savemat_Foodweb(FoodWebFile,Z_yrs,B_yrs,gainB_yrs,gainZ_yrs,v_yrs,TE_yrs,PB_yrs,TLik_yrs,TLi_yrs,TLk_yrs,TLall_yrs,Zw_yrs,Bw_yrs,gainBw_yrs,gainZw_yrs,vw_yrs,TEw_yrs,PBw_yrs,TLikw_yrs,TLiw_yrs,TLkw_yrs,TLallw_yrs,BLV1_yrs,gainBLV1_yrs,BLV1w_yrs,gainBLV1w_yrs,Btrans,dBtrans,gainBtrans,r1,a1,z1,K1,flag1,raR21,r_T1,K_T1,K_T_ratio1,r_T_ratio1,fitCode,P);
  
     %plots
     numYrs=20; %number of years in the end of time series to average over

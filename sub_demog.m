@@ -13,7 +13,7 @@ bi = reshape(B',[P.n 1 P.nx]); % predator biomass: dims are species,1,patches
 % difference between spp optimal temp and local temp: rows patches, cols spp
 %dt  = bsxfun(@minus, T, P.z);
 %dt  = T - P.z;
-dt  = T - P.z - 1.738211; %move optimal temperature z to stated after skewing thermal envelope with the shape parameter w=-2.7
+dt  = T - P.z - 0.4346; %move optimal temperature z to stated after skewing thermal envelope with the shape parameter w=-2.7
 
 % squared for thermal envelope
 dt2 = dt.^2;

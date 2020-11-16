@@ -9,37 +9,35 @@ TimeData=string(datetime);
 %choose temperature change scenario to display: (position of tempChange =[-2 2 4 6])
 TempScenario=1; %position is without 0 change position [+2 +4 +6] (3 for base case or 1 for variants)
 recordYrs=20; %use these number of years at the end of time series to compute mean statistics
+defaultNumIt=10; %cap maximum number of iterations per case to analyse
 %Cases={'basalSize0.01_meanD-Inf_stdD0';'basalSize0.01_meanD0_stdD0';'basalSize0.01_meanD3_stdD0';'basalSize0.01_meanD6_stdD0';'basalSize0.01_meanD9_stdD0';'basalSize0.01_meanD12_stdD0'};
 %Cases={'basalSize0.01_meanD-Inf';'basalSize0.01_meanD0';'basalSize0.01_meanD3';'basalSize0.01_meanD6';'basalSize0.01_meanD9';'basalSize0.01_meanD12'};
 
 %specify simulation data folder in current directory
-Path='Type III narrow thermal evlp'; %'Lambda 02'; %'GA1'; %'EA 069'; %'PPMR 208'; %''; %'Specialist food web'; %'Generalist food web'; 'General special base';
+Path='Type III narrow thermal evlp 2'; %'Lambda 02'; %'GA1'; %'EA 069'; %'PPMR 208'; %''; %'Specialist food web'; %'Generalist food web'; 'General special base'; 'Type III narrow thermal evlp';
 
 %first, use these lines for specialist food webs:
-%Cases={'basalSize0.01_meanD-Inf_pInedible0.5';'basalSize0.01_meanD0_pInedible0.5';'basalSize0.01_meanD3_pInedible0.5';'basalSize0.01_meanD6_pInedible0.5';'basalSize0.01_meanD9_pInedible0.5';'basalSize0.01_meanD12_pInedible0.5'};
-%AntiCases={'basalSize0.01_meanD-Inf_pInedible1';'basalSize0.01_meanD0_pInedible1';'basalSize0.01_meanD3_pInedible1';'basalSize0.01_meanD6_pInedible1';'basalSize0.01_meanD9_pInedible1';'basalSize0.01_meanD12_pInedible1'};
-%Cases={'basalSize0.01_meanD4_pInedible0.5';'basalSize0.01_meanD5_pInedible0.5';'basalSize0.01_meanD7_pInedible0.5'};
-%AntiCases={'basalSize0.01_meanD4_pInedible1';'basalSize0.01_meanD5_pInedible1';'basalSize0.01_meanD7_pInedible1'};
-
+%AntiCases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII';'basalSize0.01_meanD8_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII';'basalSize0.01_meanD10_pInedible0_fIII'};
+%Cases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII';'basalSize0.01_meanD8_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII';'basalSize0.01_meanD10_pInedible0.5_fIII'};
 
 %second, use these lines for generalist food webs:
-%Cases={'basalSize0.01_meanD-Inf';'basalSize0.01_meanD0';'basalSize0.01_meanD3'};
-%Cases={'basalSize0.01_meanD3_pInedible0'};
-%AntiCases={'basalSize0.01_meanD3_pInedible0.5'};
-%Cases={'basalSize0.01_meanD-Inf';'basalSize0.01_meanD0';'basalSize0.01_meanD3';'basalSize0.01_meanD6';'basalSize0.01_meanD9'};
-%Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII'};
-%AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII'};
-Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII';'basalSize0.01_meanD8_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII'};
-AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0.5_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII';'basalSize0.01_meanD8_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII'};
-%Cases={'basalSize0.01_meanD4_pInedible0';'basalSize0.01_meanD5_pInedible0';'basalSize0.01_meanD7_pInedible0'};
-%AntiCases={'basalSize0.01_meanD4_pInedible0.5';'basalSize0.01_meanD5_pInedible0.5';'basalSize0.01_meanD7_pInedible0.5'};
+%Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII';'basalSize0.01_meanD8_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII';'basalSize0.01_meanD10_pInedible0_fIII'};
+%AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII';'basalSize0.01_meanD8_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII';'basalSize0.01_meanD10_pInedible0.5_fIII'};
+%Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII'};
+%AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII'};
 
-%Cases={'basalSize0.001_meanD-Inf_stdD0';'basalSize0.001_meanD0_stdD0';'basalSize0.001_meanD3_stdD0';'basalSize0.001_meanD6_stdD0';'basalSize0.001_meanD9_stdD0';'basalSize0.001_meanD12_stdD0'};
+AntiCases={'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII'};
+Cases={'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0.2_fIII';'basalSize0.01_meanD0_pInedible0_fIII_alpha_R2.08';'basalSize0.01_meanD0_pInedible0_fIII_Ea0.69';'basalSize0.01_meanD0_pInedible0_fIII_Fh0.13';'basalSize0.01_meanD0_pInedible0_fIII_lambda0.2'}; %pIned=0.1, alpha_R=2.08, Ea=0.63, Fh=0.13, lambda=0.2
+
+
+
 numCases=length(Cases);
-moveRates=[-Inf 0 3 6 7 8 9];
+%moveRates=[-Inf 0 3 6 7 8];
+moveRates=[0 1 2 3 4 5];
 %moveRates=[-Inf,0,3,6];
 %movementLabels={'0' '1' '10^3' '10^6' '10^9' '10^{12}'};
-movementLabels={'0' '1' '10^3' '10^6' '10^7' '10^8' '10^9'};
+movementLabels={'0' 'p_N-' '\alpha_R-' 'E_a+' 'F_h-' '\lambda-'};
+%movementLabels=moveRates;
 caseIts=[]; %record number of iterations for each case
 
 %quantile fits:
@@ -72,8 +70,20 @@ maxBiomassBS=[]; %body size of most common species
 maxProdBS=[]; %body size of most productive species
 consResRatio=[]; %consumer-to-basal resource ratio
 fractSpeciesProd=[]; %fraction of species that are net productive
-novelSpatialAssemblage=[]; %fraction of original spatial occurances that is new
+novelSpatialAssemblage=[]; %fraction of current spatial occurances that is new
 lostSpatialAssemblage=[]; %fraction of original spatial occurances lost
+novelSpatialAssemblage2=[]; %fraction of current spatial occurances that is new
+lostSpatialAssemblage2=[]; %fraction of original spatial occurances lost
+novelSpatialAssemblage6=[]; %fraction of current spatial occurances that is new
+lostSpatialAssemblage6=[]; %fraction of original spatial occurances lost
+novelCoexistence=[]; %fraction of current coexisting pairs that is new
+lostCoexistence=[]; %fraction of originial coexisting pairs lost
+novelCoexistence22=[]; %fraction of current coexisting pairs that is new
+lostCoexistence22=[]; %fraction of originial coexisting pairs lost
+novelCoexistence26=[]; %fraction of current coexisting pairs that is new
+lostCoexistence26=[]; %fraction of originial coexisting pairs lost
+novelCoexistence66=[]; %fraction of current coexisting pairs that is new
+lostCoexistence66=[]; %fraction of originial coexisting pairs lost
 
 %by space
 varBiomass=[];
@@ -99,6 +109,10 @@ FinalwCentroid=[]; %mean location of each species at the end of warming period
 FinalwLVCentroid=[]; %mean location of each species at the end of warming period
 CentroidShift0=[]; %centroid shift with no warming
 CentroidShift=[]; %centroid shift with warming
+Centroid2Shift0=[]; %centroid shift with no warming
+Centroid2Shift=[]; %centroid shift with warming
+Centroid6Shift0=[]; %centroid shift with no warming
+Centroid6Shift=[]; %centroid shift with warming
 InitTrailing=[];
 InitLeading=[];
 FinalTrailing=[];
@@ -115,8 +129,24 @@ LeadingShift0=[]; %average trailing edge shift under no warming
 LeadingShift=[]; %average trailing edge shift under warming
 RangeExpansion0=[]; %average range expansion under no warming
 RangeExpansion=[]; %average range expansion under warming
+Trailing2Shift0=[]; %average trailing edge shift under no warming
+Trailing2Shift=[]; %average trailing edge shift under warming
+Leading2Shift0=[]; %average trailing edge shift under no warming
+Leading2Shift=[]; %average trailing edge shift under warming
+Range2Expansion0=[]; %average range expansion under no warming
+Range2Expansion=[]; %average range expansion under warmingTrailingShift0=[]; %average trailing edge shift under no warming
+Trailing6Shift0=[]; %average trailing edge shift under no warming
+Trailing6Shift=[]; %average trailing edge shift under warming
+Leading6Shift0=[]; %average trailing edge shift under no warming
+Leading6Shift=[]; %average trailing edge shift under warming
+Range6Expansion0=[]; %average range expansion under no warming
+Range6Expansion=[]; %average range expansion under warming
 RangeExpansionPerc0=[]; %average range expansion % under no warming
 RangeExpansionPerc=[]; %average range expansion % under warming
+Range2ExpansionPerc0=[]; %average range expansion % under no warming
+Range2ExpansionPerc=[]; %average range expansion % under warming
+Range6ExpansionPerc0=[]; %average range expansion % under no warming
+Range6ExpansionPerc=[]; %average range expansion % under warming
 
 
 %species-specific variables
@@ -133,6 +163,9 @@ All_LeadingShifts=[];
 All_RangeExpansions=[];
 All_RangeSizes=[]; %all initial range sizes
 All_Centroids=[]; %all initial centroids
+
+All_a_est=[];
+All_r_est=[];
 
 % 'Select files containing simulation results in first folder'
 %
@@ -171,8 +204,9 @@ for CaseNumber=1:numCases %first, check for minimum number of iterations for eac
         end
     end
 end
-numIt=min(caseIts); %minimum number of iterations for all cases
+numIt=min([caseIts defaultNumIt]); %minimum number of iterations for all cases
 
+numRun=1;
 for CaseNumber=1:numCases
     iteration=0;
     Positions=contains(Files,Cases{CaseNumber}); %find positions of .mat files that belong to landscape type CaseNumber
@@ -213,89 +247,118 @@ for CaseNumber=1:numCases
             TLallw=nanmean(TLallw_yrs(end-recordYrs+1:end,TempScenario));
             TLiw=nanmean(TLiw_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
             
-            %                 %Redo single-species LV hindcast fits by finding the best biomass
-            %                 %and production quantiles to match model projections to
-            %                 %forecast:
-            %                 if sum(B(:))<eps
-            %                     BLV1=nanmean(BLV4_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
-            %                     gainBLV1=nanmean(gainBLV4_yrs(:,:,end-recordYrs+1:end),3);
-            %                     BLV1w=nanmean(BLV4w_yrs(:,:,end-recordYrs+1:end),3);
-            %                     gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
-            %                     BPquantiles=[BPquantiles;fitCode(4,:)];
-            %                     BPpercDiff=[BPpercDiff;[NaN NaN]];
-            %                 else
-            %                     meanLV1B=mean(nansum(nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanLV2B=mean(nansum(nanmean(BLV2_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanLV3B=mean(nansum(nanmean(BLV3_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanLV4B=mean(nansum(nanmean(BLV4_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanB=mean(nansum(B)); %mean observed biomass
-            %                     meanLV1P=mean(nansum(nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanLV2P=mean(nansum(nanmean(gainBLV2_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanLV3P=mean(nansum(nanmean(gainBLV3_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanLV4P=mean(nansum(nanmean(gainBLV4_yrs(:,:,end-recordYrs+1:end),3),2));
-            %                     meanP=mean(nansum(gainB)); %mean observed production
-            %                     X=[ones(length(fitCode),1) fitCode fitCode(:,1).*fitCode(:,2)]; %set up regression predictor matrix
-            %                     bB=regress([meanLV1B meanLV2B meanLV3B meanLV4B]',X); %regression model for B as function of B and P quantiles
-            %                     bP=regress([meanLV1P meanLV2P meanLV3P meanLV4P]',X); %regression model for P as function of B and P quantiles
-            %                     [fitCodeEsts,fval,exitflag,output] = fminsearchbnd(@(params) quantileFit(meanB,meanP,bB,bP,params),freeparstart,freeparmin,freeparmax); %fit quantiles to meanB and meanP
-            %                     [percDiffB,percDiffP] = quantileOutputs(meanB,meanP,bB,bP,fitCodeEsts); %get percent differences between predicted and observed biomass and production
-            %                     [r5,a5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,fitCodeEsts); %fit growth model to all patches at once using estimated best quantiles
-            %                     BPquantiles=[BPquantiles;fitCodeEsts];
-            %                     BPpercDiff=[BPpercDiff;[percDiffB,percDiffP]];
-            %                     disp(['case ' num2str(CaseNumber) ' iteration ' num2str(iteration) ': quantiles ' num2str(fitCodeEsts,2) ', %diff ' num2str([percDiffB,percDiffP],2)])
-            %
-            %                     %rerun single-species projection:
-            %                     TimePts=[1:365:200*365+1]; %record every year
-            %                     numPts=length(TimePts); %number of time points
-            %                     gainBLV5=zeros(P.nx,P.n);
-            %                     dBLV5=zeros(P.nx,P.n);
-            %                     gainBLV5w=zeros(P.nx,P.n);
-            %                     dBLV5w=zeros(P.nx,P.n);
-            %                     BLV5w_yrs=zeros(P.nx,P.n,numPts);
-            %                     gainBLV5w_yrs=zeros(P.nx,P.n,numPts);
-            %                     BLV5=BLV1_yrs(:,:,1); %no warming case under estimated single-species dynamics (start at identical point as other simulations)
-            %                     BLV5w=BLV5; %6C warming case under estimated single-species dynamics (start at identical point as other simulations)
-            %                     for t = 1:TimePts(end) %run for 200 years (with daily time steps)
-            %                         BLV5(BLV5<eps) = 0;
-            %                         BLV5w(BLV5w<eps)= 0;
-            %                         T1      = P.T;% + t.*P.dT; %<<< add this when time is right
-            %                         T1w      = P.T + (t-1)*P.dT(3);
-            %                         BLV5=sub_move(BLV5,P); %single species model no temp change, move
-            %                         [gainBLV5 dBLV5] = sub_demogLVmsy(BLV5,T1,r5,a5,z5,P); % grow/die
-            %                         BLV5w=sub_move(BLV5w,P); %single species model with temp change, move
-            %                         [gainBLV5w dBLV5w] = sub_demogLVmsy(BLV5w,T1w,r5,a5,z5,P); % grow/die
-            %                         tpos=find(t==TimePts);
-            %                         if ~isempty(tpos)
-            %                             BLV5_yrs(:,:,tpos)=BLV5;
-            %                             gainBLV5_yrs(:,:,tpos)=gainBLV5;
-            %                         end
-            %                         BLV5 = BLV5 + dBLV5;
-            %                         BLV5w = BLV5w + dBLV5w;
-            %                     end
-            
+%             %                 %Redo single-species LV hindcast fits by finding the best biomass
+%             %                 %and production quantiles to match model projections to
+%             %                 %forecast:
+%             %                 if sum(B(:))<eps
+%             %                     BLV1=nanmean(BLV4_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
+%             %                     gainBLV1=nanmean(gainBLV4_yrs(:,:,end-recordYrs+1:end),3);
+%             %                     BLV1w=nanmean(BLV4w_yrs(:,:,end-recordYrs+1:end),3);
+%             %                     gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
+%             %                     BPquantiles=[BPquantiles;fitCode(4,:)];
+%             %                     BPpercDiff=[BPpercDiff;[NaN NaN]];
+%             %                 else
+%             %                     meanLV1B=mean(nansum(nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanLV2B=mean(nansum(nanmean(BLV2_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanLV3B=mean(nansum(nanmean(BLV3_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanLV4B=mean(nansum(nanmean(BLV4_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanB=mean(nansum(B)); %mean observed biomass
+%             %                     meanLV1P=mean(nansum(nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanLV2P=mean(nansum(nanmean(gainBLV2_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanLV3P=mean(nansum(nanmean(gainBLV3_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanLV4P=mean(nansum(nanmean(gainBLV4_yrs(:,:,end-recordYrs+1:end),3),2));
+%             %                     meanP=mean(nansum(gainB)); %mean observed production
+%             %                     X=[ones(length(fitCode),1) fitCode fitCode(:,1).*fitCode(:,2)]; %set up regression predictor matrix
+%             %                     bB=regress([meanLV1B meanLV2B meanLV3B meanLV4B]',X); %regression model for B as function of B and P quantiles
+%             %                     bP=regress([meanLV1P meanLV2P meanLV3P meanLV4P]',X); %regression model for P as function of B and P quantiles
+%             %                     [fitCodeEsts,fval,exitflag,output] = fminsearchbnd(@(params) quantileFit(meanB,meanP,bB,bP,params),freeparstart,freeparmin,freeparmax); %fit quantiles to meanB and meanP
+%             %                     [percDiffB,percDiffP] = quantileOutputs(meanB,meanP,bB,bP,fitCodeEsts); %get percent differences between predicted and observed biomass and production
+
+
+%Redo single-species LV hindcast fits by fixing c and estimating r and a for each species:
+if CaseNumber==1
+                                display(['running single species estimate for run ' num2str(numRun) ' of ' num2str(numIt*numCases)])
+                                numRun=numRun+1;
+                                [r5,a5,c5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,[0.5 0.5]); %fit growth model to all patches at once using estimated best quantiles
+                                All_r_est=[All_r_est; r5]; 
+                                All_a_est=[All_a_est; a5];
+%                                 BPquantiles=[BPquantiles;fitCodeEsts];
+%                                 BPpercDiff=[BPpercDiff;[percDiffB,percDiffP]];
+%                                 disp(['case ' num2str(CaseNumber) ' iteration ' num2str(iteration) ': quantiles ' num2str(fitCodeEsts,2) ', %diff ' num2str([percDiffB,percDiffP],2)])
+%                       
+                                %rerun single-species projection:
+                                TimePts=[1:365:200*365+1]; %record every year
+                                numPts=length(TimePts); %number of time points
+                                gainBLV5=zeros(P.nx,P.n);
+                                dBLV5=zeros(P.nx,P.n);
+                                gainBLV5w=zeros(P.nx,P.n);
+                                dBLV5w=zeros(P.nx,P.n);
+                                %BLV5w_yrs=zeros(P.nx,P.n,numPts);
+                                %gainBLV5w_yrs=zeros(P.nx,P.n,numPts);
+                                BLV5=BLV1_yrs(:,:,1); %no warming case under estimated single-species dynamics (start at identical point as other simulations)
+                                BLV5w=BLV5; %6C warming case under estimated single-species dynamics (start at identical point as other simulations)
+                                for t = 1:TimePts(end) %run for 200 years (with daily time steps)
+                                    BLV5(BLV5<eps) = 0;
+                                    BLV5w(BLV5w<eps)= 0;
+                                    T1      = P.T;% + t.*P.dT; %<<< add this when time is right
+                                    T1w      = P.T + (t-1)*P.dT;
+                                    BLV5=sub_move(BLV5,P); %single species model no temp change, move
+                                    [gainBLV5 dBLV5] = sub_demogLV(BLV5,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd); % grow/die
+                                    BLV5w=sub_move(BLV5w,P); %single species model with temp change, move
+                                    [gainBLV5w dBLV5w] = sub_demogLV(BLV5w,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd); % grow/die
+                                    tpos=find(t==TimePts);
+                                    if ~isempty(tpos)
+                                        BLV5_yrs(:,:,tpos)=BLV5;
+                                        gainBLV5_yrs(:,:,tpos)=gainBLV5;
+                                        BLV5w_yrs(:,:,tpos)=BLV5w;
+                                        gainBLV5w_yrs(:,:,tpos)=gainBLV5w;
+                                    end
+                                    BLV5 = BLV5 + dBLV5;
+                                    BLV5w = BLV5w + dBLV5w;
+                                end
+            BLV1=nanmean(BLV5_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
+            gainBLV1=nanmean(gainBLV5_yrs(:,:,end-recordYrs+1:end),3);
+            BLV1w=nanmean(BLV5w_yrs(:,:,end-recordYrs+1:end),3);
+            gainBLV1w=nanmean(gainBLV5w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
+ 
+else
             %---------------Change assignments here for different single-species projections---------
-            BLV1=nanmean(BLV4_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
-            gainBLV1=nanmean(gainBLV4_yrs(:,:,end-recordYrs+1:end),3);
-            BLV1w=nanmean(BLV4w_yrs(:,:,end-recordYrs+1:end),3);
-            gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
+            BLV1=nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
+            gainBLV1=nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3);
+            BLV1w=nanmean(BLV1w_yrs(:,:,end-recordYrs+1:end),3);
+            gainBLV1w=nanmean(gainBLV1w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
             %----------------------------------------------------------------------------------------
+end
             %    end
             BtransEnd=nanmean(Btrans(:,:,end-recordYrs+1:end),3); %biomasses at the end of transcient period
             BtransEnd(BtransEnd<=eps)=nan;
-          
+            numPatches=size(B,1);
             %-------
-%             %%use if eliminating species with centroids in the three coldest patches:
-%             %meanInitCentroid=nansum(BtransEnd.*[1:numPatches]')./nansum(BtransEnd); %get initial centroids
-%             %BtransEnd(:,meanInitCentroid<=3)=NaN; %set initial biomass of these species to NaN
-%             %%use if eliminating species with leading edges in 3 coldest patches and trailing edges in 3 hottest patches:
-%             leadingQ=0.025; %lower quantile indicates location of leading edge (towards cold region)
-%             trailingQ=0.975; %upper quantile indicates location of trailing edge (towards hot region)
-%             minSpeciesBiomass=leadingQ*nansum(BtransEnd); %determine leading biomass density
-%             maxSpeciesBiomass=trailingQ*nansum(BtransEnd); %determine trailing biomass density
-%             tempInitTrailing=sum(cumsum(BtransEnd,'omitnan')<maxSpeciesBiomass)+1;
-%             tempInitLeading=sum(cumsum(BtransEnd,'omitnan')<minSpeciesBiomass)+1;
-%             BtransEnd(:,tempInitTrailing>=9)=NaN; %set initial biomass of these species to NaN
-%             BtransEnd(:,tempInitLeading<=3)=NaN; %set initial biomass of these species to NaN
+% %             %%use if eliminating species with centroids in the coldest patches:
+%             meanInitCentroid=nansum(BtransEnd.*[1:numPatches]')./nansum(BtransEnd); %get initial centroids
+%             BtransEnd(:,meanInitCentroid<=3)=NaN; %set initial biomass of these species to NaN
+            %%use if eliminating species with leading edges in 3 coldest patches and trailing edges in 3 hottest patches:
+            leadingQ=0.025; %lower quantile indicates location of leading edge (towards cold region)
+            trailingQ=0.975; %upper quantile indicates location of trailing edge (towards hot region)
+            minSpeciesBiomass=leadingQ*nansum(BtransEnd); %determine leading biomass density
+            maxSpeciesBiomass=trailingQ*nansum(BtransEnd); %determine trailing biomass density
+            tempInitTrailing=sum(cumsum(BtransEnd,'omitnan')<maxSpeciesBiomass)+1;
+            tempInitLeading=sum(cumsum(BtransEnd,'omitnan')<minSpeciesBiomass)+1;
+            %BtransEnd(:,tempInitTrailing>=19)=NaN; %set initial biomass of these species to NaN
+            BtransEnd(:,tempInitLeading<=3)=NaN; %set initial biomass of these species to NaN
+            %B(:,tempInitTrailing>=19)=NaN; %set initial biomass of these species to NaN
+            B(:,tempInitLeading<=3)=NaN; %set initial biomass of these species to NaN
+            %Bw(:,tempInitTrailing>=19)=NaN; %set initial biomass of these species to NaN
+            Bw(:,tempInitLeading<=3)=NaN; %set initial biomass of these species to NaN
+            %BLV1(:,tempInitTrailing>=19)=NaN; %set initial biomass of these species to NaN
+            BLV1(:,tempInitLeading<=3)=NaN; %set initial biomass of these species to NaN
+            %BLV1w(:,tempInitTrailing>=19)=NaN; %set initial biomass of these species to NaN
+            BLV1w(:,tempInitLeading<=3)=NaN; %set initial biomass of these species to NaN
+            gainB(:,tempInitLeading<=3)=NaN;
+            gainBw(:,tempInitLeading<=3)=NaN;
+            gainBLV1(:,tempInitLeading<=3)=NaN;
+            gainBLV1w(:,tempInitLeading<=3)=NaN;
+            
             %-------
             
             Bnan=B;
@@ -306,8 +369,6 @@ for CaseNumber=1:numCases
             Bwnan(Bwnan<=eps)=nan;
             BLV1wnan=BLV1w;
             BLV1wnan(BLV1wnan<=eps)=nan;
-            
-            numPatches=size(B,1);
             
             %variables for no warming/warming (col1, col2 unless otherwise commented) cases:
             %global (for heterotrophs)
@@ -361,7 +422,7 @@ for CaseNumber=1:numCases
             consResRatio=[consResRatio; nansum(B(:))/nansum(Z(:)) nansum(Bw(:))/nansum(Zw(:))];
             fractSpeciesProd=[fractSpeciesProd; [nansum(nansum(gainB)>0)/nansum(nansum(B)>eps*numPatches) nansum(nansum(gainBw)>0)/nansum(nansum(Bw)>eps*numPatches) nansum(nansum(gainBLV1)>0)/nansum(nansum(BLV1)>eps*numPatches) nansum(nansum(gainBLV1w)>0)/nansum(nansum(BLV1w)>eps*numPatches)]];
             BtransExist=BtransEnd>eps; %matrix of species existence (columns) at different locations (rows) at the end of transcient period
-            Bexist=Bnan>eps; %matrix of food web species existence (columns) at different locations (rows) at the end of no-warming period
+            Bexist=Bnan>eps; %matrix of food web species existence (columns) at different locations (rows) at the end
             Bwexist=Bwnan>eps;
             BLV1exist=BLV1nan>eps;
             BLV1wexist=BLV1wnan>eps;
@@ -369,8 +430,57 @@ for CaseNumber=1:numCases
             BwLocalDiff=Bwexist-BtransExist;
             BLV1LocalDiff=BLV1exist-BtransExist;
             BLV1wLocalDiff=BLV1wexist-BtransExist;
-            novelSpatialAssemblage=[novelSpatialAssemblage; [sum(BLocalDiff(:)==1)/sum(Bexist(:)) sum(BwLocalDiff(:)==1)/sum(Bwexist(:)) sum(BLV1LocalDiff(:)==1)/sum(BLV1exist(:)) sum(BLV1wLocalDiff(:)==1)/sum(BLV1wexist(:))]];
-            lostSpatialAssemblage=[lostSpatialAssemblage; [sum(BLocalDiff(:)==-1)/sum(Bexist(:)) sum(BwLocalDiff(:)==-1)/sum(Bwexist(:)) sum(BLV1LocalDiff(:)==-1)/sum(BLV1exist(:)) sum(BLV1wLocalDiff(:)==-1)/sum(BLV1wexist(:))]];
+            novelSpatialAssemblage=[novelSpatialAssemblage; [sum(BLocalDiff(:)==1)/sum(Bexist(:)) sum(BwLocalDiff(:)==1)/sum(Bwexist(:)) sum(BLV1LocalDiff(:)==1)/sum(BLV1exist(:)) sum(BLV1wLocalDiff(:)==1)/sum(BLV1wexist(:))]]; % portion of current species that were not there initially
+            lostSpatialAssemblage=[lostSpatialAssemblage; [sum(BLocalDiff(:)==-1)/sum(BtransExist(:)) sum(BwLocalDiff(:)==-1)/sum(BtransExist(:)) sum(BLV1LocalDiff(:)==-1)/sum(BtransExist(:)) sum(BLV1wLocalDiff(:)==-1)/sum(BtransExist(:))]]; %portion of initially present species that are no longer there
+            Size2_3_Pos=find(P.S>2&P.S<=3)-1;
+            Size5_6_Pos=find(P.S>5&P.S<=6)-1;
+            novelSpatialAssemblage2=[novelSpatialAssemblage2; [sum(sum(BLocalDiff(:,Size2_3_Pos)==1))/sum(sum(Bexist(:,Size2_3_Pos))) sum(sum(BwLocalDiff(:,Size2_3_Pos)==1))/sum(sum(Bexist(:,Size2_3_Pos))) sum(sum(BLV1LocalDiff(:,Size2_3_Pos)==1))/sum(sum(BLV1exist(:,Size2_3_Pos))) sum(sum(BLV1wLocalDiff(:,Size2_3_Pos)==1))/sum(sum(BLV1exist(:,Size2_3_Pos)))]]; % portion of current species that were not there initially
+            novelSpatialAssemblage6=[novelSpatialAssemblage6; [sum(sum(BLocalDiff(:,Size5_6_Pos)==1))/sum(sum(Bexist(:,Size5_6_Pos))) sum(sum(BwLocalDiff(:,Size5_6_Pos)==1))/sum(sum(Bexist(:,Size5_6_Pos))) sum(sum(BLV1LocalDiff(:,Size5_6_Pos)==1))/sum(sum(BLV1exist(:,Size5_6_Pos))) sum(sum(BLV1wLocalDiff(:,Size5_6_Pos)==1))/sum(sum(BLV1exist(:,Size5_6_Pos)))]]; % portion of current species that were not there initially
+            lostSpatialAssemblage2=[lostSpatialAssemblage2; [sum(sum(BLocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos))) sum(sum(BwLocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos))) sum(sum(BLV1LocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos))) sum(sum(BLV1wLocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos)))]]; %portion of initially present species that are no longer there
+            lostSpatialAssemblage6=[lostSpatialAssemblage6; [sum(sum(BLocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos))) sum(sum(BwLocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos))) sum(sum(BLV1LocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos))) sum(sum(BLV1wLocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos)))]]; %portion of initially present species that are no longer there
+            
+            
+            for sp1=1:length(B)
+                for sp2=1:length(B)
+                    CoexistInit(sp1,sp2)=sum(BtransEnd(:,sp1).*BtransEnd(:,sp2)>0)>0; %initial coexistence matrix
+                    CoexistB(sp1,sp2)=sum(B(:,sp1).*B(:,sp2)>0)>0; %final coexistence matrix
+                    CoexistBw(sp1,sp2)=sum(Bw(:,sp1).*Bw(:,sp2)>0)>0; %final coexistence matrix
+                    CoexistBLV1(sp1,sp2)=sum(BLV1(:,sp1).*BLV1(:,sp2)>0)>0; %final coexistence matrix
+                    CoexistBLV1w(sp1,sp2)=sum(BLV1w(:,sp1).*BLV1w(:,sp2)>0)>0; %final coexistence matrix
+                    if (~isempty(find(Size2_3_Pos==sp1)))
+                        if (~isempty(find(Size2_3_Pos==sp2))) %within size class coexistence
+                            Coexist22Init(sp1,sp2)=sum(BtransEnd(:,sp1).*BtransEnd(:,sp2)>0)>0; %initial coexistence matrix
+                            Coexist22B(sp1,sp2)=sum(B(:,sp1).*B(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist22Bw(sp1,sp2)=sum(Bw(:,sp1).*Bw(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist22BLV1(sp1,sp2)=sum(BLV1(:,sp1).*BLV1(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist22BLV1w(sp1,sp2)=sum(BLV1w(:,sp1).*BLV1w(:,sp2)>0)>0; %final coexistence matrix
+                        elseif (~isempty(find(Size5_6_Pos==sp2))) %between size class coexistence
+                            Coexist26Init(sp1,sp2)=sum(BtransEnd(:,sp1).*BtransEnd(:,sp2)>0)>0; %initial coexistence matrix
+                            Coexist26B(sp1,sp2)=sum(B(:,sp1).*B(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist26Bw(sp1,sp2)=sum(Bw(:,sp1).*Bw(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist26BLV1(sp1,sp2)=sum(BLV1(:,sp1).*BLV1(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist26BLV1w(sp1,sp2)=sum(BLV1w(:,sp1).*BLV1w(:,sp2)>0)>0; %final coexistence matrix
+                        end
+                    elseif (~isempty(find(Size5_6_Pos==sp1)))
+                        if (~isempty(find(Size5_6_Pos==sp2))) %within size class coexistence
+                            Coexist66Init(sp1,sp2)=sum(BtransEnd(:,sp1).*BtransEnd(:,sp2)>0)>0; %initial coexistence matrix
+                            Coexist66B(sp1,sp2)=sum(B(:,sp1).*B(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist66Bw(sp1,sp2)=sum(Bw(:,sp1).*Bw(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist66BLV1(sp1,sp2)=sum(BLV1(:,sp1).*BLV1(:,sp2)>0)>0; %final coexistence matrix
+                            Coexist66BLV1w(sp1,sp2)=sum(BLV1w(:,sp1).*BLV1w(:,sp2)>0)>0; %final coexistence matrix
+                        end
+                    end
+                end
+            end
+            novelCoexistence=[novelCoexistence; sum((CoexistB(:)-CoexistInit(:))==1)/sum(CoexistB(:)) sum((CoexistBw(:)-CoexistInit(:))==1)/sum(CoexistBw(:)) sum((CoexistBLV1(:)-CoexistInit(:))==1)/sum(CoexistBLV1(:)) sum((CoexistBLV1w(:)-CoexistInit(:))==1)/sum(CoexistBLV1w(:))]; %portion of current coexisting pairs that were not there initially
+            lostCoexistence=[lostCoexistence; sum((CoexistB(:)-CoexistInit(:))==-1)/sum(CoexistInit(:)) sum((CoexistBw(:)-CoexistInit(:))==-1)/sum(CoexistInit(:)) sum((CoexistBLV1(:)-CoexistInit(:))==-1)/sum(CoexistInit(:)) sum((CoexistBLV1w(:)-CoexistInit(:))==-1)/sum(CoexistInit(:))]; %portion of past coexisting pairs that are no longer there
+            novelCoexistence22=[novelCoexistence22; sum((Coexist22B(:)-Coexist22Init(:))==1)/sum(Coexist22B(:)) sum((Coexist22Bw(:)-Coexist22Init(:))==1)/sum(Coexist22Bw(:)) sum((Coexist22BLV1(:)-Coexist22Init(:))==1)/sum(Coexist22BLV1(:)) sum((Coexist22BLV1w(:)-Coexist22Init(:))==1)/sum(Coexist22BLV1w(:))]; %portion of current coexisting pairs that were not there initially
+            lostCoexistence22=[lostCoexistence22; sum((Coexist22B(:)-Coexist22Init(:))==-1)/sum(Coexist22Init(:)) sum((Coexist22Bw(:)-Coexist22Init(:))==-1)/sum(Coexist22Init(:)) sum((Coexist22BLV1(:)-Coexist22Init(:))==-1)/sum(Coexist22Init(:)) sum((Coexist22BLV1w(:)-Coexist22Init(:))==-1)/sum(Coexist22Init(:))]; %portion of past coexisting pairs that are no longer there
+            novelCoexistence26=[novelCoexistence26; sum((Coexist26B(:)-Coexist26Init(:))==1)/sum(Coexist26B(:)) sum((Coexist26Bw(:)-Coexist26Init(:))==1)/sum(Coexist26Bw(:)) sum((Coexist26BLV1(:)-Coexist26Init(:))==1)/sum(Coexist26BLV1(:)) sum((Coexist26BLV1w(:)-Coexist26Init(:))==1)/sum(Coexist26BLV1w(:))]; %portion of current coexisting pairs that were not there initially
+            lostCoexistence26=[lostCoexistence26; sum((Coexist26B(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:)) sum((Coexist26Bw(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:)) sum((Coexist26BLV1(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:)) sum((Coexist26BLV1w(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:))]; %portion of past coexisting pairs that are no longer there
+            novelCoexistence66=[novelCoexistence66; sum((Coexist66B(:)-Coexist66Init(:))==1)/sum(Coexist66B(:)) sum((Coexist66Bw(:)-Coexist66Init(:))==1)/sum(Coexist66Bw(:)) sum((Coexist66BLV1(:)-Coexist66Init(:))==1)/sum(Coexist66BLV1(:)) sum((Coexist66BLV1w(:)-Coexist66Init(:))==1)/sum(Coexist66BLV1w(:))]; %portion of current coexisting pairs that were not there initially
+            lostCoexistence66=[lostCoexistence66; sum((Coexist66B(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:)) sum((Coexist66Bw(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:)) sum((Coexist66BLV1(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:)) sum((Coexist66BLV1w(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:))]; %portion of past coexisting pairs that are no longer there
+ 
             
             %range shift (median)
             [dummy BtransEndLoc]=max(BtransEnd);
@@ -418,6 +528,10 @@ for CaseNumber=1:numCases
             FinalwLVCentroid=[FinalwLVCentroid; meanFinalwLVCentroid]; %projected mean location of each species at the end of warming period
             CentroidShift0=[CentroidShift0; nanmean(meanFinalCentroid-meanInitCentroid) nanmean(meanFinalLVCentroid-meanInitCentroid)]; %average centroid shift
             CentroidShift=[CentroidShift; nanmean(meanFinalwCentroid-meanInitCentroid) nanmean(meanFinalwLVCentroid-meanInitCentroid)]; %average centroid shift
+            Centroid2Shift0=[Centroid2Shift0; nanmean(meanFinalCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos)) nanmean(meanFinalLVCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos))]; %average centroid shift
+            Centroid2Shift=[Centroid2Shift; nanmean(meanFinalwCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos)) nanmean(meanFinalwLVCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos))]; %average centroid shift
+            Centroid6Shift0=[Centroid6Shift0; nanmean(meanFinalCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos)) nanmean(meanFinalLVCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos))]; %average centroid shift
+            Centroid6Shift=[Centroid6Shift; nanmean(meanFinalwCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos)) nanmean(meanFinalwLVCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos))]; %average centroid shift            
             All_CentroidShifts=cat(3,All_CentroidShifts,[meanFinalCentroid-meanInitCentroid;meanFinalwCentroid-meanInitCentroid;meanFinalLVCentroid-meanInitCentroid;meanFinalwLVCentroid-meanInitCentroid]);
             All_Centroids=cat(3,All_Centroids,meanInitCentroid);
             
@@ -475,8 +589,26 @@ for CaseNumber=1:numCases
             LeadingShift=[LeadingShift; nanmean(tempFinalwLeading-tempInitLeading) nanmean(tempFinalwLVLeading-tempInitLeading)]; %average trailing edge shift under warming
             RangeExpansion0=[RangeExpansion0; nanmean((tempFinalTrailing-tempFinalLeading)-(tempInitTrailing-tempInitLeading)) nanmean((tempFinalLVTrailing-tempFinalLVLeading)-(tempInitTrailing-tempInitLeading))]; %average range expansion under no warming
             RangeExpansion=[RangeExpansion; nanmean((tempFinalwTrailing-tempFinalwLeading)-(tempInitTrailing-tempInitLeading)) nanmean((tempFinalwLVTrailing-tempFinalwLVLeading)-(tempInitTrailing-tempInitLeading))]; %average range expansion under warming
+            Trailing2Shift0=[Trailing2Shift0; nanmean(tempFinalTrailing(Size2_3_Pos)-tempInitTrailing(Size2_3_Pos)) nanmean(tempFinalLVTrailing(Size2_3_Pos)-tempInitTrailing(Size2_3_Pos))]; %average trailing edge shift under no warming
+            Trailing2Shift=[Trailing2Shift; nanmean(tempFinalwTrailing(Size2_3_Pos)-tempInitTrailing(Size2_3_Pos)) nanmean(tempFinalwLVTrailing(Size2_3_Pos)-tempInitTrailing(Size2_3_Pos))]; %average trailing edge shift under warming
+            Leading2Shift0=[Leading2Shift0; nanmean(tempFinalLeading(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)) nanmean(tempFinalLVLeading(Size2_3_Pos)-tempInitLeading(Size2_3_Pos))]; %average trailing edge shift under no warming
+            Leading2Shift=[Leading2Shift; nanmean(tempFinalwLeading(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)) nanmean(tempFinalwLVLeading(Size2_3_Pos)-tempInitLeading(Size2_3_Pos))]; %average trailing edge shift under warming
+            Range2Expansion0=[Range2Expansion0; nanmean((tempFinalTrailing(Size2_3_Pos)-tempFinalLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos))) nanmean((tempFinalLVTrailing(Size2_3_Pos)-tempFinalLVLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))]; %average range expansion under no warming
+            Range2Expansion=[Range2Expansion; nanmean((tempFinalwTrailing(Size2_3_Pos)-tempFinalwLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos))) nanmean((tempFinalwLVTrailing(Size2_3_Pos)-tempFinalwLVLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))]; %average range expansion under warming
+            Trailing6Shift0=[Trailing6Shift0; nanmean(tempFinalTrailing(Size5_6_Pos)-tempInitTrailing(Size5_6_Pos)) nanmean(tempFinalLVTrailing(Size5_6_Pos)-tempInitTrailing(Size5_6_Pos))]; %average trailing edge shift under no warming
+            Trailing6Shift=[Trailing6Shift; nanmean(tempFinalwTrailing(Size5_6_Pos)-tempInitTrailing(Size5_6_Pos)) nanmean(tempFinalwLVTrailing(Size5_6_Pos)-tempInitTrailing(Size5_6_Pos))]; %average trailing edge shift under warming
+            Leading6Shift0=[Leading6Shift0; nanmean(tempFinalLeading(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)) nanmean(tempFinalLVLeading(Size5_6_Pos)-tempInitLeading(Size5_6_Pos))]; %average trailing edge shift under no warming
+            Leading6Shift=[Leading6Shift; nanmean(tempFinalwLeading(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)) nanmean(tempFinalwLVLeading(Size5_6_Pos)-tempInitLeading(Size5_6_Pos))]; %average trailing edge shift under warming
+            Range6Expansion0=[Range6Expansion0; nanmean((tempFinalTrailing(Size5_6_Pos)-tempFinalLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos))) nanmean((tempFinalLVTrailing(Size5_6_Pos)-tempFinalLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))]; %average range expansion under no warming
+            Range6Expansion=[Range6Expansion; nanmean((tempFinalwTrailing(Size5_6_Pos)-tempFinalwLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos))) nanmean((tempFinalwLVTrailing(Size5_6_Pos)-tempFinalwLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))]; %average range expansion under warming
+
             RangeExpansionPerc0=[RangeExpansionPerc0; nanmean(((tempFinalTrailing-tempFinalLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100 nanmean(((tempFinalLVTrailing-tempFinalLVLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100]; %average range expansion % under no warming
             RangeExpansionPerc=[RangeExpansionPerc; nanmean(((tempFinalwTrailing-tempFinalwLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100 nanmean(((tempFinalwLVTrailing-tempFinalwLVLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100]; %average range expansion % under no warming
+            Range2ExpansionPerc0=[Range2ExpansionPerc0; nanmean(((tempFinalTrailing(Size2_3_Pos)-tempFinalLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100 nanmean(((tempFinalLVTrailing(Size2_3_Pos)-tempFinalLVLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100]; %average range expansion % under no warming
+            Range2ExpansionPerc=[Range2ExpansionPerc; nanmean(((tempFinalwTrailing(Size2_3_Pos)-tempFinalwLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100 nanmean(((tempFinalwLVTrailing(Size2_3_Pos)-tempFinalwLVLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100]; %average range expansion % under no warming
+            Range6ExpansionPerc0=[Range6ExpansionPerc0; nanmean(((tempFinalTrailing(Size5_6_Pos)-tempFinalLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100 nanmean(((tempFinalLVTrailing(Size5_6_Pos)-tempFinalLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100]; %average range expansion % under no warming
+            Range6ExpansionPerc=[Range6ExpansionPerc; nanmean(((tempFinalwTrailing(Size5_6_Pos)-tempFinalwLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100 nanmean(((tempFinalwLVTrailing(Size5_6_Pos)-tempFinalwLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100]; %average range expansion % under no warming
+ 
             All_TrailingShifts=cat(3,All_TrailingShifts,[tempFinalTrailing-tempInitTrailing;tempFinalwTrailing-tempInitTrailing;tempFinalLVTrailing-tempInitTrailing;tempFinalwLVTrailing-tempInitTrailing]);
             All_LeadingShifts=cat(3,All_LeadingShifts,[tempFinalLeading-tempInitLeading;tempFinalwLeading-tempInitLeading;tempFinalLVLeading-tempInitLeading;tempFinalwLVLeading-tempInitLeading]);
             All_RangeExpansions=cat(3,All_RangeExpansions,[(tempFinalTrailing-tempFinalLeading)-(tempInitTrailing-tempInitLeading);(tempFinalwTrailing-tempFinalwLeading)-(tempInitTrailing-tempInitLeading);(tempFinalLVTrailing-tempFinalLVLeading)-(tempInitTrailing-tempInitLeading);(tempFinalwLVTrailing-tempFinalwLVLeading)-(tempInitTrailing-tempInitLeading)]);
@@ -496,11 +628,14 @@ set(0,'defaulttextinterpreter','tex');
 set(0, 'defaultAxesTickLabelInterpreter','tex');
 set(0, 'defaultLegendInterpreter','tex');
 set(0,'defaultaxeslinewidth',2)
-set(0,'DefaultAxesFontSize',14)
+set(0,'DefaultAxesFontSize',16)
+CM=colormap(jet(128)); % set colormap
+%numXPresent=length(moveRates);
+numXPresent=6;
 
 
 FileName=sprintf('WarmingMovementStats_%s.mat', TimeData);
-save(FileName);
+%save(FileName);
 
 %figs(1)=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)]);
 %subplot(4,2,1)
@@ -515,9 +650,9 @@ bl1=boundedline([1:numCases], nanmean(reshape((totBiomass(:,3)),numIt,[])),[nans
 %bl1=boundedline([1:numCases], nanmean(reshape(log10(totBiomass(:,2)),numIt,[])),[nanstd(reshape(log10(totBiomass(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape(log10(totBiomass(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 %bl1=boundedline([1:numCases], nanmean(reshape(log10(totBiomass(:,3)),numIt,[])),[nanstd(reshape(log10(totBiomass(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape(log10(totBiomass(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 %bl1=boundedline([1:numCases], nanmean(reshape(log10(totBiomass(:,4)),numIt,[])),[nanstd(reshape(log10(totBiomass(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape(log10(totBiomass(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 %title 'outcomes'
-xlabel 'movement rate'
+xlabel 'movement rate [log(m^2/day)]'
 ylabel 'biomass [gm^{-3}]'
 legend off
 %subplot(4,2,2)
@@ -529,9 +664,9 @@ bl1=boundedline([1:numCases], nanmean(reshape((totProd(:,1)),numIt,[])),[nanstd(
 %bl1=boundedline([1:numCases], nanmean(reshape((totProd(:,2)),numIt,[])),[nanstd(reshape((totProd(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((totProd(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 bl1=boundedline([1:numCases], nanmean(reshape((totProd(:,3)),numIt,[])),[nanstd(reshape((totProd(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((totProd(:,3)),numIt,[])))).^0.5)]','--k','alpha','transparency', 0.1);
 %bl1=boundedline([1:numCases], nanmean(reshape((totProd(:,4)),numIt,[])),[nanstd(reshape((totProd(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((totProd(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 %title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
-xlabel 'movement rate'
+xlabel 'movement rate [log(m^2/day)]'
 ylabel 'production [gm^-{3}/day]'
 legend off
 % subplot(4,2,3)
@@ -542,7 +677,7 @@ legend off
 % %bl1=boundedline([1:numCases], nanmean(reshape((totRich(:,3)),numIt,[])),[nanstd(reshape((totRich(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((totRich(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 % %bl1=boundedline([1:numCases], nanmean(reshape((totRich(:,4)),numIt,[])),[nanstd(reshape((totRich(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((totRich(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel 'richness'
 % title ''
 % legend off
@@ -556,7 +691,7 @@ legend off
 % %bl1=boundedline([1:numCases], nanmean(reshape((totBeta(:,3)),numIt,[])),[nanstd(reshape((totBeta(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((totBeta(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 % %bl1=boundedline([1:numCases], nanmean(reshape((totBeta(:,4)),numIt,[])),[nanstd(reshape((totBeta(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((totBeta(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel 'beta diversity'
 % %ylabel 'mean alpha diversity'
 % title ''
@@ -567,7 +702,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((totTrophicLevel(:,1)),numIt,[])),[nanstd(reshape((totTrophicLevel(:,1)),numIt,[]))*1.96./((sum(~isnan(reshape((totTrophicLevel(:,1)),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(bl1,'linewidth',2);
 % bl1=boundedline([1:numCases], nanmean(reshape((totTrophicLevel(:,2)),numIt,[])),[nanstd(reshape((totTrophicLevel(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((totTrophicLevel(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel 'mean trophic level'
 % title ''
 % legend off
@@ -577,7 +712,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((maxTrophicLevel(:,1)),numIt,[])),[nanstd(reshape((maxTrophicLevel(:,1)),numIt,[]))*1.96./((sum(~isnan(reshape((totTrophicLevel(:,1)),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(bl1,'linewidth',2);
 % bl1=boundedline([1:numCases], nanmean(reshape((maxTrophicLevel(:,2)),numIt,[])),[nanstd(reshape((maxTrophicLevel(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((totTrophicLevel(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel 'max trophic level'
 % title ''
 % legend off
@@ -589,7 +724,7 @@ legend off
 % %bl1=boundedline([1:numCases], nanmean(reshape((totBodyMass(:,3)),numIt,[])),[nanstd(reshape((totBodyMass(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((totBodyMass(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 % %bl1=boundedline([1:numCases], nanmean(reshape((totBodyMass(:,4)),numIt,[])),[nanstd(reshape((totBodyMass(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((totBodyMass(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel 'mean log_{10}(body size [g])'
 % title ''
 % legend off
@@ -603,7 +738,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((consResRatio(:,1)),numIt,[])),[nanstd(reshape((consResRatio(:,1)),numIt,[]))*1.96./((sum(~isnan(reshape((consResRatio(:,1)),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(bl1,'linewidth',2);
 % bl1=boundedline([1:numCases], nanmean(reshape((consResRatio(:,2)),numIt,[])),[nanstd(reshape((consResRatio(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((consResRatio(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % %ylabel 'max body size'
 % ylabel 'consumer:resource'
 % title ''
@@ -619,7 +754,7 @@ legend off
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title 'warming effects'
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel '\Delta biomass [gm^{-3}]'
 % subplot(4,2,2)
 % %violin(reshape((totProd(:,2)-totProd(:,1)),numIt,[]),'facecolor','w','facealpha',1,'mc',[],'medc',[]);
@@ -630,7 +765,7 @@ legend off
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel '\Delta production [gm^{-3}/day]'
 %
 % subplot(4,2,3)
@@ -641,7 +776,7 @@ legend off
 % refl=refline(0,0);
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel '\Delta richness'
 % subplot(4,2,4)
 % %violin(reshape(log2(totBeta(:,2)./totBeta(:,1)),numIt,[]),'facecolor','w','facealpha',1,'mc',[],'medc',[]);
@@ -653,7 +788,7 @@ legend off
 % refl=refline(0,0);
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % %ylabel '\Delta mean alpha diversity'
 % ylabel '\Delta beta diversity'
 % subplot(4,2,7)
@@ -663,7 +798,7 @@ legend off
 % refl=refline(0,0);
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel '\Delta mean trophic level'
 % subplot(4,2,8)
 % %violin(reshape(log2(maxTrophicLevel(:,2)./maxTrophicLevel(:,1)),numIt,[]),'facecolor','w','facealpha',1,'mc',[],'medc',[]);
@@ -672,7 +807,7 @@ legend off
 % refl=refline(0,0);
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel '\Delta max trophic level'
 % subplot(4,2,5)
 % %violin(reshape(log2(totBodyMass(:,2)./totBodyMass(:,1)),numIt,[]),'facecolor','w','facealpha',1,'mc',[],'medc',[]);
@@ -682,7 +817,7 @@ legend off
 % refl=refline(0,0);
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'\Delta mean'; 'log_{10}(body size [g])'})
 % subplot(4,2,6)
 % %violin(reshape(log2(maxBodyMass(:,2)./maxBodyMass(:,1)),numIt,[]),'facecolor','w','facealpha',1,'mc',[],'medc',[]);
@@ -693,7 +828,7 @@ legend off
 % refl=refline(0,0);
 % set(refl,'color','k')
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % % ylabel 'log ratio max body size'
 % ylabel '\Delta consumer:resource'
 
@@ -767,7 +902,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((maxBiomass(:,2)),numIt,[])),[nanstd(reshape((maxBiomass(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomass(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxBiomass(:,3)),numIt,[])),[nanstd(reshape((maxBiomass(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomass(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxBiomass(:,4)),numIt,[])),[nanstd(reshape((maxBiomass(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomass(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'biomass fraction'; 'from top species'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title 'outcomes'
@@ -780,7 +915,7 @@ legend off
 % % bl1=boundedline([1:numCases], nanmean(reshape((maxProd(:,2)),numIt,[])),[nanstd(reshape((maxProd(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((maxProd(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxProd(:,3)),numIt,[])),[nanstd(reshape((maxProd(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((maxProd(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxProd(:,4)),numIt,[])),[nanstd(reshape((maxProd(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((maxProd(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'productive fraction'; 'of species'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
@@ -791,7 +926,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((maxBiomassBS(:,2)),numIt,[])),[nanstd(reshape((maxBiomassBS(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomassBS(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxBiomassBS(:,3)),numIt,[])),[nanstd(reshape((maxBiomassBS(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomassBS(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxBiomassBS(:,4)),numIt,[])),[nanstd(reshape((maxBiomassBS(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomassBS(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'most common';'log_{10}(body size [g])'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title ''
@@ -802,7 +937,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((maxProdBS(:,2)),numIt,[])),[nanstd(reshape((maxProdBS(:,2)),numIt,[]))*1.96./((sum(~isnan(reshape((maxProdBS(:,2)),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(bl1,'linewidth',2);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxProdBS(:,3)),numIt,[])),[nanstd(reshape((maxProdBS(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((maxProdBS(:,3)),numIt,[])))).^0.5)]','--b','alpha','transparency', 0.1);
 % %bl1=boundedline([1:numCases], nanmean(reshape((maxProdBS(:,4)),numIt,[])),[nanstd(reshape((maxProdBS(:,4)),numIt,[]))*1.96./((sum(~isnan(reshape((maxProdBS(:,4)),numIt,[])))).^0.5)]','--r','alpha','transparency', 0.1);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'most productive';'log_{10}(body size [g])'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title ''
@@ -815,7 +950,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((maxBiomass(:,4)-maxBiomass(:,3)),numIt,[])),[nanstd(reshape((maxBiomass(:,4)-maxBiomass(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomass(:,4)-maxBiomass(:,3)),numIt,[])))).^0.5)]','--k','alpha');
 % refl=refline(0,0);
 % set(refl,'color','k')
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'\Delta biomass fraction';'from top species'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title 'warming effects'
@@ -828,7 +963,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((fractSpeciesProd(:,4)-fractSpeciesProd(:,3)),numIt,[])),[nanstd(reshape((fractSpeciesProd(:,4)-fractSpeciesProd(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((fractSpeciesProd(:,4)-fractSpeciesProd(:,3)),numIt,[])))).^0.5)]','--k','alpha'); drawnow;
 % refl=refline(0,0);
 % set(refl,'color','k')
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % %ylabel '\Delta production from top species'
 % ylabel ({'\Delta productive fraction'; 'of species'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
@@ -840,7 +975,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((maxBiomassBS(:,4)-maxBiomassBS(:,3)),numIt,[])),[nanstd(reshape((maxBiomassBS(:,4)-maxBiomassBS(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomassBS(:,4)-maxBiomassBS(:,3)),numIt,[])))).^0.5)]','--k','alpha');
 % refl=refline(0,0);
 % set(refl,'color','k')
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'\Delta most common';'log_{10}(body size [g])'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title ''
@@ -851,7 +986,7 @@ legend off
 % bl1=boundedline([1:numCases], nanmean(reshape((maxProdBS(:,4)-maxProdBS(:,3)),numIt,[])),[nanstd(reshape((maxProdBS(:,4)-maxProdBS(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((maxProdBS(:,4)-maxProdBS(:,3)),numIt,[])))).^0.5)]','--k','alpha');
 % refl=refline(0,0);
 % set(refl,'color','k')
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 % ylabel ({'\Delta most productive';'log_{10}(body size [g])'})
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
 % title ''
@@ -868,10 +1003,10 @@ set(refl,'color','k')
 %scatter(paramIndices, rangeShift0(:,2),20,'ok');
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), rangeShift0(:,1),'.r');
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), rangeShift0(:,2),'.k');
-xlabel 'movement rate'
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel 'means species shift'
 title 'no warming'
-xlim([0.5 numCases+0.5]); xticks([1:numCases]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 legend off
 
 subplot(2,2,2)
@@ -888,10 +1023,10 @@ set(ref2,'color','r')
 % scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), rangeShift(:,2),'.k');
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), rangeShift(:,1)-rangeShift0(:,1),'.r');
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), rangeShift(:,2)-rangeShift0(:,2),'.k');
-xlabel 'movement rate'
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel 'mean species shift'
-xlim([0.5 numCases+0.5]); xticks([1:numCases]); xticklabels(movementLabels);
-title (['warming-no warming ' num2str(tempChanges(TempScenario)) '\circC'])
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%title (['warming-no warming ' num2str(tempChanges(TempScenario)) '\circC'])
 legend off
 
 subplot(2,2,3)
@@ -902,10 +1037,10 @@ refl=refline(0,0);
 set(refl,'color','k')
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), BiomShift0(:,1),'.r');
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), BiomShift0(:,2),'.k');
-xlabel 'movement rate'
+xlabel 'movement rate [log(m^2/day)]'
 ylabel 'biome shift'
 title 'no warming'
-xlim([0.5 numCases+0.5]); xticks([1:numCases]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 legend off
 
 subplot(2,2,4)
@@ -918,10 +1053,10 @@ ref2=refline(0,-6);
 set(ref2,'color','r')
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), BiomShift(:,1),'.r');
 scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), BiomShift(:,2),'.k');
-xlabel 'movement rate'
+xlabel 'movement rate [log(m^2/day)]'
 ylabel 'biome shift'
-title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
-xlim([0.5 numCases+0.5]); xticks([1:numCases]); xticklabels(movementLabels);
+%title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 legend off
 
 
@@ -943,10 +1078,10 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 %title 'outcomes and warming effects'
 title ''
-xlabel 'movement rate'
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 legend off
 subplot(4,2,2)
@@ -956,6 +1091,7 @@ bl1=boundedline([1:numCases], nanmean(reshape((totProd(:,1)),numIt,[])),[nanstd(
 ylabel 'production [gm^-{3}/day]'
 yyaxis right
 hold on
+totProd(abs(totProd)>0.1)=NaN; %******set unrealistically large production to NaN
 % pChangeFoodWeb=reshape((totProd(:,2)-totProd(:,1))./totProd(:,1),numIt,[])*100;
 % pChangeSingleSp=reshape((totProd(:,4)-totProd(:,3))./totProd(:,3),numIt,[])*100;
 pChangeFoodWeb=reshape((totProd(:,2)-totProd(:,1)),numIt,[]);
@@ -964,9 +1100,9 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%title (['warming ' num2str(tempChanges(TempScenario)) '\circC'])
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 legend off
 subplot(4,2,3)
@@ -984,8 +1120,8 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 title ''
 legend off
@@ -1003,8 +1139,8 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 title ''
 legend off
@@ -1020,8 +1156,8 @@ pChangeFoodWeb=reshape((totTrophicLevel(:,2)-totTrophicLevel(:,1)),numIt,[]);
 bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.96./((sum(~isnan(pChangeFoodWeb))).^0.5)]','--r','alpha'); drawnow; set(bl1,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 title ''
 legend off
@@ -1037,8 +1173,8 @@ pChangeFoodWeb=reshape((maxTrophicLevel(:,2)-maxTrophicLevel(:,1)),numIt,[]);
 bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.96./((sum(~isnan(pChangeFoodWeb))).^0.5)]','--r','alpha'); drawnow; set(bl1,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 title ''
 legend off
@@ -1057,8 +1193,8 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 title ''
 legend off
@@ -1074,8 +1210,8 @@ pChangeFoodWeb=reshape((consResRatio(:,2)-consResRatio(:,1)),numIt,[]);
 bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.96./((sum(~isnan(pChangeFoodWeb))).^0.5)]','--r','alpha'); drawnow; set(bl1,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
 title ''
 legend off
@@ -1086,24 +1222,100 @@ else
     plotColor='r';
 end
 
-Assemblagefig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 2*scrsz(4)/7]);
+% NonTrophicfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)/1.5]);
+% set(NonTrophicfig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
+% subplot(2,2,1)
+% hold on
+% blmean=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+% bl2=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+% bl6=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+% scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage2(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+% scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage6(:,2)*100,8,CM(end,:),'filled');
+% 
+% scatter(
+
+
+Assemblagefig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)/1.5]);
 set(Assemblagefig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
-subplot(1,2,1)
-bl1=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(bl1,'linewidth',2);
-bl1=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--k','alpha'); drawnow; set(bl1,'linewidth',2);
-xlabel 'movement rate'
+subplot(2,2,1)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl2=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+bl6=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage2(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage6(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2proj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6proj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+
+%bl1=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--k','alpha'); drawnow; set(bl1,'linewidth',2);
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '% species locally novel'
 %xlim([1 numCases]); xticks([1:numCases]);
-xticklabels(movementLabels);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 
-subplot(1,2,2)
-bl1=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(bl1,'linewidth',2);
-bl1=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--k','alpha'); drawnow; set(bl1,'linewidth',2);
-xlabel 'movement rate'
+subplot(2,2,3)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl2=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+bl6=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostSpatialAssemblage2(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostSpatialAssemblage6(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2proj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6proj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+%bl1=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--k','alpha'); drawnow; set(bl1,'linewidth',2);
+xlabel 'movement rate [log(m^2/day)]'
 ylabel '% species locally extirpated'
 %xlim([1 numCases]); xticks([1:numCases]);
-xticklabels(movementLabels);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 
+subplot(2,2,2)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(novelCoexistence(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl22=boundedline([1:numCases], nanmean(reshape(novelCoexistence22(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence22(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence22(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22,'linewidth',1);
+bl26=boundedline([1:numCases], nanmean(reshape(novelCoexistence26(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence26(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence26(:,2)*100,numIt,[])))).^0.5)]','m','alpha'); drawnow; set(bl26,'linewidth',1);
+bl66=boundedline([1:numCases], nanmean(reshape(novelCoexistence66(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence66(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence66(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl66,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence22(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence26(:,2)*100,8,'m','filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence66(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(novelCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl22proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence22(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence22(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence22(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22proj,'linewidth',1);
+bl26proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence26(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence26(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence26(:,4)*100,numIt,[])))).^0.5)]','m--','alpha'); drawnow; set(bl26proj,'linewidth',1);
+bl66proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence66(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence66(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence66(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl66proj,'linewidth',1);
+
+%bl1=boundedline([1:numCases], nanmean(reshape(novelCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence(:,4)*100,numIt,[])))).^0.5)]','--k','alpha'); drawnow; set(bl1,'linewidth',2);
+%xlabel 'movement rate [log(m^2/day)]'
+ylabel '% coexisting pairs novel'
+%xlim([1 numCases]); xticks([1:numCases]);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+
+subplot(2,2,4)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(lostCoexistence(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl22=boundedline([1:numCases], nanmean(reshape(lostCoexistence22(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence22(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence22(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22,'linewidth',1);
+bl26=boundedline([1:numCases], nanmean(reshape(lostCoexistence26(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence26(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence26(:,2)*100,numIt,[])))).^0.5)]','m','alpha'); drawnow; set(bl26,'linewidth',1);
+bl66=boundedline([1:numCases], nanmean(reshape(lostCoexistence66(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence66(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence66(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl66,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence22(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence26(:,2)*100,8,'m','filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence66(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(lostCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl22proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence22(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence22(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence22(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22proj,'linewidth',1);
+bl26proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence26(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence26(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence26(:,4)*100,numIt,[])))).^0.5)]','m--','alpha'); drawnow; set(bl26proj,'linewidth',1);
+bl66proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence66(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence66(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence66(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl66proj,'linewidth',1);
+
+
+%bl1=boundedline([1:numCases], nanmean(reshape(lostCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence(:,4)*100,numIt,[])))).^0.5)]','--k','alpha'); drawnow; set(bl1,'linewidth',2);
+xlabel 'movement rate [log(m^2/day)]'
+ylabel '% coexisting pairs lost'
+%xlim([1 numCases]); xticks([1:numCases]);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 
 compfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/1.75 3*scrsz(4)/7]);
 set(compfig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
@@ -1122,8 +1334,8 @@ bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*
 refl=refline(0,0);
 set(refl,'color','r')
 ylabel '\Delta'
-xlabel 'movement rate'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
+%xlabel 'movement rate [log(m^2/day)]'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 %title 'outcomes'
 title ''
 legend off
@@ -1141,10 +1353,10 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlabel 'movement rate'
+%xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-title (['warming ' num2str(TempChange) '\circC'])
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%title (['warming ' num2str(TempChange) '\circC'])
 legend off
 subplot(2,2,3)
 yyaxis left
@@ -1160,9 +1372,9 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlabel 'movement rate'
+xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 title ''
 legend off
 subplot(2,2,4)
@@ -1179,9 +1391,9 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','k')
-xlabel 'movement rate'
+xlabel 'movement rate [log(m^2/day)]'
 ylabel '\Delta'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
 title ''
 legend off
 
@@ -1195,7 +1407,7 @@ MedianShift_moveLV=reshape(All_Shifts(4,:,:)-All_Shifts(3,:,:),numIt*size(All_Sh
 % meanBSShiftCoeff=[];
 % seBSShiftCoeff=[];
 % meanBS26Shift=[];
-% seBS26Shift=[];
+% ciBS26Shift=[];
 % for i=1:length(moveRates)
 %     lm=fitlm(BS_move(:,i),Shift_move(:,i));
 %     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
@@ -1203,14 +1415,14 @@ MedianShift_moveLV=reshape(All_Shifts(4,:,:)-All_Shifts(3,:,:),numIt*size(All_Sh
 %     [shift2, ci2] = predict(lm,2);
 %     [shift6, ci6] = predict(lm,6);
 %     meanBS26Shift(:,i)=[shift2;shift6];
-%     seBS26Shift(:,i)=[ci2(1);ci6(1)];
+%     ciBS26Shift(:,i)=[ci2(1);ci6(1)];
 % end
 % hold on
 % %yyaxis left
 % CM=colormap(jet(128)); % set colormap
 % %bl1=boundedline([1:numCases], meanBSShiftCoeff(2,:),seBSShiftCoeff(2,:)*1.96,'-b','alpha'); drawnow; set(bl1,'linewidth',2);
-% bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-seBS26Shift(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
-% bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-seBS26Shift(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+% bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-ciBS26Shift(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+% bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-ciBS26Shift(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
 % if ~exist('CentroidShift1') %if this is first set of analysis (specialists)
 %     plotColor='b';
 % else
@@ -1227,7 +1439,7 @@ MedianShift_moveLV=reshape(All_Shifts(4,:,:)-All_Shifts(3,:,:),numIt*size(All_Sh
 % set(refl,'color',plotColor)
 % %ylabel 'log_{10}(body size):shift intercept'
 % xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-% xlabel 'movement rate'
+% xlabel 'movement rate [log(m^2/day)]'
 
 BS_move=reshape(allBody_Biomass(1,:,:),numIt*size(allBody_Biomass,2),[]); %reshape individual species body sizes by movement rates
 OptT_move=reshape(allBody_Biomass(2,:,:),numIt*size(allBody_Biomass,2),[]); %reshape individual species optimal temperature by movement rates
@@ -1238,41 +1450,65 @@ Centroid_move=reshape(All_Centroids(1,:,:),numIt*size(All_Centroids,2),[]);
 meanBSShiftCoeff=[];
 seBSShiftCoeff=[];
 meanBS26Shift=[];
-seBS26Shift=[];
+ciBS26Shift=[];
 CentroidShift_moveLV=reshape(All_CentroidShifts(4,:,:)-All_CentroidShifts(3,:,:),numIt*size(All_CentroidShifts,2),[]); %reshape individual species shifts with warming by movement rates
 meanBSShiftCoeffLV=[];
 seBSShiftCoeffLV=[];
 meanBS26ShiftLV=[];
-seBS26ShiftLV=[];
+ciBS26ShiftLV=[];
 for i=1:length(moveRates)
-    lm=fitlm(BS_move(:,i),-CentroidShift_move(:,i)*100/TempChange);
+    %lm=fitlm(BS_move(:,i),-CentroidShift_move(:,i)*100/TempChange);
     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
     %seBSShiftCoeff(:,i)=lm.Coefficients.SE;
-    [shift2, ci2] = predict(lm,2);
-    [shift6, ci6] = predict(lm,6);
+    %[shift2, ci2] = predict(lm,2);
+    %[shift6, ci6] = predict(lm,6);
+    BS2indices=find(BS_move(:,i)>2 & BS_move(:,i)<=3);
+    BS6indices=find(BS_move(:,i)>5 & BS_move(:,i)<=6);
+    nBS2=sum(~isnan(CentroidShift_move(BS2indices,i))); %number of surviving size 2-3 species
+    nBS6=sum(~isnan(CentroidShift_move(BS6indices,i))); %number of surviving size 5-6 species
+    nAllBS=sum(~isnan(CentroidShift_move(:,i))); %number of surviving species
+    shift2=nanmean(-CentroidShift_move(BS2indices,i)*100/TempChange);
+    shift6=nanmean(-CentroidShift_move(BS6indices,i)*100/TempChange);
+    ci2=1.96*nanstd(-CentroidShift_move(BS2indices,i)*100/TempChange)/nBS2^.5;
+    ci6=1.96*nanstd(-CentroidShift_move(BS6indices,i)*100/TempChange)/nBS6^.5;
     meanBS26Shift(:,i)=[shift2;shift6];
-    seBS26Shift(:,i)=[ci2(1);ci6(1)];
-    lmLV=fitlm(BS_move(:,i),-CentroidShift_moveLV(:,i)*100/TempChange);
-    [shift2LV, ci2LV] = predict(lmLV,2);
-    [shift6LV, ci6LV] = predict(lmLV,6);
+    ciBS26Shift(:,i)=[ci2(1);ci6(1)];
+
+%    lmLV=fitlm(BS_move(:,i),-CentroidShift_moveLV(:,i)*100/TempChange);
+%     [shift2LV, ci2LV] = predict(lmLV,2);
+%     [shift6LV, ci6LV] = predict(lmLV,6);
+    shift2LV=nanmean(-CentroidShift_moveLV(BS2indices,i)*100/TempChange);
+    shift6LV=nanmean(-CentroidShift_moveLV(BS6indices,i)*100/TempChange);
+    ci2LV=1.96*nanstd(-CentroidShift_moveLV(BS2indices,i)*100/TempChange)/(nBS2^.5);
+    ci6LV=1.96*nanstd(-CentroidShift_moveLV(BS6indices,i)*100/TempChange)/(nBS6^.5);
     meanBS26ShiftLV(:,i)=[shift2LV;shift6LV];
-    seBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
+    ciBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
 end
 hold on
 %yyaxis left
 CM=colormap(jet(128)); % set colormap
 %bl1=boundedline([1:numCases], meanBSShiftCoeff(2,:),seBSShiftCoeff(2,:)*1.96,'-b','alpha'); drawnow; set(bl1,'linewidth',2);
-bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-seBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
-bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-seBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
 if ~exist('CentroidShift1') %if this is first set of analysis (specialists)
     plotColor='b';
 else
     plotColor='r';
 end
-blmean=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
-bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-seBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
-bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-seBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-blssproj=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
+blmean=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,1)-CentroidShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+%scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(CentroidShift(:,1)-CentroidShift0(:,1))*100/TempChange,'.',plotColor);
+%bl2=boundedline([1:numCases], meanBS26Shift(1,:),ciBS26Shift(1,:),'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+%bl6=boundedline([1:numCases], meanBS26Shift(2,:),ciBS26Shift(2,:),'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+bl2=boundedline([1:numCases], -nanmean(reshape(Centroid2Shift(:,1)-Centroid2Shift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(Centroid2Shift(:,1)-Centroid2Shift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Centroid2Shift(:,1)-Centroid2Shift0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Centroid2Shift(:,1)-Centroid2Shift0(:,1))*100/TempChange,8,CM(ceil(2*128/6),:),'filled');
+bl6=boundedline([1:numCases], -nanmean(reshape(Centroid6Shift(:,1)-Centroid6Shift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(Centroid6Shift(:,1)-Centroid6Shift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Centroid6Shift(:,1)-Centroid6Shift0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Centroid6Shift(:,1)-Centroid6Shift0(:,1))*100/TempChange,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2proj=boundedline([1:numCases], -nanmean(reshape(Centroid2Shift(:,2)-Centroid2Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Centroid2Shift(:,2)-Centroid2Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Centroid2Shift(:,2)-Centroid2Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6proj=boundedline([1:numCases], -nanmean(reshape(Centroid6Shift(:,2)-Centroid6Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Centroid6Shift(:,2)-Centroid6Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Centroid6Shift(:,2)-Centroid6Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+%bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-ciBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+%bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-ciBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+%blssproj=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(CentroidShift(:,2)-CentroidShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'centroid shift %'
@@ -1281,8 +1517,8 @@ ylim([0 100])
 %refl=refline(0,-6);
 %set(refl,'color',plotColor)
 %ylabel 'log_{10}(body size):shift intercept'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel 'movement rate [log(m^2/day)]'
 
 subplot(2,2,2) %range contraction
 %RangeContraction_move=-reshape((All_RangeExpansions(2,:,:)-All_RangeExpansions(1,:,:))./All_RangeSizes,numIt*size(All_RangeExpansions,2),[]); %reshape individual species range expansions with warming by movement rates
@@ -1291,13 +1527,13 @@ RangeSize_move=reshape(All_RangeSizes(1,:,:),numIt*size(All_RangeSizes,2),[]);
 meanBSShiftCoeff=[];
 seBSShiftCoeff=[];
 meanBS26Shift=[];
-seBS26Shift=[];
+ciBS26Shift=[];
 %RangeContraction_moveLV=-reshape((All_RangeExpansions(4,:,:)-All_RangeExpansions(3,:,:))./All_RangeSizes,numIt*size(All_RangeExpansions,2),[]); %reshape individual species shifts with warming by movement rates
 RangeContraction_moveLV=-reshape((All_RangeExpansions(4,:,:)-All_RangeExpansions(3,:,:))*100./All_RangeSizes,numIt*size(All_RangeExpansions,2),[]); %reshape individual species shifts with warming by movement rates
 meanBSShiftCoeffLV=[];
 seBSShiftCoeffLV=[];
 meanBS26ShiftLV=[];
-seBS26ShiftLV=[];
+ciBS26ShiftLV=[];
 for i=1:length(moveRates)
     lm=fitlm(BS_move(:,i),RangeContraction_move(:,i));
     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
@@ -1305,23 +1541,33 @@ for i=1:length(moveRates)
     [shift2, ci2] = predict(lm,2);
     [shift6, ci6] = predict(lm,6);
     meanBS26Shift(:,i)=[shift2;shift6];
-    seBS26Shift(:,i)=[ci2(1);ci6(1)];
+    ciBS26Shift(:,i)=[ci2(1);ci6(1)];
     lmLV=fitlm(BS_move(:,i),RangeContraction_moveLV(:,i));
     [shift2LV, ci2LV] = predict(lmLV,2);
     [shift6LV, ci6LV] = predict(lmLV,6);
     meanBS26ShiftLV(:,i)=[shift2LV;shift6LV];
-    seBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
+    ciBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
 end
 hold on
 %yyaxis left
 CM=colormap(jet(128)); % set colormap
 %bl1=boundedline([1:numCases], meanBSShiftCoeff(2,:),seBSShiftCoeff(2,:)*1.96,'-b','alpha'); drawnow; set(bl1,'linewidth',2);
-bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-seBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
-bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-seBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
-blmean=boundedline([1:numCases], -nanmean(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])),[nanstd(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
-bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-seBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
-bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-seBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-blssproj=boundedline([1:numCases], -nanmean(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[])),[nanstd(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
+% bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-ciBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+% bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-ciBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+blmean=boundedline([1:numCases], -nanmean(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])),[nanstd(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+%scatter([1:numCases], -(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[]))*100/TempChange,'.',plotColor);
+bl2=boundedline([1:numCases], -nanmean(reshape(Range2ExpansionPerc(:,1)-Range2ExpansionPerc0(:,1),numIt,[])),[nanstd(reshape(Range2ExpansionPerc(:,1)-Range2ExpansionPerc0(:,1),numIt,[]))*1.96./((sum(~isnan(reshape(Range2ExpansionPerc(:,1)-Range2ExpansionPerc0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Range2ExpansionPerc(:,1)-Range2ExpansionPerc0(:,1)),8,CM(ceil(2*128/6),:),'filled');
+bl6=boundedline([1:numCases], -nanmean(reshape(Range6ExpansionPerc(:,1)-Range6ExpansionPerc0(:,1),numIt,[])),[nanstd(reshape(Range6ExpansionPerc(:,1)-Range6ExpansionPerc0(:,1),numIt,[]))*1.96./((sum(~isnan(reshape(Range6ExpansionPerc(:,1)-Range6ExpansionPerc0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Range6ExpansionPerc(:,1)-Range6ExpansionPerc0(:,1)),8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], -nanmean(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[])),[nanstd(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2proj=boundedline([1:numCases], -nanmean(reshape(Range2ExpansionPerc(:,2)-Range2ExpansionPerc0(:,2),numIt,[])),[nanstd(reshape(Range2ExpansionPerc(:,2)-Range2ExpansionPerc0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(Range2ExpansionPerc(:,2)-Range2ExpansionPerc0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6proj=boundedline([1:numCases], -nanmean(reshape(Range6ExpansionPerc(:,2)-Range6ExpansionPerc0(:,2),numIt,[])),[nanstd(reshape(Range6ExpansionPerc(:,2)-Range6ExpansionPerc0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(Range6ExpansionPerc(:,2)-Range6ExpansionPerc0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+% bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-ciBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+% bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-ciBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+% blssproj=boundedline([1:numCases], -nanmean(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[])),[nanstd(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc(:,2)-RangeExpansionPerc0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'range contraction %'
@@ -1330,20 +1576,20 @@ ylabel 'range contraction %'
 %refl=refline(0,-6);
 %set(refl,'color',plotColor)
 %ylabel 'log_{10}(body size):shift intercept'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel 'movement rate [log(m^2/day)]'
 
 subplot(2,2,3) %leading edge shift
 LeadingShift_move=reshape(All_LeadingShifts(2,:,:)-All_LeadingShifts(1,:,:),numIt*size(All_LeadingShifts,2),[]); %reshape individual species shifts with warming by movement rates
 meanBSShiftCoeff=[];
 seBSShiftCoeff=[];
 meanBS26Shift=[];
-seBS26Shift=[];
+ciBS26Shift=[];
 LeadingShift_moveLV=reshape(All_LeadingShifts(4,:,:)-All_LeadingShifts(3,:,:),numIt*size(All_LeadingShifts,2),[]); %reshape individual species shifts with warming by movement rates
 meanBSShiftCoeffLV=[];
 seBSShiftCoeffLV=[];
 meanBS26ShiftLV=[];
-seBS26ShiftLV=[];
+ciBS26ShiftLV=[];
 for i=1:length(moveRates)
     lm=fitlm(BS_move(:,i),-LeadingShift_move(:,i)*100/TempChange);
     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
@@ -1351,23 +1597,33 @@ for i=1:length(moveRates)
     [shift2, ci2] = predict(lm,2);
     [shift6, ci6] = predict(lm,6);
     meanBS26Shift(:,i)=[shift2;shift6];
-    seBS26Shift(:,i)=[ci2(1);ci6(1)];
+    ciBS26Shift(:,i)=[ci2(1);ci6(1)];
     lmLV=fitlm(BS_move(:,i),-LeadingShift_moveLV(:,i)*100/TempChange);
     [shift2LV, ci2LV] = predict(lmLV,2);
     [shift6LV, ci6LV] = predict(lmLV,6);
     meanBS26ShiftLV(:,i)=[shift2LV;shift6LV];
-    seBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
+    ciBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
 end
 hold on
 %yyaxis left
 CM=colormap(jet(128)); % set colormap
 %bl1=boundedline([1:numCases], meanBSShiftCoeff(2,:),seBSShiftCoeff(2,:)*1.96,'-b','alpha'); drawnow; set(bl1,'linewidth',2);
-bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-seBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
-bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-seBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
-blmean=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
-bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-seBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
-bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-seBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-blssproj=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
+%bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-ciBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+%bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-ciBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+blmean=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl2=boundedline([1:numCases], -nanmean(reshape(Leading2Shift(:,1)-Leading2Shift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(Leading2Shift(:,1)-Leading2Shift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Leading2Shift(:,1)-Leading2Shift0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Leading2Shift(:,1)-Leading2Shift0(:,1))*100/TempChange,8,CM(ceil(2*128/6),:),'filled');
+bl6=boundedline([1:numCases], -nanmean(reshape(Leading6Shift(:,1)-Leading6Shift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(Leading6Shift(:,1)-Leading6Shift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Leading6Shift(:,1)-Leading6Shift0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Leading6Shift(:,1)-Leading6Shift0(:,1))*100/TempChange,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2proj=boundedline([1:numCases], -nanmean(reshape(Leading2Shift(:,2)-Leading2Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Leading2Shift(:,2)-Leading2Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Leading2Shift(:,2)-Leading2Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6proj=boundedline([1:numCases], -nanmean(reshape(Leading6Shift(:,2)-Leading6Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Leading6Shift(:,2)-Leading6Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Leading6Shift(:,2)-Leading6Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+
+% bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-ciBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+% bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-ciBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+% blssproj=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,2)-LeadingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'leading edge shift %'
@@ -1376,20 +1632,20 @@ ylim([0 100])
 %refl=refline(0,-6);
 %set(refl,'color',plotColor)
 %ylabel 'log_{10}(body size):shift intercept'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel 'movement rate [log(m^2/day)]'
 
 subplot(2,2,4) %trailing edge shift
 TrailingShift_move=reshape(All_TrailingShifts(2,:,:)-All_TrailingShifts(1,:,:),numIt*size(All_TrailingShifts,2),[]); %reshape individual species shifts with warming by movement rates
 meanBSShiftCoeff=[];
 seBSShiftCoeff=[];
 meanBS26Shift=[];
-seBS26Shift=[];
+ciBS26Shift=[];
 TrailingShift_moveLV=reshape(All_TrailingShifts(4,:,:)-All_TrailingShifts(3,:,:),numIt*size(All_TrailingShifts,2),[]); %reshape individual species shifts with warming by movement rates
 meanBSShiftCoeffLV=[];
 seBSShiftCoeffLV=[];
 meanBS26ShiftLV=[];
-seBS26ShiftLV=[];
+ciBS26ShiftLV=[];
 for i=1:length(moveRates)
     lm=fitlm(BS_move(:,i),-TrailingShift_move(:,i)*100/TempChange);
     %meanBSShiftCoeff(:,i)=lm.Coefficients.Estimate;
@@ -1397,23 +1653,33 @@ for i=1:length(moveRates)
     [shift2, ci2] = predict(lm,2);
     [shift6, ci6] = predict(lm,6);
     meanBS26Shift(:,i)=[shift2;shift6];
-    seBS26Shift(:,i)=[ci2(1);ci6(1)];
+    ciBS26Shift(:,i)=[ci2(1);ci6(1)];
     lmLV=fitlm(BS_move(:,i),-TrailingShift_moveLV(:,i)*100/TempChange);
     [shift2LV, ci2LV] = predict(lmLV,2);
     [shift6LV, ci6LV] = predict(lmLV,6);
     meanBS26ShiftLV(:,i)=[shift2LV;shift6LV];
-    seBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
+    ciBS26ShiftLV(:,i)=[ci2LV(1);ci6LV(1)];
 end
 hold on
 %yyaxis left
 CM=colormap(jet(128)); % set colormap
 %bl1=boundedline([1:numCases], meanBSShiftCoeff(2,:),seBSShiftCoeff(2,:)*1.96,'-b','alpha'); drawnow; set(bl1,'linewidth',2);
-bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-seBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
-bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-seBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
-blmean=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',4);
-bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-seBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
-bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-seBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-blssproj=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
+% bl2=boundedline([1:numCases], meanBS26Shift(1,:),[meanBS26Shift(1,:)-ciBS26Shift(1,:)],'-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+% bl6=boundedline([1:numCases], meanBS26Shift(2,:),[meanBS26Shift(2,:)-ciBS26Shift(2,:)],'-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+blmean=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl2mean=boundedline([1:numCases], -nanmean(reshape(Trailing2Shift(:,1)-Trailing2Shift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(Trailing2Shift(:,1)-Trailing2Shift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Trailing2Shift(:,1)-Trailing2Shift0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Trailing2Shift(:,1)-Trailing2Shift0(:,1))*100/TempChange,8,CM(ceil(2*128/6),:),'filled');
+bl6mean=boundedline([1:numCases], -nanmean(reshape(Trailing6Shift(:,1)-Trailing6Shift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(Trailing6Shift(:,1)-Trailing6Shift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Trailing6Shift(:,1)-Trailing6Shift0(:,1),numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), -(Trailing6Shift(:,1)-Trailing6Shift0(:,1))*100/TempChange,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2meanproj=boundedline([1:numCases], -nanmean(reshape(Trailing2Shift(:,2)-Trailing2Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Trailing2Shift(:,2)-Trailing2Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Trailing2Shift(:,2)-Trailing2Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6meanproj=boundedline([1:numCases], -nanmean(reshape(Trailing6Shift(:,2)-Trailing6Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Trailing6Shift(:,2)-Trailing6Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Trailing6Shift(:,2)-Trailing6Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+
+% bl2proj=boundedline([1:numCases], meanBS26ShiftLV(1,:),[meanBS26ShiftLV(1,:)-ciBS26ShiftLV(1,:)],'--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+% bl6proj=boundedline([1:numCases], meanBS26ShiftLV(2,:),[meanBS26ShiftLV(2,:)-ciBS26ShiftLV(2,:)],'--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+% blssproj=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,2)-TrailingShift0(:,2),numIt,[])))).^0.5)]','--k','alpha'); set(blssproj,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'trailing edge shift %'
@@ -1422,8 +1688,8 @@ ylim([0 100])
 %refl=refline(0,-6);
 %set(refl,'color',plotColor)
 %ylabel 'log_{10}(body size):shift intercept'
-xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-xlabel 'movement rate'
+xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel 'movement rate [log(m^2/day)]'
 
 if ~exist('CentroidShift1') %record percent change in food web species shift compared to single-species projection
     %percShift1=reshape((rangeShift(:,1)-rangeShift0(:,1)-(rangeShift(:,2)-rangeShift0(:,2)))./(rangeShift(:,2)-rangeShift0(:,2)),numIt,[])*100;
@@ -1480,7 +1746,7 @@ else %plot both sets of changes
     %     set(refl,'color',plotColor)
     %     %ylabel 'log_{10}(body size):shift intercept'
     %     xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-    %     xlabel 'movement rate'
+    %     xlabel 'movement rate [log(m^2/day)]'
     
     subplot(2,2,1) %centroid shift
     %yyaxis left
@@ -1504,8 +1770,8 @@ else %plot both sets of changes
     refl=refline(0,-6);
     set(refl,'color',plotColor)
     %ylabel 'log_{10}(body size):shift intercept'
-    xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-    xlabel 'movement rate'
+    xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+    %xlabel 'movement rate [log(m^2/day)]'
     
     subplot(2,2,2) %range expansion
     %yyaxis left
@@ -1529,8 +1795,8 @@ else %plot both sets of changes
     %refl=refline(0,-6);
     %set(refl,'color',plotColor)
     %ylabel 'log_{10}(body size):shift intercept'
-    xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-    xlabel 'movement rate'
+    xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+    %xlabel 'movement rate [log(m^2/day)]'
     
     subplot(2,2,3) %leading edge shift
     %yyaxis left
@@ -1554,8 +1820,8 @@ else %plot both sets of changes
     refl=refline(0,-6);
     set(refl,'color',plotColor)
     %ylabel 'log_{10}(body size):shift intercept'
-    xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-    xlabel 'movement rate'
+    xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+    xlabel 'movement rate [log(m^2/day)]'
     
     subplot(2,2,4) %trailing edge shift
     %yyaxis left
@@ -1578,8 +1844,8 @@ else %plot both sets of changes
     refl=refline(0,-6);
     set(refl,'color',plotColor)
     %ylabel 'log_{10}(body size):shift intercept'
-    xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-    xlabel 'movement rate'
+    xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+    xlabel 'movement rate [log(m^2/day)]'
     %
     %     shiftfig2=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/1.5 scrsz(4)/2.5]); %3.5
     %     set(shiftfig2,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
@@ -1592,7 +1858,7 @@ else %plot both sets of changes
     %     refl=refline(0,0);
     %     set(refl,'color','k')
     %     xlim([2 numCases]); xticks([2:numCases]); xticklabels(moveRates(2:end));
-    %     xlabel 'movement rate'
+    %     xlabel 'movement rate [log(m^2/day)]'
     %     ylabel '% difference in median shift'
     
   
@@ -1605,8 +1871,8 @@ else %plot both sets of changes
     bar([1:numCases],singlespeciesSurvive,'w')
     bar([1:numCases],foodwebNoWarmingSurvive,'b')
     bar([1:numCases],foodwebWarmingSurvive,'r')
-    xlim([0 numCases+1]); xticks([1:numCases]); xticklabels(movementLabels);
-    xlabel 'movement rate'
+    xlim([0 numXPresent+1]); xticks([1:numXPresent]); xticklabels(movementLabels);
+    xlabel 'movement rate [log(m^2/day)]'
     ylabel 'non-extinct food webs'
     
     
@@ -1897,8 +2163,8 @@ else %plot both sets of changes
     %set(refl,'color',plotColor)
     ylabel 'range changes %'
     %ylim([-2 0.1])
-    xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-    xlabel 'movement rate'
+    xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+    xlabel 'movement rate [log(m^2/day)]'
     
     subplot(1,3,2)
     x=BS_move1(:,C);
@@ -2111,13 +2377,13 @@ else %plot both sets of changes
     hold on
     refl=refline(0,0);
     set(refl,'color','k')
-    %blMedian2=boundedline([1:numCases], -nanmean(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
-    %blMedian1=boundedline([1:numCases], -nanmean(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
-    blMedian2=boundedline([1:numCases-2], -nanmean(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
-    blMedian1=boundedline([1:numCases-2], -nanmean(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
+    blMedian2=boundedline([1:numCases], -nanmean(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift(:,1)-rangeShift0(:,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
+    blMedian1=boundedline([1:numCases], -nanmean(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift1(:,1)-rangeShift01(:,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
+    %blMedian2=boundedline([1:numCases-2], -nanmean(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift(1:end-160,1)-rangeShift0(1:end-160,1),numIt,[])))).^0.5)]','r','alpha'); drawnow; set(blMedian2,'linewidth',2);
+    %blMedian1=boundedline([1:numCases-2], -nanmean(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])*100/TempChange),[nanstd(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(rangeShift1(1:end-160,1)-rangeShift01(1:end-160,1),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(blMedian1,'linewidth',2);
     blMedianLV=boundedline([1:numCases], -nanmean([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])]*100/TempChange),[nanstd([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])])*(100/TempChange)*1.96./((sum(~isnan([reshape(rangeShift(:,2)-rangeShift0(:,2),numIt,[]);reshape(rangeShift1(:,2)-rangeShift01(:,2),numIt,[])]))).^0.5)]','k','alpha'); drawnow; set(blMedianLV,'linewidth',2);
 
     ylabel 'median location shift %'
-    xlim([1 numCases]); xticks([1:numCases]); xticklabels(movementLabels);
-    xlabel 'movement rate'
+    xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+    xlabel 'movement rate [log(m^2/day)]'
 end

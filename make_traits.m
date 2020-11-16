@@ -22,7 +22,7 @@ rng('shuffle') % set random number seed to ensure the same 'random' numbers each
 %sdm = [0 2 4 5 7]; % mean D in log10(m^2/day)
 %sdv = [0 0.3 0.5 0.7]; % standard deviation of D among species in log10 space
 ThermPerfWidth=5/4; %thermal performance width (or 5)
-sdm = [6.25 6.5 6.75 7.25 7.5 7.75]; %[-Inf 0 3 6 7 8 9]; % mean D in log10(m^2/day) for all
+sdm = [0]; %[-Inf 0 3 6 7 8 9 10]; % mean D in log10(m^2/day) for all
 sdv = 0; % standard deviation of D among species in log10 space
 specialist = [0]; %value of pInedible, with extreme specialist=1, intermediate=0.5, and generalist=0
 tv = [0]; %standard deviation of optimal temperature around 12.5C: 10~uniform distribution

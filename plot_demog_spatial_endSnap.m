@@ -4,8 +4,10 @@
 
 TempChangePos=1;
 %run as script:
-B=cat(3,Btrans,Bw_yrs(:,:,:,TempChangePos)); %3 refers to position of temperature change (6C warming)
+B=cat(3,Btrans,Bw_yrs(:,:,:,TempChangePos));
 prodB=cat(3,gainBtrans,gainBw_yrs(:,:,:,TempChangePos));
+%B=cat(3,Btrans,BLV1w_yrs(:,:,:,TempChangePos));
+%prodB=cat(3,gainBtrans,gainBLV1w_yrs(:,:,:,TempChangePos));
 
 %or use as function:
 %function [Gbar,Ybins,Y2bins,avgB,avgP,figs] = plot_demog_spatial_Btrans(B, P, prodB)
@@ -36,7 +38,7 @@ end
 
 %prepare global biomass and productivity histograms
 X = log10(P.s.mi);
-Xb=log10(P.s.m0); %body mass of basal species
+Xb=log10(P.s.m0); %body size of basal species
 %construct histogram bins:
 numBins=7; %number of bins for heterotrophs (total number of bins is 1+numBins)
 binWidth=(ceil(max(X))-floor(min(X)))/numBins;
@@ -96,11 +98,11 @@ for pl=1:length(plots)
     %     hLine2.Color='r';
     set(gca,'fontsize',15);
     box on;
-    xlabel('Body Mass (log_{10} g)','fontsize',16)
-    ylabel({['\fontsize{16} {\color{blue}Biomass (log_{10} g) '],...
-        ['\color{red}Productivity (log_{10} g/day)}']})
-    %     ylabel(hAx(1),'Fish Biomass (log_{10} g)','fontsize',16)
-    %     ylabel(hAx(2),'Fish Productivity (log_{10} g)','fontsize',16)
+    xlabel('body size (log_{10}g)','fontsize',16)
+    ylabel({['\fontsize{16} {\color{blue}Biomass (log_{10}g) '],...
+        ['\color{red}Productivity (log_{10}g/day)}']})
+    %     ylabel(hAx(1),'Fish Biomass (log_{10}g)','fontsize',16)
+    %     ylabel(hAx(2),'Fish Productivity (log_{10}g)','fontsize',16)
     title(['Patch ' num2str(ptch)])
     curYlim=ylim;
     %xlim([floor(log10(P.s.m0)) ceil(max(X))]);
@@ -148,9 +150,9 @@ for pl=1:length(plots)
     errorbar([1:1+numBins]+0.04,Y2bins-floor(log10(eps)),Y2bins-Y2binsTimeLo,Y2binsTimeHi-Y2bins,'.','Color',ProdErrColor,'LineWidth',2);
     %errorbar([1:8]-0.01,Ybins-floor(log10(eps)),YbinsTimeStd,'.k','LineWidth',2);
     %errorbar([1:8]+0.01,Y2bins-floor(log10(eps)),Y2binsTimeStd,'.k','LineWidth',2);
-    xlabel('Body Mass (log_{10} g)','fontsize',16)
-    ylabel({['\fontsize{16} {\color{blue}Biomass (log_{10} g) '],...
-        ['\color{red}Productivity (log_{10} g/day)}']});
+    xlabel('body size (log_{10}g)','fontsize',16)
+    ylabel({['\fontsize{16} {\color{blue}Biomass (log_{10}g) '],...
+        ['\color{red}Productivity (log_{10}g/day)}']});
     title(['Patch ' num2str(ptch)])
     ax=gca;
     ax.XTick=[1:2+numBins]-0.5;
@@ -191,7 +193,7 @@ ylabel('Biomass (g)','fontsize',16)
 title('Initial species distributions')
 at = linspace(floor(log10(min(P.s.mi))), ceil(log10(max(P.s.mi))), 8);
 b = colorbar('YTick',[0:1/7:1],'YTickLabel',at);
-set(get(b,'ylabel'), 'String', 'Body Mass (log_{10} g)', 'fontsize', 16)
+set(get(b,'ylabel'), 'String', 'body size (log_{10}g)', 'fontsize', 16)
 hold on
 %yyaxis right
 %plot(Xp,P.T,'linewidth',2);
@@ -215,7 +217,7 @@ ylabel('Biomass (g)','fontsize',16)
 title('Final species distributions','fontsize',16)
 at = linspace(floor(log10(min(P.s.mi))), ceil(log10(max(P.s.mi))), 8);
 b = colorbar('YTick',[0:1/7:1],'YTickLabel',at);
-set(get(b,'ylabel'), 'String', 'Body Mass (log_{10} g)', 'fontsize', 16)
+set(get(b,'ylabel'), 'String', 'body size (log_{10}g)', 'fontsize', 16)
 curYlim=ylim;
 %ylim([0 2.5]);
 xlim([0.8 numpatch+0.2]);
@@ -305,9 +307,9 @@ errorbar([1:1+numBins]+0.04,Y2bins-floor(log10(eps)),Y2bins-Y2binsTimeLo,Y2binsT
 %her2=herrorbar([1:1+numBins],Y2bins-floor(log10(eps)),Y2binsSpaceStd/10,'.k');
 her2=herrorbar([1:1+numBins],Y2bins-floor(log10(eps)),(Y2bins-Y2binsSpaceLo)*horErrScale,(Y2binsSpaceHi-Y2bins)*horErrScale,'.');
 set(her2,'LineWidth',2,'Color',ProdErrColor);
-xlabel('Body Mass (log_{10} g)','fontsize',16)
-ylabel({['\fontsize{16} {\color{blue}Biomass (log_{10} g) '],...
-    ['\color{red}Productivity (log_{10} g/day)}']});
+xlabel('body size (log_{10}g)','fontsize',16)
+ylabel({['\fontsize{16} {\color{blue}Biomass (log_{10}g) '],...
+    ['\color{red}Productivity (log_{10}g/day)}']});
 title(['Global means, movement rate=' num2str(log10(P.diff(1)))])
 ax=gca;
 ax.XTick=[1:2+numBins]-0.5;
@@ -329,7 +331,7 @@ ylim([16+log10(eps) 18]);
 %8. beta richness
 %9. gamma Shannon's div
 %10. beta Shannon's div
-%11. most common species (body mass)
+%11. most common species (body size)
 %12. most common species (biomass)
 
 GlobalBiomasses=sort(sum(mean(B(:,:,avgWindow),1),2),3); %mean global heterotroph biomass
@@ -356,8 +358,8 @@ Ghi(4)=BetaRichnessDistr(:,:,ceil(lengthWindow*(0.975)));
 
 % subplot(1,2,2)
 % b=bar(Y2bins-floor(log10(eps)),'k');
-% xlabel('Body Mass (log_{10} g)','fontsize',16)
-% ylabel('Productivity (log_{10} g/day)')
+% xlabel('body size (log_{10}g)','fontsize',16)
+% ylabel('Productivity (log_{10}g/day)')
 % ax=gca;
 % ax.XTick=[1:8]-0.5;
 % ax.XTickLabel=xbinLabels;
