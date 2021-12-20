@@ -21,11 +21,7 @@ Met = Met .* exp(0.03.*Spds'.*100./60./60./24');
 
 if fitCode(1)==0 %fit model to all observed biomass time points
     [gainB,dB]=sub_demogLV(Bseries,T,r,a,c,zs,Eas,ks,smis,Spds); %B,T,r,a,z,P
-    %Bguess=Bseries+dB;
     SS=sum(sum((dBseries-dB).^2)); %compare current observed biomass - previous biomass to predicted dB for each time and location
-    %SS=sum((Bseries(2:end)-Bguess(1:end-1)).^2); %compare current observed biomass - previous biomass to predicted dB
-    %SSdB=sum(sum((dBseries-dB).^2)); %compare current observed change in biomass - predicted dB
-
 else %fit model to a quantile of biomass and production   
     EqB=(skewThEnv(r,T,zs)-Met')/-a; %predicted equilibrium biomass densities at each location
     if fitCode(1)==0.5 %use means
@@ -33,30 +29,12 @@ else %fit model to a quantile of biomass and production
     else
         SSEqB=sum((quantile(Bseries,fitCode(1),3)-EqB).^2); %fit to a quantile of observed biomass
     end
-    %EqGain=EqB.*skewThEnv(r,T,zs); %predicted equilibrium species productions at each location
-    %EqGain=EqB.*(skewThEnv(r,T,zs)-Met'); %predicted equilibrium species productions at each location
-    %EqGain=EqB.*(skewThEnv(r,T,zs)-Met')/4; %predicted maximum species productions at each location based on maximum sustainable yield
-    %EqGain=EqB.*(skewThEnv(r,T,zs)+(a.*EqB)); %predicted maximum species productions at each location based on production at equilibrium biomass (carrying capacity)
-    %EqGain=EqB.*(skewThEnv(r,T,zs)+(a.*EqB)/c); %predicted maximum species productions at each location based on production at equilibrium biomass (carrying capacity)
     EqGain=EqB.*(skewThEnv(r,T,zs)-Met'+(a.*EqB)./c); %predicted maximum species productions at each location based on production at equilibrium biomass (carrying capacity)
-    %EqGain=EqB.*Met'; %=EqB.*(skewThEnv(r,T,zs)+(a.*EqB)) at equilibrum
-    %EqGain=EqB.*(skewThEnv(r,T,zs)-Met')/c;
-    
     if fitCode(2)==0.5 %use means
         SSEqGain=sum((nanmean(Pseries,3)-EqGain).^2); %fit to mean of observed production 
     else
         SSEqGain=sum((quantile(Pseries,fitCode(2),3)-EqGain).^2); %fit to a quantile of observed production
     end
-    %SS=SSdB/var(dBseries(:))+SSEqB/var(Bseries(:))+SSEqGain/var(Pseries(:));
-    %SS=SSEqB/var(Bseries(:))+SSEqGain/var(Pseries(:));
-%     if nanmean(Bseries(:))==0
-%         ratio_prod_biom=1;
-%     elseif isnan(nanmean(Bseries(:)))
-%         ratio_prod_biom=1;
-%     else
-%         ratio_prod_biom=nanmean(Pseries(:))/nanmean(Bseries(:));
-%     end
     %SS=SSEqB/abs(Bseries(:))+SSEqGain/abs(nanmean(Pseries(:)));
     SS=SSEqB+1000*SSEqGain;
-    %SS=SSEqB*SSEqGain;
 end

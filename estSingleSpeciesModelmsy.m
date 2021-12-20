@@ -27,7 +27,6 @@ betas=NaN(1,size(Btrans,2));
 
 dBperM=dBtrans./Btrans;
 for species=1:size(Btrans,2)
-    %X3=NaN(size(Btrans,1)*size(Btrans,3),size(Btrans,1)+1);
     X3=NaN(size(Btrans,1)*size(Btrans,3),size(Btrans,1)+2);
     Y3=NaN(size(Btrans,1)*size(Btrans,3),1); %all dB data for each species
     nPatches=0;
@@ -52,15 +51,6 @@ for species=1:size(Btrans,2)
                 X3((patch-1)*length(X1)+1:patch*length(X1),end-1)=X1;
                 X3((patch-1)*length(X1)+1:patch*length(X1),end)=X0; %add interaction with others
                 Y3((patch-1)*length(X1)+1:patch*length(X1))=Y;
-                %lm=fitlm(X1,Y, 'y ~ x1');
-                %[lm2,resnorm,residual,exitflag,output,lambda]=lsqlin(X2,Y,[-1 -max(X1)],0,[],[],[-Inf;-Inf],[Inf;0],[],options); %r/a<max(Btrans) or x1/x2<=max(Btrans)
-                %r(patch,species)=lm.Coefficients.Estimate(1);
-                %a(patch,species)=lm.Coefficients.Estimate(2);
-                %r(patch,species)=lm2(1);
-                %a(patch,species)=lm2(2);
-                %flag(patch,species)=exitflag;
-                %raR2(patch,species)=lm.Rsquared.Ordinary;
-                %numraPts(patch,species)=lm.NumObservations;
             end
         end
     end
@@ -68,11 +58,6 @@ for species=1:size(Btrans,2)
     X4=X4(:,nansum(X3)>0); %delete NaN columns;
     X4(isnan(X4))=0; %replace NaNs in the design matrix with zero;
     Y4=Y3(~isnan(X3(:,end)),:); %delete NaN rows
-    %     %construct lower and upper constraints
-    %     lower=-Inf*ones(size(X4,2),1);
-    %     upper=[Inf*ones(size(X4,2)-1,1);0];
-    %construct Bmax constraints
-    %nPatches=size(X4,2)-1;
     
     if ~isempty(Y4)
         Bseries=Btrans(:,species,:);
@@ -93,73 +78,15 @@ for species=1:size(Btrans,2)
         raR2(species)=1-fval4/(var(Y4)*(length(Y4)-1));
         flag(1,species)=exitflag;
         r_T(:,species)=skewThEnv(lm4(1),P.T,zs);
-        %-------deterministic parameter assignments:
-%         Met=(0.71.*log(smis) + 18.47 - Eas./(ks.*(P.T+273)))';
-%         Met=exp(Met);
-%         Met=Met .* (1/7000.*(60.*60.*24)./smis');
-%         Met=Met .* exp(0.03.*Spds'.*100./60./60./24'); %per day
-%         Bmean=nanmean(Bseries,3);
-%         [Bmax,BmaxIdx]=max(Bmean);
-%         Pmean=nanmean(Pseries,3);
-%         Pbmax=Pmean(BmaxIdx);
-%         r(:,species)=Pbmax/Bmax+Met(BmaxIdx);
-%         %r(:,species)=Pbmax/Bmax;
-%         %r(:,species)=Pbmax/Bmax-((Pbmax/Bmax)-Met(BmaxIdx))/(2-Bmax);
-%         a(:,species)=-Pbmax/(Bmax^2);
-%         %a(:,species)=-(Pbmax/Bmax-Met(BmaxIdx))./Bmax;
-%         %a(:,species)=-(Pbmax/Bmax-Met(BmaxIdx))/(Bmax*(1-Bmax/2));
-%         c(:,species)=0;
-%         raR2(species)=0;
-%         %raR2(species)=abs(nanmean(Bmean)-nanmean((r(:,species)-Met')./a(:,species)))/nanmean(Bmean);
-%         flag(1,species)=0;
-%         r_T(:,species)=0;
-        %-------
-        %z(:,species)=lm4(3);
         z(:,species)=zs;
-        %estimate left-skewed normal thermal envelope of species s:
-        %beta=nlinfit(P.T(nansum(X3(:,1:end-2))>0),lm4(1:end-2),@skewThEnv,1e-5);
-        %r_T(:,species)=skewThEnv(lm4(1),P.T,lm4(3));
-%        betas(1,species)=beta;
     end
 end
-
-%scale r & a from yr^-1 to day^-1
-% r=r/365;
-% a=a/365;
-% r_T=r_T/365;
 
 K=r./-a(1,:); %max carrying capacities
 K_T=r_T./-a(1,:); %carrying capacities based on temperature-dependent r and
 sumBmean=nansum(Bmean(:));
-%sumBmedian=nansum(Bmedian(:));
 sumBmax=nansum(Bmax(:));
-%sumBend=nansum(Bend(:));
 sumK=nansum(K(:));
 sumK_T=nansum(K_T(:));
-%K_T_ratio=sumK_T/sumBmax %predicted maximum total biomass over observed maximum total biomass
 K_T_ratio=sumK_T/sumBmean;
-%K_Tmedian_ratio=sumK_T/sumBmedian
-%K_Tend_ratio=sumK_T/sumBend
-
 r_T_ratio=nansum(K_T(:).*r_T(:)/4)/nansum(gainBmean(:)); %predicted maximum total productivity over observed maximum total productivity
-
-% scrsz = get(0,'ScreenSize');
-% figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/5 scrsz(4)]);
-% subplot(3,1,1)
-% bar(max(r));
-% xlabel 'species (ordered by increasing body size)'
-% ylabel 'maximum intrinsic growth rate (r)'
-% xlim([0,100])
-% title([{'Lotka-Volterra parameter estimates from'}; {'food-web simulation'}])
-% subplot(3,1,2)
-% bar((-a(1,:)).^.1);
-% xlabel 'species (ordered by increasing body size)'
-% ylabel 'self competition (-a_i_i)^{1/10}'
-% xlim([0,100])
-% subplot(3,1,3)
-% bar(a(2,:));
-% xlabel 'species (ordered by increasing body size)'
-% ylabel 'competition with others (a_i_o)'
-% xlim([0,100])
-
-%temp-independent a
