@@ -1,13 +1,14 @@
 function [P B Z T] = make_parameters(TR,II)
 %%%%% Parameters of size-shifts
 
+load        ./Data/Data_traits
 %%---- Big parameters
 P.iter      = TR{II}.iter;
-P.dt        = 1; % time step (days)
+P.dt        = TR{II}.dt; % time step (days): 1 or 0.1
 %P.Tend      = TR{II}.Times(end) ./ P.dt; % number of days to run model forward in time 100,000+200yrs=173,000
 %P.en        = 2; % number of ensemble runs
 P.nx        = TR{II}.nx; % number of spatial patches (MUST be an even number)
-P.dT        = TR{II}.DT./73000; % rate of temperature increase (deg C per day) over 200 years
+P.dT        = TR{II}.DT./73000./TR{II}.dt; % rate of temperature increase (deg C per day) over 200 years
 P.T         = [linspace(4,24,P.nx)  ]'; %temp gradient
 %P.T         = [linspace(15,15,P.nx) ]'; %constant temp
 
@@ -15,12 +16,12 @@ P.T         = [linspace(4,24,P.nx)  ]'; %temp gradient
 %%     weight, times 5g wet fish/1g dry fish
 %P.ZK        = 0.946*5; % g m-3 zooplankton carrying capacity
 P.ZK        = TR{II}.ZK;
-P.Zr        = 0.0015*5;% g day-1 m-3 zooplankton growth rate
+P.Zr        = 0.0075;% g day-1 m-3 zooplankton growth rate
 %P.s.m0      = 5e-7; %= 0.05; % Body-mass of zooplankton; g, 5e-7 for phytoplankton, 1e-13 for bacteria
 
 
 %%---- Initial distribution of traits (size, dispersal variance, thermal envelope)
-load        ./Data/Data_traits
+%load        ./Data/Data_traits
 P.n         = TR{II}.n; % number of species
 P.s.m0      = TR{II}.s.m0; % body mass of basal species (g)
 P.s.mi      = TR{II}.m.si; % body mass of species (g)
@@ -29,7 +30,7 @@ P.s.mi      = P.s.mi(j);
 P.z         = TR{II}.z(j); % Thermal optima (deg C)
 P.sigmaz    = TR{II}.sigmaz(j); % Thermal niche breadth (deg C)
 P.omegaz    = TR{II}.omegaz(j); % Thermal niche skewness
-P.diff      = TR{II}.D(j) .* P.dt; % Dispersal diffusitivity
+P.diff      = TR{II}.D(j) .* TR{II}.dt; % Dispersal diffusitivity
 P.S         = log10([P.s.m0 P.s.mi]);  % log10 g body sizes of all species (incl. zoo)
 P.pInedible = TR{II}.pInedible;
 
