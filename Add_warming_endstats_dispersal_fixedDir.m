@@ -235,103 +235,74 @@ for CaseNumber=1:numCases
             TLallw=nanmean(TLallw_yrs(end-recordYrs+1:end,TempScenario));
             TLiw=nanmean(TLiw_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
             
-%             %                 %Redo single-species LV hindcast fits by finding the best biomass
-%             %                 %and production quantiles to match model projections to
-%             %                 %forecast:
-%             %                 if sum(B(:))<eps
-%             %                     BLV1=nanmean(BLV4_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
-%             %                     gainBLV1=nanmean(gainBLV4_yrs(:,:,end-recordYrs+1:end),3);
-%             %                     BLV1w=nanmean(BLV4w_yrs(:,:,end-recordYrs+1:end),3);
-%             %                     gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
-%             %                     BPquantiles=[BPquantiles;fitCode(4,:)];
-%             %                     BPpercDiff=[BPpercDiff;[NaN NaN]];
-%             %                 else
-%             %                     meanLV1B=mean(nansum(nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanLV2B=mean(nansum(nanmean(BLV2_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanLV3B=mean(nansum(nanmean(BLV3_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanLV4B=mean(nansum(nanmean(BLV4_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanB=mean(nansum(B)); %mean observed biomass
-%             %                     meanLV1P=mean(nansum(nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanLV2P=mean(nansum(nanmean(gainBLV2_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanLV3P=mean(nansum(nanmean(gainBLV3_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanLV4P=mean(nansum(nanmean(gainBLV4_yrs(:,:,end-recordYrs+1:end),3),2));
-%             %                     meanP=mean(nansum(gainB)); %mean observed production
-%             %                     X=[ones(length(fitCode),1) fitCode fitCode(:,1).*fitCode(:,2)]; %set up regression predictor matrix
-%             %                     bB=regress([meanLV1B meanLV2B meanLV3B meanLV4B]',X); %regression model for B as function of B and P quantiles
-%             %                     bP=regress([meanLV1P meanLV2P meanLV3P meanLV4P]',X); %regression model for P as function of B and P quantiles
-%             %                     [fitCodeEsts,fval,exitflag,output] = fminsearchbnd(@(params) quantileFit(meanB,meanP,bB,bP,params),freeparstart,freeparmin,freeparmax); %fit quantiles to meanB and meanP
-%             %                     [percDiffB,percDiffP] = quantileOutputs(meanB,meanP,bB,bP,fitCodeEsts); %get percent differences between predicted and observed biomass and production
-
-
-%Redo single-species LV hindcast fits by fixing c and estimating r and a for each species:
-% if CaseNumber==1
-                                display(['running single species estimate for run ' num2str(numRun) ' of ' num2str(numIt*numCases)])
-                                numRun=numRun+1;
-                                [r5,a5,c5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,[0.5 0.5]); %fit growth model to all patches at once using estimated best quantiles
-                                All_r_est=[All_r_est; r5]; 
-                                All_a_est=[All_a_est; a5];
-%                                 BPquantiles=[BPquantiles;fitCodeEsts];
-%                                 BPpercDiff=[BPpercDiff;[percDiffB,percDiffP]];
-%                                 disp(['case ' num2str(CaseNumber) ' iteration ' num2str(iteration) ': quantiles ' num2str(fitCodeEsts,2) ', %diff ' num2str([percDiffB,percDiffP],2)])
-%                       
-                                %rerun single-species projection:
-                                TimePts=[1:365:200*365+1]; %record every year
-                                numPts=length(TimePts); %number of time points
-                                gainBLV5=zeros(P.nx,P.n);
-                                dBLV5=zeros(P.nx,P.n);
-                                gainBLV5w=zeros(P.nx,P.n);
-                                dBLV5w=zeros(P.nx,P.n);
-                                BLV5=BLV1_yrs(:,:,1); %no warming case under estimated single-species dynamics (start at identical point as other simulations)
-                                BLV5w=BLV5; %6C warming case under estimated single-species dynamics (start at identical point as other simulations)
-                                for t = 1:TimePts(end) %run for 200 years (with daily time steps)
-                                    BLV5(BLV5<eps) = 0;
-                                    BLV5w(BLV5w<eps)= 0;
-                                    T1      = P.T;% + t.*P.dT; %<<< add this when time is right
-                                    T1w      = P.T + (t-1)*P.dT;
-                                    BLV5_RK1=sub_move(BLV5,P); %single species model no temp change Runge-Kutta step 1
-                                    [gainBLV5_RK1 dBLV5_RK1] = sub_demogLV(BLV5_RK1,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                                    BLV5_RK2        = sub_move(BLV5+0.5*dBLV5_RK1,P); % move Runge-Kutta step 2
-                                    [gainBLV5_RK2 dBLV5_RK2] = sub_demogLV(BLV5_RK2,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                                    dBLV5=(dBLV5_RK1+dBLV5_RK2)/2; %2nd order RK integration
-                                    gainBLV5=(gainBLV5_RK1+gainBLV5_RK2)/2; %2nd order RK integration
-                                    
-                                    BLV5w_RK1=sub_move(BLV5w,P); %single species model temp change Runge-Kutta step 1
-                                    [gainBLV5w_RK1 dBLV5w_RK1] = sub_demogLV(BLV5w_RK1,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                                    BLV5w_RK2        = sub_move(BLV5w+0.5*dBLV5w_RK1,P); % move Runge-Kutta step 2
-                                    [gainBLV5w_RK2 dBLV5w_RK2] = sub_demogLV(BLV5w_RK2,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                                    dBLV5w=(dBLV5w_RK1+dBLV5w_RK2)/2; %2nd order RK integration
-                                    gainBLV5w=(gainBLV5w_RK1+gainBLV5w_RK2)/2; %2nd order RK integration
-                                    tpos=find(t==TimePts);
-                                    if ~isempty(tpos)
-                                        BLV5_yrs(:,:,tpos)=BLV5;
-                                        gainBLV5_yrs(:,:,tpos)=gainBLV5;
-                                        BLV5w_yrs(:,:,tpos)=BLV5w;
-                                        gainBLV5w_yrs(:,:,tpos)=gainBLV5w;
-                                    end
-                                    BLV5 = BLV5 + dBLV5;
-                                    BLV5w = BLV5w + dBLV5w;
-                                end
-            BLV1=nanmean(BLV5_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
+            %Redo single-species LV hindcast fits by fixing c and estimating r and a for each species:
+            display(['running single species estimate for run ' num2str(numRun) ' of ' num2str(numIt*numCases)])
+            numRun=numRun+1;
+            [r5,a5,c5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,[0.5 0.5]); %fit growth model to all patches at once using estimated best quantiles
+            All_r_est=[All_r_est; r5];
+            All_a_est=[All_a_est; a5];
+            %                                 BPquantiles=[BPquantiles;fitCodeEsts];
+            %                                 BPpercDiff=[BPpercDiff;[percDiffB,percDiffP]];
+            %                                 disp(['case ' num2str(CaseNumber) ' iteration ' num2str(iteration) ': quantiles ' num2str(fitCodeEsts,2) ', %diff ' num2str([percDiffB,percDiffP],2)])
+            %
+            %rerun single-species projection:
+            TimePts=[1:365:200*365+1]; %record every year
+            numPts=length(TimePts); %number of time points
+            gainBLV5=zeros(P.nx,P.n);
+            dBLV5=zeros(P.nx,P.n);
+            gainBLV5w=zeros(P.nx,P.n);
+            dBLV5w=zeros(P.nx,P.n);
+            BLV5=BLV1_yrs(:,:,1); %no warming case under estimated single-species dynamics (start at identical point as other simulations)
+            BLV5w=BLV5; %6C warming case under estimated single-species dynamics (start at identical point as other simulations)
+            for t = 1:TimePts(end) %run for 200 years (with daily time steps)
+                BLV5(BLV5<eps) = 0;
+                BLV5w(BLV5w<eps)= 0;
+                T1      = P.T;% + t.*P.dT; %<<< add this when time is right
+                T1w      = P.T + (t-1)*P.dT;
+                BLV5_RK1=sub_move(BLV5,P); %single species model no temp change Runge-Kutta step 1
+                [gainBLV5_RK1 dBLV5_RK1] = sub_demogLV(BLV5_RK1,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
+                BLV5_RK2        = sub_move(BLV5+0.5*dBLV5_RK1,P); % move Runge-Kutta step 2
+                [gainBLV5_RK2 dBLV5_RK2] = sub_demogLV(BLV5_RK2,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
+                dBLV5=(dBLV5_RK1+dBLV5_RK2)/2; %2nd order RK integration
+                gainBLV5=(gainBLV5_RK1+gainBLV5_RK2)/2; %2nd order RK integration
+                
+                BLV5w_RK1=sub_move(BLV5w,P); %single species model temp change Runge-Kutta step 1
+                [gainBLV5w_RK1 dBLV5w_RK1] = sub_demogLV(BLV5w_RK1,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
+                BLV5w_RK2        = sub_move(BLV5w+0.5*dBLV5w_RK1,P); % move Runge-Kutta step 2
+                [gainBLV5w_RK2 dBLV5w_RK2] = sub_demogLV(BLV5w_RK2,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
+                dBLV5w=(dBLV5w_RK1+dBLV5w_RK2)/2; %2nd order RK integration
+                gainBLV5w=(gainBLV5w_RK1+gainBLV5w_RK2)/2; %2nd order RK integration
+                tpos=find(t==TimePts);
+                if ~isempty(tpos)
+                    BLV5_yrs(:,:,tpos)=BLV5;
+                    gainBLV5_yrs(:,:,tpos)=gainBLV5;
+                    BLV5w_yrs(:,:,tpos)=BLV5w;
+                    gainBLV5w_yrs(:,:,tpos)=gainBLV5w;
+                end
+                BLV5 = BLV5 + dBLV5;
+                BLV5w = BLV5w + dBLV5w;
+            end
+            BLV1=nanmean(BLV5_yrs(:,:,end-recordYrs+1:end),3);
             gainBLV1=nanmean(gainBLV5_yrs(:,:,end-recordYrs+1:end),3);
             BLV1w=nanmean(BLV5w_yrs(:,:,end-recordYrs+1:end),3);
-            gainBLV1w=nanmean(gainBLV5w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
- 
-% else
+            gainBLV1w=nanmean(gainBLV5w_yrs(:,:,end-recordYrs+1:end),3);
+            
+            
             %---------------Change assignments here for different single-species projections---------
-%             BLV1=nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
-%             gainBLV1=nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3);
-%             BLV1w=nanmean(BLV1w_yrs(:,:,end-recordYrs+1:end),3);
-%             gainBLV1w=nanmean(gainBLV1w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
+            %             BLV1=nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
+            %             gainBLV1=nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3);
+            %             BLV1w=nanmean(BLV1w_yrs(:,:,end-recordYrs+1:end),3);
+            %             gainBLV1w=nanmean(gainBLV1w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
             %----------------------------------------------------------------------------------------
-%end
+            %end
             %    end
             BtransEnd=nanmean(Btrans(:,:,end-recordYrs+1:end),3); %biomasses at the end of transcient period
             BtransEnd(BtransEnd<=eps)=nan;
             numPatches=size(B,1);
             %-------
-% %             %%use if eliminating species with centroids in the coldest patches:
-%             meanInitCentroid=nansum(BtransEnd.*[1:numPatches]')./nansum(BtransEnd); %get initial centroids
-%             BtransEnd(:,meanInitCentroid<=3)=NaN; %set initial biomass of these species to NaN
+            % %             %%use if eliminating species with centroids in the coldest patches:
+            %             meanInitCentroid=nansum(BtransEnd.*[1:numPatches]')./nansum(BtransEnd); %get initial centroids
+            %             BtransEnd(:,meanInitCentroid<=3)=NaN; %set initial biomass of these species to NaN
             %%use if eliminating species with leading edges in 3 coldest patches and trailing edges in 3 hottest patches:
             leadingQ=0.025; %lower quantile indicates location of leading edge (towards cold region)
             trailingQ=0.975; %upper quantile indicates location of trailing edge (towards hot region)
@@ -467,7 +438,7 @@ for CaseNumber=1:numCases
             lostCoexistence26=[lostCoexistence26; sum((Coexist26B(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:)) sum((Coexist26Bw(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:)) sum((Coexist26BLV1(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:)) sum((Coexist26BLV1w(:)-Coexist26Init(:))==-1)/sum(Coexist26Init(:))]; %portion of past coexisting pairs that are no longer there
             novelCoexistence66=[novelCoexistence66; sum((Coexist66B(:)-Coexist66Init(:))==1)/sum(Coexist66B(:)) sum((Coexist66Bw(:)-Coexist66Init(:))==1)/sum(Coexist66Bw(:)) sum((Coexist66BLV1(:)-Coexist66Init(:))==1)/sum(Coexist66BLV1(:)) sum((Coexist66BLV1w(:)-Coexist66Init(:))==1)/sum(Coexist66BLV1w(:))]; %portion of current coexisting pairs that were not there initially
             lostCoexistence66=[lostCoexistence66; sum((Coexist66B(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:)) sum((Coexist66Bw(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:)) sum((Coexist66BLV1(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:)) sum((Coexist66BLV1w(:)-Coexist66Init(:))==-1)/sum(Coexist66Init(:))]; %portion of past coexisting pairs that are no longer there
- 
+            
             
             %range shift (median)
             [dummy BtransEndLoc]=max(BtransEnd);
@@ -518,7 +489,7 @@ for CaseNumber=1:numCases
             Centroid2Shift0=[Centroid2Shift0; nanmean(meanFinalCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos)) nanmean(meanFinalLVCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos))]; %average centroid shift
             Centroid2Shift=[Centroid2Shift; nanmean(meanFinalwCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos)) nanmean(meanFinalwLVCentroid(Size2_3_Pos)-meanInitCentroid(Size2_3_Pos))]; %average centroid shift
             Centroid6Shift0=[Centroid6Shift0; nanmean(meanFinalCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos)) nanmean(meanFinalLVCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos))]; %average centroid shift
-            Centroid6Shift=[Centroid6Shift; nanmean(meanFinalwCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos)) nanmean(meanFinalwLVCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos))]; %average centroid shift            
+            Centroid6Shift=[Centroid6Shift; nanmean(meanFinalwCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos)) nanmean(meanFinalwLVCentroid(Size5_6_Pos)-meanInitCentroid(Size5_6_Pos))]; %average centroid shift
             All_CentroidShifts=cat(3,All_CentroidShifts,[meanFinalCentroid-meanInitCentroid;meanFinalwCentroid-meanInitCentroid;meanFinalLVCentroid-meanInitCentroid;meanFinalwLVCentroid-meanInitCentroid]);
             All_Centroids=cat(3,All_Centroids,meanInitCentroid);
             
@@ -588,14 +559,14 @@ for CaseNumber=1:numCases
             Leading6Shift=[Leading6Shift; nanmean(tempFinalwLeading(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)) nanmean(tempFinalwLVLeading(Size5_6_Pos)-tempInitLeading(Size5_6_Pos))]; %average trailing edge shift under warming
             Range6Expansion0=[Range6Expansion0; nanmean((tempFinalTrailing(Size5_6_Pos)-tempFinalLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos))) nanmean((tempFinalLVTrailing(Size5_6_Pos)-tempFinalLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))]; %average range expansion under no warming
             Range6Expansion=[Range6Expansion; nanmean((tempFinalwTrailing(Size5_6_Pos)-tempFinalwLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos))) nanmean((tempFinalwLVTrailing(Size5_6_Pos)-tempFinalwLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))]; %average range expansion under warming
-
+            
             RangeExpansionPerc0=[RangeExpansionPerc0; nanmean(((tempFinalTrailing-tempFinalLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100 nanmean(((tempFinalLVTrailing-tempFinalLVLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100]; %average range expansion % under no warming
             RangeExpansionPerc=[RangeExpansionPerc; nanmean(((tempFinalwTrailing-tempFinalwLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100 nanmean(((tempFinalwLVTrailing-tempFinalwLVLeading)-(tempInitTrailing-tempInitLeading))./(tempInitTrailing-tempInitLeading+1))*100]; %average range expansion % under no warming
             Range2ExpansionPerc0=[Range2ExpansionPerc0; nanmean(((tempFinalTrailing(Size2_3_Pos)-tempFinalLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100 nanmean(((tempFinalLVTrailing(Size2_3_Pos)-tempFinalLVLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100]; %average range expansion % under no warming
             Range2ExpansionPerc=[Range2ExpansionPerc; nanmean(((tempFinalwTrailing(Size2_3_Pos)-tempFinalwLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100 nanmean(((tempFinalwLVTrailing(Size2_3_Pos)-tempFinalwLVLeading(Size2_3_Pos))-(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)))./(tempInitTrailing(Size2_3_Pos)-tempInitLeading(Size2_3_Pos)+1))*100]; %average range expansion % under no warming
             Range6ExpansionPerc0=[Range6ExpansionPerc0; nanmean(((tempFinalTrailing(Size5_6_Pos)-tempFinalLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100 nanmean(((tempFinalLVTrailing(Size5_6_Pos)-tempFinalLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100]; %average range expansion % under no warming
             Range6ExpansionPerc=[Range6ExpansionPerc; nanmean(((tempFinalwTrailing(Size5_6_Pos)-tempFinalwLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100 nanmean(((tempFinalwLVTrailing(Size5_6_Pos)-tempFinalwLVLeading(Size5_6_Pos))-(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)))./(tempInitTrailing(Size5_6_Pos)-tempInitLeading(Size5_6_Pos)+1))*100]; %average range expansion % under no warming
- 
+            
             All_TrailingShifts=cat(3,All_TrailingShifts,[tempFinalTrailing-tempInitTrailing;tempFinalwTrailing-tempInitTrailing;tempFinalLVTrailing-tempInitTrailing;tempFinalwLVTrailing-tempInitTrailing]);
             All_LeadingShifts=cat(3,All_LeadingShifts,[tempFinalLeading-tempInitLeading;tempFinalwLeading-tempInitLeading;tempFinalLVLeading-tempInitLeading;tempFinalwLVLeading-tempInitLeading]);
             All_RangeExpansions=cat(3,All_RangeExpansions,[(tempFinalTrailing-tempFinalLeading)-(tempInitTrailing-tempInitLeading);(tempFinalwTrailing-tempFinalwLeading)-(tempInitTrailing-tempInitLeading);(tempFinalLVTrailing-tempFinalLVLeading)-(tempInitTrailing-tempInitLeading);(tempFinalwLVTrailing-tempFinalwLVLeading)-(tempInitTrailing-tempInitLeading)]);
