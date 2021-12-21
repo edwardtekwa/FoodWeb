@@ -5,6 +5,7 @@
 %Make_warming_MultPtsstats_Parallel.m:
 load('Foodweb_numSpecies200_dT3_basalSize0.01_meanD3_pInedible0_fIII.mat')
 
+plot_demog_spatial_end; %plot time series and spatial distributions
 
 set(0,'defaultaxeslinewidth',2)
 set(0,'DefaultAxesFontSize',20)
