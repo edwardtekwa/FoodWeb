@@ -6,7 +6,7 @@ function Gij = sub_feedfunc_adj(P)
 %pInedible=portion of possible preys that is inedible (higher means
 %specialist predators, with random potential preys knocked out from diet)
 
-load ./Data/Data_Barnes
+%load ./Data/Data_Barnes
 Si = P.S; Sj = P.S; % body sizes
 X = [ones(size(P.S')) P.S']; % design matrix for linear regression
 
@@ -15,7 +15,7 @@ X = [ones(size(P.S')) P.S']; % design matrix for linear regression
 %sd = (X*VAR.b); % range in prey size difference
 
 % From Barnes et al. 10 (Tekwa)
-mu = X*[2.66; 0.24]; % mean difference between predator and prey log10(g)=log10(PPMR)=0.24log10(predator mass)+2.66 (or 2.08)
+mu = X*[2.66; 0.24]; % mean difference between predator and prey log10(g)=log10(PPMR)=0.24log10(predator mass)+2.66 (or 2.08, 2.37, 2.95, 3.24)
 %sd = (X*[1.36;0]); % range in prey size difference =s.d. of intercept in the log10(PPMR)-log10(predator mass) regression
 sd = (X*[0.569;0]);
 
