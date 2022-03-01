@@ -4,7 +4,9 @@
 %run Add_warming_endstats_dispersal_fixedDir.m first if collecting new
 %data, and comment out the following line. Else the following loads the
 %simualtion data from the paper's main results
-load('WarmingMovementStats_c1_004 sumLL.mat');
+%load('WarmingDispersalStats_main.mat'); %plot main results with base
+%parameters
+load('WarmingDispersalStats_main.mat'); %plot results from .mat file
 
 scrsz = get(0,'ScreenSize');
 set(0,'defaulttextinterpreter','tex');
@@ -13,31 +15,30 @@ set(0, 'defaultLegendInterpreter','tex');
 set(0,'defaultaxeslinewidth',2)
 set(0,'DefaultAxesFontSize',16)
 CM=colormap(jet(128)); % set colormap
-%numXPresent=length(moveRates);
-numXPresent=6; %6
+numXPresent=length(moveRates);
 plotColor='b';
 
-figs(1)=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)/4]);
+%Figure S2: Food web vs. counterfactual fit
+fitfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)/4]);
 subplot(1,2,1)
 hold on
 bl1=boundedline([1:numCases], nanmean(reshape((totBiomass(:,1)),numIt,[])),[nanstd(reshape((totBiomass(:,1)),numIt,[]))*1.96./((sum(~isnan(reshape((totBiomass(:,1)),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(bl1,'linewidth',2);
 bl1=boundedline([1:numCases], nanmean(reshape((totBiomass(:,3)),numIt,[])),[nanstd(reshape((totBiomass(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((totBiomass(:,3)),numIt,[])))).^0.5)]','--k','alpha','transparency', 0.1);
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-xlabel 'movement rate [log(m^2/day)]'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
 ylabel 'biomass [gm^{-3}]'
-legend off
+%legend off
 subplot(1,2,2)
-hold on
 hold on
 bl1=boundedline([1:numCases], nanmean(reshape((totProd(:,1)),numIt,[])),[nanstd(reshape((totProd(:,1)),numIt,[]))*1.96./((sum(~isnan(reshape((totProd(:,1)),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(bl1,'linewidth',2);
 bl1=boundedline([1:numCases], nanmean(reshape((totProd(:,3)),numIt,[])),[nanstd(reshape((totProd(:,3)),numIt,[]))*1.96./((sum(~isnan(reshape((totProd(:,3)),numIt,[])))).^0.5)]','--k','alpha','transparency', 0.1);
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-xlabel 'movement rate [log(m^2/day)]'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
 ylabel 'production [gm^-{3}/day]'
 legend off
 
-%composite graphs (outcomes and effects)
-compfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/1.75 scrsz(4)]);
+%Figure S3: composite graphs (outcomes and effects)
+compfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)]);
 set(compfig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
 subplot(4,2,1)
 yyaxis left
@@ -52,7 +53,7 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 title ''
 ylabel '\Delta'
 legend off
@@ -70,7 +71,7 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 ylabel '\Delta'
 legend off
 subplot(4,2,3)
@@ -86,7 +87,7 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 ylabel '\Delta'
 title ''
 legend off
@@ -102,7 +103,7 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 ylabel '\Delta'
 title ''
 legend off
@@ -117,8 +118,8 @@ pChangeFoodWeb=reshape((totTrophicLevel(:,2)-totTrophicLevel(:,1)),numIt,[]);
 bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.96./((sum(~isnan(pChangeFoodWeb))).^0.5)]','--r','alpha'); drawnow; set(bl1,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-xlabel 'movement rate [log(m^2/day)]'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
 ylabel '\Delta'
 title ''
 legend off
@@ -133,8 +134,8 @@ pChangeFoodWeb=reshape((maxTrophicLevel(:,2)-maxTrophicLevel(:,1)),numIt,[]);
 bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.96./((sum(~isnan(pChangeFoodWeb))).^0.5)]','--r','alpha'); drawnow; set(bl1,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-xlabel 'movement rate [log(m^2/day)]'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
 ylabel '\Delta'
 title ''
 legend off
@@ -151,7 +152,7 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 ylabel '\Delta'
 title ''
 legend off
@@ -166,83 +167,14 @@ pChangeFoodWeb=reshape((consResRatio(:,2)-consResRatio(:,1)),numIt,[]);
 bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.96./((sum(~isnan(pChangeFoodWeb))).^0.5)]','--r','alpha'); drawnow; set(bl1,'linewidth',2);
 refl=refline(0,0);
 set(refl,'color','r')
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 ylabel '\Delta'
 title ''
 legend off
 
-Assemblagefig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)/1.5]);
-set(Assemblagefig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
-subplot(2,2,1)
-hold on
-blmean=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
-bl2=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
-bl6=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage2(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage6(:,2)*100,8,CM(end,:),'filled');
-
-blmeanproj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
-bl2proj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
-bl6proj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-
-ylabel '% species locally novel'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-
-subplot(2,2,3)
-hold on
-blmean=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
-bl2=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
-bl6=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostSpatialAssemblage2(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostSpatialAssemblage6(:,2)*100,8,CM(end,:),'filled');
-
-blmeanproj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
-bl2proj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
-bl6proj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
-
-xlabel 'movement rate [log(m^2/day)]'
-ylabel '% species locally extirpated'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-
-subplot(2,2,2)
-hold on
-blmean=boundedline([1:numCases], nanmean(reshape(novelCoexistence(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
-bl22=boundedline([1:numCases], nanmean(reshape(novelCoexistence22(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence22(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence22(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22,'linewidth',1);
-bl26=boundedline([1:numCases], nanmean(reshape(novelCoexistence26(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence26(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence26(:,2)*100,numIt,[])))).^0.5)]','m','alpha'); drawnow; set(bl26,'linewidth',1);
-bl66=boundedline([1:numCases], nanmean(reshape(novelCoexistence66(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence66(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence66(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl66,'linewidth',1);
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence22(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence26(:,2)*100,8,'m','filled');
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence66(:,2)*100,8,CM(end,:),'filled');
-
-blmeanproj=boundedline([1:numCases], nanmean(reshape(novelCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
-bl22proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence22(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence22(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence22(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22proj,'linewidth',1);
-bl26proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence26(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence26(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence26(:,4)*100,numIt,[])))).^0.5)]','m--','alpha'); drawnow; set(bl26proj,'linewidth',1);
-bl66proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence66(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence66(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence66(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl66proj,'linewidth',1);
-
-ylabel '% coexisting pairs novel'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-
-subplot(2,2,4)
-hold on
-blmean=boundedline([1:numCases], nanmean(reshape(lostCoexistence(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
-bl22=boundedline([1:numCases], nanmean(reshape(lostCoexistence22(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence22(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence22(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22,'linewidth',1);
-bl26=boundedline([1:numCases], nanmean(reshape(lostCoexistence26(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence26(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence26(:,2)*100,numIt,[])))).^0.5)]','m','alpha'); drawnow; set(bl26,'linewidth',1);
-bl66=boundedline([1:numCases], nanmean(reshape(lostCoexistence66(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence66(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence66(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl66,'linewidth',1);
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence22(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence26(:,2)*100,8,'m','filled');
-scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence66(:,2)*100,8,CM(end,:),'filled');
-
-blmeanproj=boundedline([1:numCases], nanmean(reshape(lostCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
-bl22proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence22(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence22(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence22(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22proj,'linewidth',1);
-bl26proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence26(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence26(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence26(:,4)*100,numIt,[])))).^0.5)]','m--','alpha'); drawnow; set(bl26proj,'linewidth',1);
-bl66proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence66(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence66(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence66(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl66proj,'linewidth',1);
-
-xlabel 'movement rate [log(m^2/day)]'
-ylabel '% coexisting pairs lost'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-
-compfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/1.75 3*scrsz(4)/7]);
-set(compfig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
+%Figure S3
+compfig2=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/1.75 3*scrsz(4)/7]);
+set(compfig2,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
 subplot(2,2,1)
 yyaxis left
 bl1=boundedline([1:numCases], nanmean(reshape((maxBiomass(:,1)),numIt,[])),[nanstd(reshape((maxBiomass(:,1)),numIt,[]))*1.96./((sum(~isnan(reshape((maxBiomass(:,1)),numIt,[])))).^0.5)]','b','alpha'); drawnow; set(bl1,'linewidth',2);
@@ -256,7 +188,7 @@ bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*
 refl=refline(0,0);
 set(refl,'color','r')
 ylabel '\Delta'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 title ''
 legend off
 subplot(2,2,2)
@@ -272,7 +204,7 @@ bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*
 refl=refline(0,0);
 set(refl,'color','r')
 ylabel '\Delta'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 legend off
 subplot(2,2,3)
 yyaxis left
@@ -286,9 +218,9 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','r')
-xlabel 'movement rate [log(m^2/day)]'
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
 ylabel '\Delta'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 title ''
 legend off
 subplot(2,2,4)
@@ -303,22 +235,22 @@ bl1=boundedline([1:numCases], nanmean(pChangeFoodWeb),[nanstd(pChangeFoodWeb)*1.
 bl1=boundedline([1:numCases], nanmean(pChangeSingleSp),[nanstd(pChangeSingleSp)*1.96./((sum(~isnan(pChangeSingleSp))).^0.5)]','--k','alpha');
 refl=refline(0,0);
 set(refl,'color','k')
-xlabel 'movement rate [log(m^2/day)]'
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
 ylabel '\Delta'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 title ''
 legend off
 
 
-
-shiftfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)/1.5]); %3.5
+%Figure 2: Range shifts and assemblage changes
+shiftfig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/1.4 scrsz(4)/2.2]);
 set(shiftfig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
 MedianShift_move=reshape(All_Shifts(2,:,:)-All_Shifts(1,:,:),numIt*size(All_Shifts,2),[]); %reshape individual species shifts with warming by movement rates
 MedianShift_moveLV=reshape(All_Shifts(4,:,:)-All_Shifts(3,:,:),numIt*size(All_Shifts,2),[]); %reshape individual species shifts with warming by movement rates
 
 BS_move=reshape(allBody_Biomass(1,:,:),numIt*size(allBody_Biomass,2),[]); %reshape individual species body sizes by movement rates
 OptT_move=reshape(allBody_Biomass(2,:,:),numIt*size(allBody_Biomass,2),[]); %reshape individual species optimal temperature by movement rates
-subplot(2,2,1) %centroid shift
+subplot(2,4,1) %centroid shift
 hold on
 CM=colormap(jet(128)); % set colormap
 
@@ -332,13 +264,14 @@ blmeanproj=boundedline([1:numCases], -nanmean(reshape(CentroidShift(:,2)-Centroi
 bl2proj=boundedline([1:numCases], -nanmean(reshape(Centroid2Shift(:,2)-Centroid2Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Centroid2Shift(:,2)-Centroid2Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Centroid2Shift(:,2)-Centroid2Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
 bl6proj=boundedline([1:numCases], -nanmean(reshape(Centroid6Shift(:,2)-Centroid6Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Centroid6Shift(:,2)-Centroid6Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Centroid6Shift(:,2)-Centroid6Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
 
+
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'centroid shift %'
 ylim([0 100])
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 
-subplot(2,2,2) %range contraction
+subplot(2,4,2) %range contraction
 hold on
 CM=colormap(jet(128)); % set colormap
 blmean=boundedline([1:numCases], -nanmean(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])),[nanstd(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[]))*1.96./((sum(~isnan(reshape(RangeExpansionPerc(:,1)-RangeExpansionPerc0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
@@ -351,12 +284,13 @@ blmeanproj=boundedline([1:numCases], -nanmean(reshape(RangeExpansionPerc(:,2)-Ra
 bl2proj=boundedline([1:numCases], -nanmean(reshape(Range2ExpansionPerc(:,2)-Range2ExpansionPerc0(:,2),numIt,[])),[nanstd(reshape(Range2ExpansionPerc(:,2)-Range2ExpansionPerc0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(Range2ExpansionPerc(:,2)-Range2ExpansionPerc0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
 bl6proj=boundedline([1:numCases], -nanmean(reshape(Range6ExpansionPerc(:,2)-Range6ExpansionPerc0(:,2),numIt,[])),[nanstd(reshape(Range6ExpansionPerc(:,2)-Range6ExpansionPerc0(:,2),numIt,[]))*1.96./((sum(~isnan(reshape(Range6ExpansionPerc(:,2)-Range6ExpansionPerc0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
 
+
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'range contraction %'
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
 
-subplot(2,2,3) %leading edge shift
+subplot(2,4,3) %leading edge shift
 hold on
 CM=colormap(jet(128)); % set colormap
 blmean=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(LeadingShift(:,1)-LeadingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
@@ -369,14 +303,15 @@ blmeanproj=boundedline([1:numCases], -nanmean(reshape(LeadingShift(:,2)-LeadingS
 bl2proj=boundedline([1:numCases], -nanmean(reshape(Leading2Shift(:,2)-Leading2Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Leading2Shift(:,2)-Leading2Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Leading2Shift(:,2)-Leading2Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
 bl6proj=boundedline([1:numCases], -nanmean(reshape(Leading6Shift(:,2)-Leading6Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Leading6Shift(:,2)-Leading6Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Leading6Shift(:,2)-Leading6Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
 
+
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'leading edge shift %'
 ylim([0 100])
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-xlabel 'movement rate [log(m^2/day)]'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
 
-subplot(2,2,4) %trailing edge shift
+subplot(2,4,4) %trailing edge shift
 hold on
 CM=colormap(jet(128)); % set colormap
 blmean=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*100/TempChange,[nanstd(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(TrailingShift(:,1)-TrailingShift0(:,1),numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
@@ -389,9 +324,86 @@ blmeanproj=boundedline([1:numCases], -nanmean(reshape(TrailingShift(:,2)-Trailin
 bl2meanproj=boundedline([1:numCases], -nanmean(reshape(Trailing2Shift(:,2)-Trailing2Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Trailing2Shift(:,2)-Trailing2Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Trailing2Shift(:,2)-Trailing2Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
 bl6meanproj=boundedline([1:numCases], -nanmean(reshape(Trailing6Shift(:,2)-Trailing6Shift0(:,2),numIt,[]))*100/TempChange,[nanstd(reshape(Trailing6Shift(:,2)-Trailing6Shift0(:,2),numIt,[]))*(100/TempChange)*1.96./((sum(~isnan(reshape(Trailing6Shift(:,2)-Trailing6Shift0(:,2),numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
 
+
 refl=refline(0,0);
 set(refl,'color','k')
 ylabel 'trailing edge shift %'
 ylim([0 100])
-xlim([1 numXPresent]); xticks([1:numXPresent]); xticklabels(movementLabels);
-xlabel 'movement rate [log(m^2/day)]'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+%xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
+
+
+% Assemblagefig=figure ('Color', [1 1 1],'Position',[1 scrsz(2) scrsz(3)/2 scrsz(4)/1.5]);
+% set(Assemblagefig,'defaultAxesColorOrder',[[0 0 1]; [1 0 0]]);
+subplot(2,4,5)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl2=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage2(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+bl6=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage6(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage2(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelSpatialAssemblage6(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2proj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage2(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6proj=boundedline([1:numCases], nanmean(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[])),[nanstd(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelSpatialAssemblage6(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
+ylabel '% species locally novel'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+
+subplot(2,4,7)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl2=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage2(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2,'linewidth',1);
+bl6=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage6(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl6,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostSpatialAssemblage2(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostSpatialAssemblage6(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl2proj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage2(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl2proj,'linewidth',1);
+bl6proj=boundedline([1:numCases], nanmean(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[])),[nanstd(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostSpatialAssemblage6(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl6proj,'linewidth',1);
+
+
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
+ylabel '% species locally extirpated'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+
+subplot(2,4,6)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(novelCoexistence(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl22=boundedline([1:numCases], nanmean(reshape(novelCoexistence22(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence22(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence22(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22,'linewidth',1);
+bl26=boundedline([1:numCases], nanmean(reshape(novelCoexistence26(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence26(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence26(:,2)*100,numIt,[])))).^0.5)]','m','alpha'); drawnow; set(bl26,'linewidth',1);
+bl66=boundedline([1:numCases], nanmean(reshape(novelCoexistence66(:,2)*100,numIt,[])),[nanstd(reshape(novelCoexistence66(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence66(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl66,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence22(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence26(:,2)*100,8,'m','filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), novelCoexistence66(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(novelCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl22proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence22(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence22(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence22(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22proj,'linewidth',1);
+bl26proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence26(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence26(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence26(:,4)*100,numIt,[])))).^0.5)]','m--','alpha'); drawnow; set(bl26proj,'linewidth',1);
+bl66proj=boundedline([1:numCases], nanmean(reshape(novelCoexistence66(:,4)*100,numIt,[])),[nanstd(reshape(novelCoexistence66(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(novelCoexistence66(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl66proj,'linewidth',1);
+
+
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
+ylabel '% coexisting pairs novel'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
+
+subplot(2,4,8)
+hold on
+blmean=boundedline([1:numCases], nanmean(reshape(lostCoexistence(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence(:,2)*100,numIt,[])))).^0.5)]',plotColor,'alpha'); drawnow; set(blmean,'linewidth',2);
+bl22=boundedline([1:numCases], nanmean(reshape(lostCoexistence22(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence22(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence22(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22,'linewidth',1);
+bl26=boundedline([1:numCases], nanmean(reshape(lostCoexistence26(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence26(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence26(:,2)*100,numIt,[])))).^0.5)]','m','alpha'); drawnow; set(bl26,'linewidth',1);
+bl66=boundedline([1:numCases], nanmean(reshape(lostCoexistence66(:,2)*100,numIt,[])),[nanstd(reshape(lostCoexistence66(:,2)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence66(:,2)*100,numIt,[])))).^0.5)]','-','Cmap',CM(end,:),'alpha'); drawnow; set(bl66,'linewidth',1);
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence22(:,2)*100,8,CM(ceil(2*128/6),:),'filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence26(:,2)*100,8,'m','filled');
+scatter(paramIndices+0.5*(rand(size(paramIndices))-0.5), lostCoexistence66(:,2)*100,8,CM(end,:),'filled');
+
+blmeanproj=boundedline([1:numCases], nanmean(reshape(lostCoexistence(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',plotColor,'alpha'); drawnow; set(blmeanproj,'linewidth',2);
+bl22proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence22(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence22(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence22(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(ceil(2*128/6),:),'alpha'); drawnow; set(bl22proj,'linewidth',1);
+bl26proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence26(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence26(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence26(:,4)*100,numIt,[])))).^0.5)]','m--','alpha'); drawnow; set(bl26proj,'linewidth',1);
+bl66proj=boundedline([1:numCases], nanmean(reshape(lostCoexistence66(:,4)*100,numIt,[])),[nanstd(reshape(lostCoexistence66(:,4)*100,numIt,[]))*1.96./((sum(~isnan(reshape(lostCoexistence66(:,4)*100,numIt,[])))).^0.5)]','--','Cmap',CM(end,:),'alpha'); drawnow; set(bl66proj,'linewidth',1);
+
+xlabel(xVarName) %xlabel 'dispersal rate [day^{-1}]'
+ylabel '% coexisting pairs lost'
+xlim([0.5 numXPresent+0.5]); xticks([1:numXPresent]); xticklabels(movementLabels);
