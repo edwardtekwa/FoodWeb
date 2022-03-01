@@ -1,6 +1,6 @@
 
 %Edward Wong Oct 22, 17
-%collect data from Make_warming_MultPtsstats_Parallel0 simulations
+%collect data from Make_warming_MultPtsstats_Parallel simulations
 
 clear
 
@@ -14,18 +14,14 @@ defaultNumIt=10; %cap maximum number of iterations per case to analyse
 %specify simulation data folder in current directory
 Path='Type III narrow thermal evlp'; %this is an example
 
-%%
-%use these lines for specialist food webs:
-%AntiCases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII';'basalSize0.01_meanD8_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII';'basalSize0.01_meanD10_pInedible0_fIII'};
-%Cases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII';'basalSize0.01_meanD8_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII';'basalSize0.01_meanD10_pInedible0.5_fIII'};
-
-%use these lines for generalist food webs:
-Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII';'basalSize0.01_meanD8_pInedible0_fIII';'basalSize0.01_meanD9_pInedible0_fIII';'basalSize0.01_meanD10_pInedible0_fIII'};
-AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII';'basalSize0.01_meanD8_pInedible0.5_fIII';'basalSize0.01_meanD9_pInedible0.5_fIII';'basalSize0.01_meanD10_pInedible0.5_fIII'};
+Cases={'basalSize0.01_meanD-Inf_pInedible0_fIII';'basalSize0.01_meanD0_pInedible0_fIII';'basalSize0.01_meanD3_pInedible0_fIII';'basalSize0.01_meanD6_pInedible0_fIII';'basalSize0.01_meanD7_pInedible0_fIII';'basalSize0.01_meanD8_pInedible0_fIII'};
+AntiCases={'basalSize0.01_meanD-Inf_pInedible0.5_fIII';'basalSize0.01_meanD0_pInedible0.5_fIII';'basalSize0.01_meanD3_pInedible0.5_fIII';'basalSize0.01_meanD6_pInedible0.5_fIII';'basalSize0.01_meanD7_pInedible0.5_fIII';'basalSize0.01_meanD8_pInedible0.5_fIII'};
 %%
 
 numCases=length(Cases);
-moveRates=[-Inf 0 3 6 7 8]; %diffusion rates
+moveRates=[-Inf 0 3 6 7 8]; %log10(diffusion coefficients)
+movementLabels={'0' '10^{-12}' '10^{-9}' '10^{-6}' '10^{-5}' '10^{-4}'}; %dispersal rates
+xVarName='dispersal rate [day^{-1}]';
 caseIts=[]; %record number of iterations for each case
 
 %quantile fits:
@@ -238,40 +234,38 @@ for CaseNumber=1:numCases
             %Redo single-species LV hindcast fits by fixing c and estimating r and a for each species:
             display(['running single species estimate for run ' num2str(numRun) ' of ' num2str(numIt*numCases)])
             numRun=numRun+1;
-            [r5,a5,c5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5]=estSingleSpeciesModelmsy(Btrans,dBtrans,gainBtrans,P,[0.5 0.5]); %fit growth model to all patches at once using estimated best quantiles
+            [r5,a5,c5,z5,K5,flag5,raR25,r_T5,K_T5,K_T_ratio5,r_T_ratio5]=estSingleSpeciesModel(Btrans,dBtrans,gainBtrans,P,[0.5 0.5]); %fit growth model to all patches at once using estimated best quantiles
             All_r_est=[All_r_est; r5];
             All_a_est=[All_a_est; a5];
             %                                 BPquantiles=[BPquantiles;fitCodeEsts];
             %                                 BPpercDiff=[BPpercDiff;[percDiffB,percDiffP]];
             %                                 disp(['case ' num2str(CaseNumber) ' iteration ' num2str(iteration) ': quantiles ' num2str(fitCodeEsts,2) ', %diff ' num2str([percDiffB,percDiffP],2)])
             %
+            
             %rerun single-species projection:
             TimePts=[1:365:200*365+1]; %record every year
             numPts=length(TimePts); %number of time points
             gainBLV5=zeros(P.nx,P.n);
             dBLV5=zeros(P.nx,P.n);
+            BLV5_yrs=zeros(P.nx,P.n,numPts);
+            gainBLV5_yrs=zeros(P.nx,P.n,numPts);
             gainBLV5w=zeros(P.nx,P.n);
             dBLV5w=zeros(P.nx,P.n);
+            BLV5w_yrs=zeros(P.nx,P.n,numPts);
+            gainBLV5w_yrs=zeros(P.nx,P.n,numPts);
             BLV5=BLV1_yrs(:,:,1); %no warming case under estimated single-species dynamics (start at identical point as other simulations)
             BLV5w=BLV5; %6C warming case under estimated single-species dynamics (start at identical point as other simulations)
             for t = 1:TimePts(end) %run for 200 years (with daily time steps)
                 BLV5(BLV5<eps) = 0;
                 BLV5w(BLV5w<eps)= 0;
                 T1      = P.T;% + t.*P.dT; %<<< add this when time is right
-                T1w      = P.T + (t-1)*P.dT;
-                BLV5_RK1=sub_move(BLV5,P); %single species model no temp change Runge-Kutta step 1
-                [gainBLV5_RK1 dBLV5_RK1] = sub_demogLV(BLV5_RK1,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                BLV5_RK2        = sub_move(BLV5+0.5*dBLV5_RK1,P); % move Runge-Kutta step 2
-                [gainBLV5_RK2 dBLV5_RK2] = sub_demogLV(BLV5_RK2,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                dBLV5=(dBLV5_RK1+dBLV5_RK2)/2; %2nd order RK integration
-                gainBLV5=(gainBLV5_RK1+gainBLV5_RK2)/2; %2nd order RK integration
-                
-                BLV5w_RK1=sub_move(BLV5w,P); %single species model temp change Runge-Kutta step 1
-                [gainBLV5w_RK1 dBLV5w_RK1] = sub_demogLV(BLV5w_RK1,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                BLV5w_RK2        = sub_move(BLV5w+0.5*dBLV5w_RK1,P); % move Runge-Kutta step 2
-                [gainBLV5w_RK2 dBLV5w_RK2] = sub_demogLV(BLV5w_RK2,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
-                dBLV5w=(dBLV5w_RK1+dBLV5w_RK2)/2; %2nd order RK integration
-                gainBLV5w=(gainBLV5w_RK1+gainBLV5w_RK2)/2; %2nd order RK integration
+                T1w      = P.T + (t-1)*P.dT(1);
+                BLV5=sub_move(BLV5,P); %single species model no temp change, move
+                %[gainBLV5 dBLV5] = sub_demogLVmsy(BLV5,T1,r5,a5,z5,P); % grow/die
+                [gainBLV5 dBLV5] = sub_demogLV(BLV5,T1,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
+                BLV5w=sub_move(BLV5w,P); %single species model with temp change, move
+                %[gainBLV5w dBLV5w] = sub_demogLVmsy(BLV5w,T1w,r5,a5,z5,P); % grow/die
+                [gainBLV5w dBLV5w] = sub_demogLV(BLV5w,T1w,r5,a5,c5,z5,P.Ea,P.k,P.s.mi,P.Spd);
                 tpos=find(t==TimePts);
                 if ~isempty(tpos)
                     BLV5_yrs(:,:,tpos)=BLV5;
@@ -287,12 +281,13 @@ for CaseNumber=1:numCases
             BLV1w=nanmean(BLV5w_yrs(:,:,end-recordYrs+1:end),3);
             gainBLV1w=nanmean(gainBLV5w_yrs(:,:,end-recordYrs+1:end),3);
             
+
             
             %---------------Change assignments here for different single-species projections---------
-            %             BLV1=nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
-            %             gainBLV1=nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3);
-            %             BLV1w=nanmean(BLV1w_yrs(:,:,end-recordYrs+1:end),3);
-            %             gainBLV1w=nanmean(gainBLV1w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
+%                         BLV1=nanmean(BLV1_yrs(:,:,end-recordYrs+1:end),3); %BLV, BLV1-6
+%                         gainBLV1=nanmean(gainBLV1_yrs(:,:,end-recordYrs+1:end),3);
+%                         BLV1w=nanmean(BLV1w_yrs(:,:,end-recordYrs+1:end),3);
+%                         gainBLV1w=nanmean(gainBLV1w_yrs(:,:,end-recordYrs+1:end),3); %gainBLV1w=nanmean(gainBLV4w_yrs(:,:,end-recordYrs+1:end,TempScenario),3);
             %----------------------------------------------------------------------------------------
             %end
             %    end
@@ -392,12 +387,31 @@ for CaseNumber=1:numCases
             lostSpatialAssemblage=[lostSpatialAssemblage; [sum(BLocalDiff(:)==-1)/sum(BtransExist(:)) sum(BwLocalDiff(:)==-1)/sum(BtransExist(:)) sum(BLV1LocalDiff(:)==-1)/sum(BtransExist(:)) sum(BLV1wLocalDiff(:)==-1)/sum(BtransExist(:))]]; %portion of initially present species that are no longer there
             Size2_3_Pos=find(P.S>2&P.S<=3)-1;
             Size5_6_Pos=find(P.S>5&P.S<=6)-1;
-            novelSpatialAssemblage2=[novelSpatialAssemblage2; [sum(sum(BLocalDiff(:,Size2_3_Pos)==1))/sum(sum(Bexist(:,Size2_3_Pos))) sum(sum(BwLocalDiff(:,Size2_3_Pos)==1))/sum(sum(Bexist(:,Size2_3_Pos))) sum(sum(BLV1LocalDiff(:,Size2_3_Pos)==1))/sum(sum(BLV1exist(:,Size2_3_Pos))) sum(sum(BLV1wLocalDiff(:,Size2_3_Pos)==1))/sum(sum(BLV1exist(:,Size2_3_Pos)))]]; % portion of current species that were not there initially
-            novelSpatialAssemblage6=[novelSpatialAssemblage6; [sum(sum(BLocalDiff(:,Size5_6_Pos)==1))/sum(sum(Bexist(:,Size5_6_Pos))) sum(sum(BwLocalDiff(:,Size5_6_Pos)==1))/sum(sum(Bexist(:,Size5_6_Pos))) sum(sum(BLV1LocalDiff(:,Size5_6_Pos)==1))/sum(sum(BLV1exist(:,Size5_6_Pos))) sum(sum(BLV1wLocalDiff(:,Size5_6_Pos)==1))/sum(sum(BLV1exist(:,Size5_6_Pos)))]]; % portion of current species that were not there initially
+            novelSpatialAssemblage2=[novelSpatialAssemblage2; [sum(sum(BLocalDiff(:,Size2_3_Pos)==1))/sum(sum(Bexist(:,Size2_3_Pos))) sum(sum(BwLocalDiff(:,Size2_3_Pos)==1))/sum(sum(Bwexist(:,Size2_3_Pos))) sum(sum(BLV1LocalDiff(:,Size2_3_Pos)==1))/sum(sum(BLV1exist(:,Size2_3_Pos))) sum(sum(BLV1wLocalDiff(:,Size2_3_Pos)==1))/sum(sum(BLV1wexist(:,Size2_3_Pos)))]]; % portion of current species that were not there initially
+            novelSpatialAssemblage6=[novelSpatialAssemblage6; [sum(sum(BLocalDiff(:,Size5_6_Pos)==1))/sum(sum(Bexist(:,Size5_6_Pos))) sum(sum(BwLocalDiff(:,Size5_6_Pos)==1))/sum(sum(Bwexist(:,Size5_6_Pos))) sum(sum(BLV1LocalDiff(:,Size5_6_Pos)==1))/sum(sum(BLV1exist(:,Size5_6_Pos))) sum(sum(BLV1wLocalDiff(:,Size5_6_Pos)==1))/sum(sum(BLV1wexist(:,Size5_6_Pos)))]]; % portion of current species that were not there initially
             lostSpatialAssemblage2=[lostSpatialAssemblage2; [sum(sum(BLocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos))) sum(sum(BwLocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos))) sum(sum(BLV1LocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos))) sum(sum(BLV1wLocalDiff(:,Size2_3_Pos)==-1))/sum(sum(BtransExist(:,Size2_3_Pos)))]]; %portion of initially present species that are no longer there
             lostSpatialAssemblage6=[lostSpatialAssemblage6; [sum(sum(BLocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos))) sum(sum(BwLocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos))) sum(sum(BLV1LocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos))) sum(sum(BLV1wLocalDiff(:,Size5_6_Pos)==-1))/sum(sum(BtransExist(:,Size5_6_Pos)))]]; %portion of initially present species that are no longer there
             
-            
+            CoexistInit=zeros(length(B));
+            CoexistB=zeros(length(B));
+            CoexistBw=zeros(length(B));
+            CoexistBLV1=zeros(length(B));
+            CoexistBLV1w=zeros(length(B));
+            Coexist22Init=zeros(length(B));
+            Coexist22B=zeros(length(B));
+            Coexist22Bw=zeros(length(B));
+            Coexist22BLV1=zeros(length(B));
+            Coexist22BLV1w=zeros(length(B));
+            Coexist26Init=zeros(length(B));
+            Coexist26B=zeros(length(B));
+            Coexist26Bw=zeros(length(B));
+            Coexist26BLV1=zeros(length(B));
+            Coexist26BLV1w=zeros(length(B));
+            Coexist66Init=zeros(length(B));
+            Coexist66B=zeros(length(B));
+            Coexist66Bw=zeros(length(B));
+            Coexist66BLV1=zeros(length(B));
+            Coexist66BLV1w=zeros(length(B));
             for sp1=1:length(B)
                 for sp2=1:length(B)
                     CoexistInit(sp1,sp2)=sum(BtransEnd(:,sp1).*BtransEnd(:,sp2)>0)>0; %initial coexistence matrix
@@ -575,6 +589,6 @@ for CaseNumber=1:numCases
     end
 end
 
-%FileName=sprintf('WarmingMovementStats_%s.mat', TimeData);
-FileName=sprintf('WarmingDispersalStats.mat');
+FileName=sprintf('WarmingDispersalStats_%s.mat', TimeData);
+%FileName=sprintf('WarmingDispersalStats.mat');
 save(FileName);
