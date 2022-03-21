@@ -13,7 +13,7 @@ sub_feedfunc_adj.m
 Add_warming_endstats_dispersal_fixedDir.m
 estSingleSpeciesModel.m
 Add_warming_endstats_dispersal_plots.m
-WarmingMovementStats_main.mat
+WarmingDispersalStats_main.mat
 plot_demog_spatial_endS.m
 Foodweb_numSpecies200_dT3_basalSize0.01_meanD3_pInedible0_fIII.mat
 
@@ -30,9 +30,9 @@ Edit sub_feedfunc_adj.m to specify feeding parameters.
 
 2. To process data from new simulations and run single-species projections, run Add_warming_endstats_dispersal_fixedDir.m after editing "Path" to the local folder containing the simulations.
 
-Edit estSingleSpeciesModel.m to change parameters for the single-species counterfactual model fit to food web data in the no-warming period. Data for subsequent plotting is saved as WarmingDispersalStats.mat.
+Edit estSingleSpeciesModel.m to change parameters for the single-species counterfactual model fit to food web data in the no-warming period. Data for subsequent plotting is saved as WarmingDispersalStats_<TimeData>.mat.
 
-3. To plot aggregate results, run Add_warming_endstats_dispersal_plots.m after editing the .mat file target under "load". Otherwise, run as is to plot data from the paper's main simulations (in WarmingMovementStats_c1_004 sumLL.mat).
+3. To plot aggregate results, run Add_warming_endstats_dispersal_plots.m after editing the .mat file target under "load". Otherwise, run as is to plot data from the paper's main simulations (in WarmingDispersalStats_main.mat).
 
 4. To plot time series and food web diagram for one simulation replicate, run plot_demog_spatial_endS.m. This plots data from a sample replicate (Foodweb_numSpecies200_dT3_basalSize0.01_meanD3_pInedible0_fIII.mat).
 
